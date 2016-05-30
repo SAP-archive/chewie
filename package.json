@@ -1,0 +1,63 @@
+{
+  "name": "chewie",
+  "version": "0.0.1",
+  "description": "Helper module for documentation independent generation concept.",
+  "homepage": "https://yaas.io",
+  "license": "Apache 2.0",
+  "engines": {
+    "node": "4.2.1",
+    "npm": "3"
+  },
+  "dependencies": {
+    "async": "^1.4.2",
+    "chai": "3.4.0",
+    "del": "^2.2.0",
+    "filendir": "^1.0.0",
+    "gulp": "3.9.0",
+    "gulp-buffer": "0.0.2",
+    "gulp-concat": "^2.4.2",
+    "gulp-concat-util": "^0.5.1",
+    "gulp-git": "^0.5.6",
+    "gulp-imagemin": "^2.0.0",
+    "gulp-jsonminify": "^1.0.0",
+    "gulp-minify-css": "^0.3.11",
+    "gulp-minify-html": "^0.1.7",
+    "gulp-rename": "^1.2.0",
+    "gulp-replace": "0.5.4",
+    "gulp-replace-task": "^0.11.0",
+    "gulp-shell": "^0.3.0",
+    "gulp-tap": "^0.1.3",
+    "gulp-uglify": "^1.0.2",
+    "gulp-util": "3.0.7",
+    "gulp-zip": "3.0.2",
+    "json-schema-deref-sync": "0.2.9",
+    "marked-metadata": "0.0.6",
+    "mkdirp": "^0.5.1",
+    "mocha": "2.3.3",
+    "path": "^0.12.7",
+    "raml-javascript-generator": "^0.1.2",
+    "raml-object-to-raml": "0.0.7",
+    "raml-parser": "^0.8.16",
+    "raml2html": "^2.4.0",
+    "raml2obj": "^2.2.0",
+    "rimraf": "2.4.3",
+    "underscore": "^1.8.3"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "NODE_ENV=master npm run test-unit && npm run test-integration",
+    "test-unit": "NODE_ENV=master ./node_modules/mocha/bin/mocha test/unit/*.spec.js",
+    "test-integration": "NODE_ENV=master ./node_modules/mocha/bin/mocha --timeout 40000 test/integration/*.spec.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hybris/chewie.git"
+  },
+  "author": {
+    "name": "SAP Hybris"
+  },
+  "bugs": {
+    "url": "https://github.com/hybris/chewie/issues"
+  },
+  "homepage": "https://github.com/hybris/chewie#readme"
+}

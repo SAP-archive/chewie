@@ -1,0 +1,14 @@
+{
+  "name": "Fillerati",
+  "type": "gettingstarted",
+  "area": "Classic Books",
+  "left_nav_area": "1",
+  "left_nav_area_element": "1",
+  "source": [
+    {
+      "location": "git@github.com:hybris/chewie-sample-data.git",
+      "docu_dir": "/content/gettingstarted/fillerati",
+      "branch_or_tag": "master"
+    }
+  ]
+}
