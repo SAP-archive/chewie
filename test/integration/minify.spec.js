@@ -1,5 +1,5 @@
 'use strict';
-const config = require('../gulpConfigTest'),
+const config = require('../chewieConfigTest'),
   minify = require('../../src/minification/minify'),
   cloneDocuSources = require('../../src/integration/cloneDocuSources'),
   prepareRegistry = require('../../src/integration/prepareRegistry'),
