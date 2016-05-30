@@ -19,26 +19,27 @@ const gulp = require('gulp'),
    */
 const parse = (source, dest, baseUri, listTraits, next) => {
   gulp.src(source)
-      .pipe(tap((file) => {
-        let retries = 0;
-        async.whilst(
-          () => retries < 3,
-          (cb) => {
-            retries++;
-            _parseRAML(file, source, dest, baseUri, listTraits, cb);
-          },
-          (err) => {
-            if(retries === 3) {
-              logger.error(`Couldn't download traits for RAML because server isn't responding`);
-              return process.exit(1);
-            }
-            next();
-          }
-        );
-      })
-    )
-    .on('error', next);
+     .pipe(tap((file) => {
+       let retries = 0;
+       async.whilst(
+         () => retries < 3,
+         (cb) => {
+           retries++;
+           _parseRAML(file, source, dest, baseUri, listTraits, cb);
+         },
+         (err) => {
+           if(retries === 3) {
+             logger.error(`Couldn't download traits for RAML because server isn't responding`);
+             return process.exit(1);
+           }
+         }
+       );
+     })
+   )
+   .on('error', next)
+   .on('end', next);
 };
+
 
 const ramlParser = {
   parse
