@@ -1,0 +1,17 @@
+{
+  "name": "Hodor Ipsum",
+  "type": "services",
+  "area": "Walkers",
+  "builder_org": "hbo",
+  "source": [
+    {
+      "builder_identifier": "hodor-ipsum",
+      "version": "v1",
+      "latest": true,
+      "location": "git@github.com:hybris/chewie-sample-data.git",
+      "docu_dir": "/content/services/hodoripsum",
+      "branch_or_tag": "master",
+      "raml": "src/main/resources/api/hodor-ipsum.raml"
+    }
+  ]
+}

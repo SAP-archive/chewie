@@ -1,0 +1,118 @@
+{
+    "rules": {
+        "indent": [
+            2,
+            2
+        ],
+        "no-inner-declarations": [
+          2,
+          "both"
+        ],
+        "arrow-parens": [
+          2,
+          "always"
+        ],
+        "arrow-spacing": 2,
+        "no-var": 2,
+        "prefer-const": 2,
+        "prefer-template": 2,
+        "require-yield": 2,
+        "prefer-arrow-callback": 2,
+        "no-this-before-super": 2,
+        "no-dupe-class-members": 2,
+        "no-class-assign": 2,
+        "no-const-assign": 2,
+        "constructor-super": 2,
+        "no-unexpected-multiline": 2,
+        "valid-typeof": 2,
+        "use-isnan": 2,
+        "no-unreachable": 2,
+        "no-obj-calls": 2,
+        "no-negated-in-lhs": 2,
+        "no-invalid-regexp": 2,
+        "no-func-assign": 2,
+        "no-extra-semi": 2,
+        "no-extra-boolean-cast": 2,
+        "no-ex-assign": 2,
+        "no-empty": 2,
+        "no-dupe-keys": 2,
+        "no-dupe-args": 2,
+        "no-duplicate-case": 2,
+        "no-debugger": 2,
+        "no-cond-assign": 2,
+        "no-constant-condition": 2,
+        "block-scoped-var": 2,
+        "dot-location": [2, "property"],
+        "guard-for-in": 2,
+        "no-alert": 2,
+        "default-case": 2,
+        "no-caller": 2,
+        "no-else-return": 2,
+        "no-eq-null": 2,
+        "no-eval": 2,
+        "no-fallthrough": 2,
+        "no-implicit-coercion": 2,
+        "no-implied-eval": 2,
+        "no-lone-blocks": 2,
+        "comma-dangle": [
+          2,
+          "never"
+        ],
+        "quotes": [
+            2,
+            "single"
+        ],
+        "linebreak-style": [
+            2,
+            "unix"
+        ],
+        "semi": [
+            2,
+            "always"
+        ],
+        "eqeqeq": [
+          2,
+          "smart"
+        ],
+        "brace-style": [2,
+          "stroustrup",
+          { "allowSingleLine": true }
+        ],
+        "camelcase": [
+          2,
+          {"properties": "always"}
+        ],
+        "comma-spacing": [
+          2,
+          {"before": false, "after": true}
+        ],
+        "comma-style": [
+          2,
+          "last"
+        ],
+        "computed-property-spacing": [
+          2,
+          "never"
+        ],
+        "lines-around-comment": [
+          2,
+          {
+            "beforeBlockComment"  : true,
+            "beforeLineComment"  : true
+          }
+        ],
+        "no-console": 2
+    },
+    "env": {
+      "node": true,
+      "browser": true,
+      "es6": true
+    },
+    "parser": "babel-eslint",
+    "ecmaFeatures": {
+      "classes": true,
+      "templateStrings": true,
+      "modules": true,
+      "jsx": true
+    }
+}
