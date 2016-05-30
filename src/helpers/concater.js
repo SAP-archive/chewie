@@ -5,7 +5,7 @@ const gulp = require('gulp'),
 
 
 /**
- * This function concats all json files into one array in one file, named as provided in gulpConfig under 'registry.fileName attribute'.
+ * This function concats all json files into one array in one file, named as provided in chewieConfig under 'registry.fileName attribute'.
  * @param {string} [registryLocation] - this is the location of the registry json files that need to be combined in one.
  * @param {object} [config] - the configuration that you need to pass to the function.
  * @param {function} [next] - callback for asynch operations

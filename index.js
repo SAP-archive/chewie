@@ -1,7 +1,7 @@
 'use strict';
 
 // config
-const config = require('./src/gulpConfig');
+const config = require('./src/chewieConfig');
 
 // integration
 const prepareRegistry = require('./src/integration/prepareRegistry'),

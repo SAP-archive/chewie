@@ -9,7 +9,7 @@ const cloner = require('../helpers/cloner'),
 
 /**
  * This function gets the registry from a given location and combines into one json file.
- * You need to make sure to have a proper configuration settings in gulpconfig().js ('registry' attribute).
+ * You need to make sure to have a proper configuration settings in chewieConfig().js ('registry' attribute).
  * There are 2 different cases allowed, 'local' and 'remote'.
  * For 'remote' case, you need to pass a branch or tag name for the remote repository.
  * @param {Object} [config] - basic integration configuration

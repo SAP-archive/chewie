@@ -1,5 +1,5 @@
 'use strict';
-const config = require('../gulpConfigTest'),
+const config = require('../chewieConfigTest'),
   cloneDocuSources = require('../../src/integration/cloneDocuSources'),
   rewriteRAML = require('../../src/integration/rewriteRAML'),
   prepareApiReferences = require('../../src/integration/prepareApiReferences'),
