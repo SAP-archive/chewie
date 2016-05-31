@@ -42,7 +42,7 @@ function cloneDocuRepo(topicDetails, cb) {
   git.clone(topicDetails.location, {args: `${topicDetails.sourcesCloneLoc} -b ${topicDetails.branchTag}`}, (err) => {
 
     if (err) {
-      if(err.code === 128) {
+      if(err.message && err.message.indexOf('already exists and is not an empty directory')) {
         log.warning(`${topicDetails.type} - ${topicDetails.name} ${version} is already cloned, use --force to download repository again`);
       }
       else {
