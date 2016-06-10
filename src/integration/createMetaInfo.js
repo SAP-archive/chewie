@@ -40,7 +40,7 @@ function latestRepoCloner(config) {
     const branch = config.generationResult.branch;
     const expectedCloneLocation = config.generationResult.clonedResultFolderPath;
 
-    logger.info(`Cloning ${config.generationResult.latestResultRepo} repository from ${config.generationResult.srcLocation}...`);
+    logger.info(`Cloning ${config.generationResult.cloneLocation} repository from ${config.generationResult.srcLocation}...`);
     cloner.cloneRepo(latestDocu, branch, expectedCloneLocation, (err) => {
       if (err) logger.error(err);
 
