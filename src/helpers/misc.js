@@ -9,10 +9,10 @@ const log = require('./logger'),
  * @param {String} [name] - string that has to be cleaned up
  * @return {String} - provided string after changes
  */
-const trimAdvanced = (name) => {
+function trimAdvanced(name) {
 
   return name.toLowerCase().replace(/([^\w-])/g, '');
-};
+}
 
 /**
  * This function takes a registry array and removes from it all entries that are not listed in a list of selected topics.
@@ -20,7 +20,7 @@ const trimAdvanced = (name) => {
  * @param {Array} [topics] - array of strings, names of topics that should stay in the registry
  * @return {Array} - registry array only with topics specified in topics array
  */
-const registryShrink = (registry, topics) => {
+function registryShrink(registry, topics) {
 
   const shrinkedRegistry = [];
   const notExistingTopics = [];
@@ -43,14 +43,14 @@ const registryShrink = (registry, topics) => {
   log.warning(`Registry is shrinked and only the following topics will get cloned: ${existingTopics}`);
 
   return shrinkedRegistry;
-};
+}
 
 
-const checkExtension = (path, str) => {
+function checkExtension(path, str) {
   return (path.indexOf(str, path.length - str.length) !== -1);
-};
+}
 
-const changeFileName = (path, newFileName) => {
+function changeFileName(path, newFileName) {
 
   const splitted = path.split('/');
   splitted.pop();
@@ -59,16 +59,16 @@ const changeFileName = (path, newFileName) => {
   const newPath = splitted.join('/');
 
   return newPath;
-};
+}
 
-const deleteFolderAsync = (path) => {
+function deleteFolderAsync(path) {
 
   return (cb) => {
     rimraf(path, (err) => {
       cb(err);
     });
   };
-};
+}
 
 /**
  * Its helper method for creating async method for gulp task.

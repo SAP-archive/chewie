@@ -12,7 +12,7 @@ const eachRegTopic = require('../helpers/registryIterator'),
  * @param {Array} [registry] - array of full registry
  * @param {Function} [next] - callback for asynch operations
  */
-const preparePlaceholders = (registry, config, next) => {
+function preparePlaceholders(registry, config, next) {
 
   let placeholderLocation, docuSrcLocation, docuSrcLocationInternal,
     placeholderRNLocation, rnSrcLocation, rnSrcLocationInternal, placeholderAPIConsoleLocation, apiConsoleLocation, apiConsoleLocationInternal;
@@ -46,7 +46,7 @@ const preparePlaceholders = (registry, config, next) => {
     ], cb);
 
   });
-};
+}
 
 //helper to run in async paralell for both internal and external content
 function moveContentAsyncDir(docuLocation, phLocation, topicDetails, name) {

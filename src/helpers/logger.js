@@ -1,17 +1,17 @@
 'use strict';
 const util = require('gulp-util');
 
-const error = (msg) => {
+function error(msg) {
   util.log(util.colors.red(msg));
-};
+}
 
-const warning = (msg) => {
+function warning(msg) {
   util.log(util.colors.yellow(msg));
-};
+}
 
-const info = (msg) => {
+function info(msg) {
   util.log(util.colors.green(msg));
-};
+}
 
 const logger = {
   error,

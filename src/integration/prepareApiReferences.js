@@ -23,7 +23,7 @@ const eachRegTopic = require('../helpers/registryIterator'),
  * @param {Object} [config] - basic integration configuration
  * @param {Function} [next] - callback for asynch operations
  */
-const prepareApiReferences = (registry, config, next) => {
+function prepareApiReferences(registry, config, next) {
   let name, nameInternal, externalFiles, internalFiles, apiReferenceContent, apiReferenceContentInternal, apiReferenceSource, apiReferenceSourceInternal, apiReferenceNewFile, apiReferenceNewFileInternal, raml2client, raml2clientInternal, clientFolder, clientFolderInternal, dest, destInternal;
 
   eachRegTopic.async(registry, config, next, (topicDetails, cb) => {
@@ -65,7 +65,7 @@ const prepareApiReferences = (registry, config, next) => {
       cb();
     }
   });
-};
+}
 
 
 function ramlToHtml(files, name){

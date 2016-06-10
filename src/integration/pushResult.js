@@ -20,7 +20,8 @@ const git = require('gulp-git'),
  * and perform operations on it, but if not provided then it is expected that 'dest' dir is a repo dir with .git folder
  * @param {Function} [next] - callback for asynch operations
  */
-const pushResult = (opt, next) => {
+
+function pushResult(opt, next) {
 
   const src = opt.src,
     dest = opt.dest,
@@ -37,7 +38,7 @@ const pushResult = (opt, next) => {
     addCommit(dest, message),
     push(branch, dest)
   ], next);
-};
+}
 
 //clone of given repo
 function clone(repo, branch, dest) {

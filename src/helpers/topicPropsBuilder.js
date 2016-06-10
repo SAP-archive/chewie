@@ -10,7 +10,7 @@ const misc = require('../helpers/misc'),
  * @param {Object} [config] - configuration object with all the basic locations needed for the topic Builder
  * @return {Object} - all topic properties
  */
-const topicPropsBuilder = (regEntry, sourceEntry, config) => {
+function topicPropsBuilder(regEntry, sourceEntry, config) {
 
   //name of the docu topic. Used for example for display in the navigation. Shoud match documents metadata.
   const name = regEntry.name;
@@ -328,7 +328,7 @@ const topicPropsBuilder = (regEntry, sourceEntry, config) => {
 
   return topicDetails;
 
-};
+}
 
 //helper to build a part of baseUri specific per environment
 function envLinkBuilder(config){

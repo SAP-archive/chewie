@@ -7,7 +7,7 @@ const creator = require('../helpers/creator'),
  * @param {Object} [topicDetails] - docu topic details
  * @return {String} - content of meta-inf file
  */
-const build = (topicDetails) => {
+function build(topicDetails) {
 
   let meta = '---\n';
 
@@ -19,7 +19,7 @@ const build = (topicDetails) => {
 
   return meta;
 
-};
+}
 
 const metaBuild = {
   build

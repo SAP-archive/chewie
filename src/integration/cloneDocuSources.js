@@ -14,11 +14,11 @@ const eachRegTopic = require('../helpers/registryIterator'),
  * @param {Object} [config] - basic integration configuration
  * @param {Function} [next] - callback for asynch operations
  */
-const cloneDocuSources = (registry, config, next) => {
+function cloneDocuSources(registry, config, next) {
   let topicDetails;
 
   iterateRegClone(registry, config, next);
-};
+}
 
 //simple abstraction, helper to use in callback
 function iterateRegClone(registry, config, next) {

@@ -12,12 +12,12 @@ const gulp = require('gulp'),
   * @param {String} [name] - name of the service
   * @param {Function} [next] - callback for asynch operations
   */
-const zipFolder = (src, dest, zipName, name, next) => {
+function zipFolder(src, dest, zipName, name, next) {
   gulp.src(`${src}/*`)
     .pipe(zip(`${zipName}.zip`))
     .pipe(gulp.dest(dest))
     .on('end', next);
-};
+}
 
 /**
  * This function makes an archive (*.zip)
@@ -26,7 +26,7 @@ const zipFolder = (src, dest, zipName, name, next) => {
  * @param {String} [zipName] - name of the zip archive
  * @param {String} [serviceName] - name of the service
  */
-const zipFolderAsync = (src, dest, zipName, serviceName) => {
+function zipFolderAsync(src, dest, zipName, serviceName) {
 
   return (cb) => {
     validator.dirCheck(src, (err) => {
@@ -41,7 +41,7 @@ const zipFolderAsync = (src, dest, zipName, serviceName) => {
       });
     });
   };
-};
+}
 
 const ziper = {
   zipFolder,

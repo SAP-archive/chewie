@@ -13,7 +13,7 @@ const gulp = require('gulp'),
  * @param {Function} [worker] - function that performs operation on the registry.
  * Function receives following parameters: topicDetails that is an object containing all topic details; cb that is a callback required inside your function for async operations
  */
-const eachRegTopic = (registry, config, next, worker) => {
+function eachRegTopic(registry, config, next, worker) {
 
   let topicDetails;
 
@@ -32,9 +32,9 @@ const eachRegTopic = (registry, config, next, worker) => {
     next();
   });
 
-};
+}
 
-const eachRegTopicSync = (registry, config, next, worker) => {
+function eachRegTopicSync(registry, config, next, worker) {
 
   let topicDetails;
 
@@ -53,7 +53,7 @@ const eachRegTopicSync = (registry, config, next, worker) => {
     next();
   });
 
-};
+}
 
 module.exports.async = eachRegTopic;
 module.exports.sync = eachRegTopicSync;

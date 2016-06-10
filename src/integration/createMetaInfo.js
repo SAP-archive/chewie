@@ -17,12 +17,13 @@ const eachRegTopic = require('../helpers/registryIterator'),
  * @param {Object} [config] - basic integration configuration
  * @param {Function} [next] - callback for asynch operations
  */
-const createMetaInfo = (registry, topics, config, next) => {
+
+function createMetaInfo(registry, topics, config, next) {
   async.series([
     latestRepoCloner(config),
     metaInfoCreator(registry, topics, config)
   ], next);
-};
+}
 
 
 /**
@@ -39,6 +40,7 @@ function latestRepoCloner(config) {
     const branch = config.generationResult.branch;
     const expectedCloneLocation = config.generationResult.clonedResultFolderPath;
 
+    logger.info(`Cloning main repository...`);
     cloner.cloneRepo(latestDocu, branch, expectedCloneLocation, (err) => {
       if (err) logger.error(err);
 
