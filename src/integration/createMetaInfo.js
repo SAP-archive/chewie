@@ -37,16 +37,17 @@ function latestRepoCloner(config) {
 
     //clone the latest generated docu portal
     const latestDocu = config.generationResult.srcLocation;
+    const name = config.generationResult.cloneLocation;
     const branch = config.generationResult.branch;
     const expectedCloneLocation = config.generationResult.clonedResultFolderPath;
 
-    logger.info(`Cloning ${config.generationResult.cloneLocation} repository from ${config.generationResult.srcLocation}...`);
+    logger.info(`Cloning ${name} repository from ${latestDocu}...`);
     cloner.cloneRepo(latestDocu, branch, expectedCloneLocation, (err) => {
       if (err) logger.error(err);
 
       return cb();
     });
-
+    
   };
 }
 
