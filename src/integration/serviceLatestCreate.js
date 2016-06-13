@@ -12,7 +12,7 @@ const eachRegTopic = require('../helpers/registryIterator'),
  * @param {Object} [config] - basic integration configuration
  * @param {Function} [next] - callback for async operations
  */
-const serviceLatestCreate = (registry, config, next) => {
+function serviceLatestCreate(registry, config, next) {
 
   let src, dest, srcInt, destInt, srcRN, destRN, srcIntRN, destIntRN;
 
@@ -41,6 +41,6 @@ const serviceLatestCreate = (registry, config, next) => {
 
     ], cb);
   });
-};
+}
 
 module.exports = serviceLatestCreate;

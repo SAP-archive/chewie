@@ -20,7 +20,8 @@ const eachRegTopic = require('../helpers/registryIterator'),
  * @param {Array} [registry] - array of full registry
  * @param {Object} [config] - basic integration configuration
  */
-const rewriteRAML = (registry, config, traits, next) => {
+
+function rewriteRAML(registry, config, traits, next) {
 
   let baseUri, baseUriInternal, sourcesCloneLoc, raml, ramlInternal, dest, destInternal;
 
@@ -42,7 +43,7 @@ const rewriteRAML = (registry, config, traits, next) => {
       _parse(sourcesCloneLoc, destInternal, ramlInternal, baseUriInternal, traits)
     ], cb);
   });
-};
+}
 
 module.exports = rewriteRAML;
 

@@ -9,7 +9,7 @@ const fs = require('fs'),
  * @param {String} [dir] - dir path
  * @return {Boolean} - confirmation if exists or not
  */
-const dirCheck = (dir, next) => {
+function dirCheck(dir, next) {
 
   try {
     fs.stat(dir, (err, stats) => {
@@ -27,7 +27,7 @@ const dirCheck = (dir, next) => {
     return next(err);
   }
 
-};
+}
 
 
 /**
@@ -35,7 +35,7 @@ const dirCheck = (dir, next) => {
  * @param {String} [file] - file path
  * @return {Boolean} - confirmation if exists or not
  */
-const fileCheck = (file, next) => {
+function fileCheck(file, next) {
 
   try {
     fs.stat(file, (err, stats) => {
@@ -53,7 +53,7 @@ const fileCheck = (file, next) => {
     return next(err);
   }
 
-};
+}
 
 
 

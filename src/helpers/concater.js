@@ -10,7 +10,7 @@ const gulp = require('gulp'),
  * @param {object} [config] - the configuration that you need to pass to the function.
  * @param {function} [next] - callback for asynch operations
  */
-const concatRegistry = (registryLocation, config, next) => {
+function concatRegistry(registryLocation, config, next) {
 
   log.info('Registry concatenation!');
 
@@ -23,7 +23,7 @@ const concatRegistry = (registryLocation, config, next) => {
         log.info('Registry concatenation successfully completed');
         next();
       });
-};
+}
 
 const concaters = {
   concatRegistry
