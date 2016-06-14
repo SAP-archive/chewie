@@ -17,7 +17,7 @@ const gulp = require('gulp'),
    * @param {string} [dest] - dest directory
    * @param {string} [baseUri] - baseUri to be replaced
    */
-const parse = (source, dest, baseUri, listTraits, next) => {
+function parse(source, dest, baseUri, listTraits, next) {
   gulp.src(source)
      .pipe(tap((file) => {
        let retries = 0;
@@ -38,12 +38,7 @@ const parse = (source, dest, baseUri, listTraits, next) => {
    )
    .on('error', next)
    .on('end', next);
-};
-
-
-const ramlParser = {
-  parse
-};
+}
 
 function _avoidRepetitiousTraits (listOfTraits) {
   if (!listOfTraits) return;
@@ -112,5 +107,9 @@ function _parseRAML(file, source, dest, baseUri, listTraits, cb) {
     cb('Other error, move on');
   });
 }
+
+const ramlParser = {
+  parse
+};
 
 module.exports = ramlParser;

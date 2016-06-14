@@ -15,7 +15,7 @@ const eachRegTopic = require('../helpers/registryIterator'),
  * @param {Object} [config] - basic integration configuration
  * @param {Function} [next] - callback for asynch operations
  */
-const replaceApiReferences = (registry, config, next) => {
+function replaceApiReferences(registry, config, next) {
   let name, nameInternal, genDocuLocation, genDocuLocationInternal, apiReferenceSource, apiReferenceSourceInternal, contentOfNav, genBasicDocuLocation, genBasicDocuLocationInternal;
 
   eachRegTopic.sync(registry, config, next, (topicDetails, cb) => {
@@ -62,7 +62,7 @@ const replaceApiReferences = (registry, config, next) => {
 
     ], cb);
   });
-};
+}
 
 /**
  * This function is responsible for replacing content of apireferenceTempContent.html file.

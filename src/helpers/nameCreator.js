@@ -10,7 +10,7 @@ const misc = require('./misc');
  * @param {String} [ext] - defines file extension for created filename
 
  */
-const createPartialName = (name, type, version, latest, ext) => {
+function createPartialName(name, type, version, latest, ext) {
 
   const processedName = name;
   const processedType = type;
@@ -18,7 +18,7 @@ const createPartialName = (name, type, version, latest, ext) => {
   const extension = ext ? `.${ext}` : '';
 
   return `${processedName}_${type}${processedVersion}${extension}`;
-};
+}
 
 
 const nameCreator = {

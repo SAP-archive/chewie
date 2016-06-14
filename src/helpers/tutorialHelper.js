@@ -28,7 +28,7 @@ const testObj = {
  * @param {String} [next] - Path to a file where test informations are store
  */
 
-const _versionApinotebookFile = (srcPath, id, newId, newFileName, next) => {
+function _versionApinotebookFile(srcPath, id, newId, newFileName, next) {
 
   const destFolder = path.dirname(srcPath);
 
@@ -45,7 +45,7 @@ const _versionApinotebookFile = (srcPath, id, newId, newFileName, next) => {
      })
      .on('end', next);
 
-};
+}
 
 
 /**
@@ -57,7 +57,7 @@ const _versionApinotebookFile = (srcPath, id, newId, newFileName, next) => {
  * @param {String} [matrixFileLocation] - Path to a file where test informations are stored
  */
 
-const copyAndRenameInteractiveTutorials = (src, dest, nameShort, version, matrixFileLocation) => {
+function copyAndRenameInteractiveTutorials(src, dest, nameShort, version, matrixFileLocation) {
   const copier = require('./copier');
 
   return (cb) => {
@@ -66,7 +66,7 @@ const copyAndRenameInteractiveTutorials = (src, dest, nameShort, version, matrix
         const filePath = file.path;
         const isHTML = filePath.indexOf('.html') !== -1;
         const isMD = filePath.indexOf('.md') !== -1;
-        
+
         //check if processed file is md or html - avoid casses where for example img files come in.
         if(isHTML || isMD) {
           let md = {};
@@ -122,7 +122,7 @@ const copyAndRenameInteractiveTutorials = (src, dest, nameShort, version, matrix
         });
       });
   };
-};
+}
 
 
 /**
@@ -132,7 +132,7 @@ const copyAndRenameInteractiveTutorials = (src, dest, nameShort, version, matrix
  * @param {String} [filePath] - Path to file
  * @param {String} [id] - Id of apinotebook file
  */
-const _processNotebookFile = (filePath, id) => {
+function _processNotebookFile(filePath, id) {
 
   fs.readFile(filePath, (err, data) => {
     if (err) throw err;
@@ -149,7 +149,7 @@ const _processNotebookFile = (filePath, id) => {
       if(filePath !== destinationReplacementPath) fs.unlink(filePath);
     });
   });
-};
+}
 
 /**
  * Function comments content inside data(excluding metadata) and adds apinotebook partial with given id

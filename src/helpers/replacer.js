@@ -13,7 +13,7 @@ const gulp = require('gulp'),
  * @param {String} [dest] - desting directory
  * @param {Function} [next] - callback for asynch operations
  */
-const replaceInFile = (src, oldContent, newContent, dest, next) => {
+function replaceInFile(src, oldContent, newContent, dest, next) {
   gulp.src(src)
     .pipe(makeBuffer())
     .pipe(replace(oldContent, newContent))
@@ -23,7 +23,7 @@ const replaceInFile = (src, oldContent, newContent, dest, next) => {
     })
     .pipe(gulp.dest(dest))
     .on('end', next);
-};
+}
 
 /**
  * This function is a helper for parallel operations. Reuses copyFiles function
@@ -33,12 +33,12 @@ const replaceInFile = (src, oldContent, newContent, dest, next) => {
  * @param {String} [dest] - destination of a file after replacing
  * @param {String} [name] - name of the service
  */
-const replaceInFileAsync = (src, oldContent, newContent, dest, name) => {
+function replaceInFileAsync(src, oldContent, newContent, dest, name) {
 
   return (cb) => {
     replaceInFile(src, oldContent, newContent, dest, cb);
   };
-};
+}
 
 
 const replacer = {

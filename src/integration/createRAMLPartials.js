@@ -18,7 +18,8 @@ const eachRegTopic = require('../helpers/registryIterator'),
  * @param {Object} [config] - basic integration configuration
  * @param {Function} [next] - callback for asynch operations
  */
-const createRAMLPartials = (registry, config, next) => {
+
+function createRAMLPartials(registry, config, next) {
 
   let name, shortName, shortNameInternal, latest, partialsMainLocation, partialsMainLocationInternal, version, topicSrcLocation, topicSrcLocationInternal, partialsRAMLContent, partialsRAMLContentInternal;
 
@@ -55,7 +56,7 @@ const createRAMLPartials = (registry, config, next) => {
     ], cb);
 
   });
-};
+}
 
 
 /**

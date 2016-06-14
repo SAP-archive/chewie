@@ -12,7 +12,8 @@ const eachRegTopic = require('../helpers/registryIterator'),
    * @param {Object} [config] - basic integration configuration
    * @param {Function} [next] - callback for asynch operations
    */
-const createUrlPartials = (registry, config, next) => {
+
+function createUrlPartials(registry, config, next) {
 
   let baseUri, internalBaseUri, isInternalNameAvailable, latest, topicSrcLocation, topicSrcLocationInternal, externalFileName, internalFileName, externalFilePath, internalFilePath, externalFileNameForLatest, internalFileNameForLatest, externalPath, internalPath, isInternalNameExists;
 
@@ -40,14 +41,14 @@ const createUrlPartials = (registry, config, next) => {
 
     externalPath = `${topicDetails.partialsMainLocation}/${externalFilePath}`;
     internalPath = `${topicDetails.partialsMainLocationInternal}/${internalFilePath}`;
-    
+
     async.parallel([
       _createAndRenamePartialsIfNeeded(externalPath, baseUri, externalFileNameForLatest, externalFilePath, topicSrcLocation, latest, true),
       _createAndRenamePartialsIfNeeded(internalPath, internalBaseUri, internalFileNameForLatest, internalPath, topicSrcLocationInternal, latest, isInternalNameExists)
     ], cb);
 
   });
-};
+}
 
 function _createAndRenamePartialsIfNeeded(path, baseUri, nameForLatest, fileName, topicSrcLocation, latest, isInternalNameExists) {
 
