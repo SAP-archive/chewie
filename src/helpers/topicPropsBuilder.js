@@ -234,6 +234,10 @@ function topicPropsBuilder(regEntry, sourceEntry, config) {
   const isService = type === 'services';
   const isGS = type === 'gettingstarted';
 
+  //additional metadatas
+  const tags = regEntry.tags;
+  const category = regEntry.category;
+
   const topicDetails = {
     name,
     service : name,
@@ -323,7 +327,9 @@ function topicPropsBuilder(regEntry, sourceEntry, config) {
     clonedDocuFolderTypes,
     isInternalNameExists,
     isService,
-    isGS
+    isGS,
+    tags,
+    category
   };
 
   return topicDetails;
