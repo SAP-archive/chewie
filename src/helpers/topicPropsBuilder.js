@@ -237,8 +237,10 @@ function topicPropsBuilder(regEntry, sourceEntry, config) {
   //additional metadatas
   const tags = regEntry.tags;
   const category = regEntry.category;
+  const packages = regEntry.packages;
 
   const topicDetails = {
+    packages,
     tags,
     category,
     name,
