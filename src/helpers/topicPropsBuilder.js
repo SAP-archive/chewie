@@ -239,6 +239,8 @@ function topicPropsBuilder(regEntry, sourceEntry, config) {
   const category = regEntry.category;
 
   const topicDetails = {
+    tags,
+    category,
     name,
     service : name,
     nameInternal,
@@ -327,9 +329,7 @@ function topicPropsBuilder(regEntry, sourceEntry, config) {
     clonedDocuFolderTypes,
     isInternalNameExists,
     isService,
-    isGS,
-    tags,
-    category
+    isGS
   };
 
   return topicDetails;
