@@ -100,7 +100,7 @@ function copyAndRenameInteractiveTutorials(src, dest, nameShort, version, matrix
 
             const newFileName = misc.checkExtension(filePath, '.eco') ? `${newId}.md.eco` : `${newId}.md`;
             const newPath = misc.changeFileName(filePath, newFileName);
-
+            if(filePath.indexOf(`_${nameShort}_${version}`) !== -1) return; 
             _versionApinotebookFile(filePath, md.id, newId, newFileName, (err) => {
               if(err) throw err;
 
