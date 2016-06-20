@@ -1,7 +1,8 @@
 'use strict';
 const gulp = require('gulp'),
   log = require('./logger'),
-  git = require('gulp-git');
+  git = require('gulp-git'),
+  copier = require('./copier');
 
 /**
  * This function clones any given repository and logouts a generic info about successfull clone
@@ -11,10 +12,11 @@ const gulp = require('gulp'),
  * @param {Function} [cb] - callback for asynchronous operation
  */
 function cloneRepo(repoLocation, branchTag, expectedCloneLocation, cb) {
-
-  git.clone(repoLocation, {args: `${expectedCloneLocation} --depth 1 -b ${branchTag}`}, (err) => {
-
-    cb(err);
+  fs.checkDir(repoLocation, (err) => {
+    if(!err) {
+      return copier.copyFiles(repoLocation, expectedCloneLocation, cb);
+    }
+    git.clone(repoLocation, {args: `${expectedCloneLocation} --depth 1 -b ${branchTag}`}, cb);
   });
 
 }

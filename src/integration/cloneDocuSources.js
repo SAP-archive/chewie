@@ -5,7 +5,8 @@ const eachRegTopic = require('../helpers/registryIterator'),
   async = require('async'),
   fs = require('fs'),
   git = require('gulp-git'),
-  log = require('../helpers/logger');
+  log = require('../helpers/logger'),
+  copier = require('../helpers/copier');
 
 
 /**
@@ -39,20 +40,27 @@ function cloneDocuRepo(topicDetails, cb) {
 
   const version = topicDetails.version || '';
 
-  git.clone(topicDetails.location, {args: `${topicDetails.sourcesCloneLoc} -b ${topicDetails.branchTag}`}, (err) => {
+  fs.checkDir(repoLocation, (err) => {
 
-    if (err) {
-      if(err.message && err.message.indexOf('already exists and is not an empty directory')) {
-        log.warning(`${topicDetails.type} - ${topicDetails.name} ${version} is already cloned, use --force to download repository again`);
+    if(!err) {
+      return copier.copyFiles(topicDetails.location, topicDetails.sourcesCloneLoc, cb);
+    }
+
+    git.clone(topicDetails.location, {args: `${topicDetails.sourcesCloneLoc} -b ${topicDetails.branchTag}`}, (err) => {
+
+      if (err) {
+        if(err.message && err.message.indexOf('already exists and is not an empty directory')) {
+          log.warning(`${topicDetails.type} - ${topicDetails.name} ${version} is already cloned, use --force to download repository again`);
+        }
+        else {
+          log.error(`${topicDetails.type} - ${topicDetails.name} ${version} wasn't successfully cloned because of: ${err}`);
+        }
       }
       else {
-        log.error(`${topicDetails.type} - ${topicDetails.name} ${version} wasn't successfully cloned because of: ${err}`);
+        log.info(`${topicDetails.type} - ${topicDetails.name} ${version} successfully cloned into ${topicDetails.sourcesCloneLoc} using ${topicDetails.branchTag} branch or tag`);
       }
-    }
-    else {
-      log.info(`${topicDetails.type} - ${topicDetails.name} ${version} successfully cloned into ${topicDetails.sourcesCloneLoc} using ${topicDetails.branchTag} branch or tag`);
-    }
-    cb();
+      cb();
+    });
   });
 }
 
