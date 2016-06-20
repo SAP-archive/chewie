@@ -16,7 +16,6 @@ const eachRegTopic = require('../helpers/registryIterator'),
  * @param {Function} [next] - callback for asynch operations
  */
 function cloneDocuSources(registry, config, next) {
-  let topicDetails;
 
   iterateRegClone(registry, config, next);
 }
@@ -40,10 +39,13 @@ function cloneDocuRepo(topicDetails, cb) {
 
   const version = topicDetails.version || '';
 
-  fs.checkDir(repoLocation, (err) => {
+  fs.stat(topicDetails.location, (err, stats) => {
 
-    if(!err) {
-      return copier.copyFiles(topicDetails.location, topicDetails.sourcesCloneLoc, cb);
+    if(!err && stats.isDirectory()) {
+      return copier.copyFiles(`${topicDetails.location}/**`, topicDetails.sourcesCloneLoc, () => {
+        log.info(`${topicDetails.type} - ${topicDetails.name} ${version} successfully cloned into ${topicDetails.sourcesCloneLoc} using local repository`);
+        cb();
+      });
     }
 
     git.clone(topicDetails.location, {args: `${topicDetails.sourcesCloneLoc} -b ${topicDetails.branchTag}`}, (err) => {
