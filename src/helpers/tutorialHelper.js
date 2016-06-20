@@ -93,6 +93,7 @@ function copyAndRenameInteractiveTutorials(src, dest, nameShort, version, matrix
             });
             header += '---\n';
 
+            //it means apinotebook was already copied
             if(filePath.indexOf(`_${nameShort}_${version}`) !== -1 || filePath.indexOf(`_${nameShort}`) !== -1) return;
 
             const fileContent = header + fs.readFileSync(filePath, 'utf8');
