@@ -6,7 +6,8 @@ const eachRegTopic = require('../helpers/registryIterator'),
   fs = require('fs'),
   git = require('gulp-git'),
   log = require('../helpers/logger'),
-  copier = require('../helpers/copier');
+  copier = require('../helpers/copier'),
+  path = require('path');
 
 
 /**
@@ -39,11 +40,16 @@ function cloneDocuRepo(topicDetails, cb) {
 
   const version = topicDetails.version || '';
 
-  fs.stat(topicDetails.location, (err, stats) => {
+  const origPath = path.resolve(process.cwd(), topicDetails.location);
+  const destPath = path.resolve(process.cwd(), topicDetails.sourcesCloneLoc);
+
+  fs.stat(origPath, (err, stats) => {
 
     if(!err && stats.isDirectory()) {
-      return copier.copyFiles(`${topicDetails.location}/**`, topicDetails.sourcesCloneLoc, () => {
-        log.info(`${topicDetails.type} - ${topicDetails.name} ${version} successfully cloned into ${topicDetails.sourcesCloneLoc} using local repository`);
+
+      return copier.copyFiles(`${origPath}/**`, destPath, (err, data) => {
+
+        log.info(`${topicDetails.type} - ${topicDetails.name} ${version} successfully cloned into ${destPath} using local repository`);
         cb();
       });
     }

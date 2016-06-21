@@ -1,9 +1,12 @@
+/* eslint camelcase: 0 */
+
 'use strict';
 const config = require('../chewieConfigTest'),
   cloneDocuSources = require('../../src/integration/cloneDocuSources'),
   prepareRegistry = require('../../src/integration/prepareRegistry'),
   misc = require('../../src/helpers/misc'),
   fs = require('fs'),
+  path = require('path'),
   rimraf = require('rimraf'),
   chai = require('chai'),
   expect = chai.expect,
@@ -90,6 +93,32 @@ describe('Clone all docu topics listed specified in the topic array', () => {
       stats = fs.statSync(topicDetails.sourcesCloneLoc);
       expect(stats.isDirectory()).to.equal(true);
       cb();
+    });
+  });
+
+  it('should clone documentation from given location', (done) => {
+
+    const topic = [
+      {
+        name: 'Builder',
+        type: 'overview',
+        area: 'Overview',
+        source: [
+          {
+            location: './tymczas/docuSourceros/overview/tupacipsum',
+            branch_or_tag: 'develop'
+          }
+        ]
+      }
+    ];
+
+    cloneDocuSources(topic, config, () => {
+      eachRegTopic.async(topic, config, done, (topicDetails, cb) => {
+
+        const stats = fs.statSync(path.resolve(process.cwd(), topicDetails.sourcesCloneLoc));
+        expect(stats.isDirectory()).to.equal(true);
+        cb();
+      });
     });
   });
 
