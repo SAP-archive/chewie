@@ -98,6 +98,7 @@ describe('Clone all docu topics listed specified in the topic array', () => {
 
   it('should clone documentation from given location', (done) => {
 
+    //this topic must be present in before clause because we rely that it is copied so we can give path to it - so we don't need to commit some example repo for tests
     const topic = [
       {
         name: 'Builder',
