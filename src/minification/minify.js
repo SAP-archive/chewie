@@ -1,8 +1,8 @@
 'use strict';
 
-const minifyCSS = require('gulp-minify-css'),
+const minifyCSS = require('gulp-clean-css'),
   uglify = require('gulp-uglify'),
-  minifyHTML = require('gulp-minify-html'),
+  minifyHTML = require('gulp-htmlmin'),
   imagemin = require('gulp-imagemin'),
   jsonminify = require('gulp-jsonminify'),
   async = require('async'),
