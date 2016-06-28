@@ -64,12 +64,12 @@ config.minification = {
   html: [{
     src: [`${out}/html/baconipsum.html`],
     dest: `${out}/minResult`,
-    opts: {collapseWhitespace: true}
+    opts: {spare:true, conditionals:true, empty:true}
   },
   {
     src: [`${out}/html/baconipsum2.html`],
     dest: `${out}/minResult`,
-    opts: {collapseWhitespace: true}
+    opts: {spare:true, conditionals:true, empty:true}
   }],
   img: [{
     src: `${out}/img/chewie.png`,
