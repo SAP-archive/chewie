@@ -11,7 +11,8 @@ const eachRegTopic = require('../helpers/registryIterator'),
  * @param {Object} [config] - basic integration configuration
  * @param {Function} [next] - callback for async operations
  */
-const copyContent = (registry, config, next) => {
+
+function copyContent(registry, config, next) {
 
   let src, dest, type, srcInt, destInt, srcPartial, destPartial, srcIntPartial, destIntPartial, srcRN, destRN, srcIntRN, destIntRN;
 
@@ -46,6 +47,6 @@ const copyContent = (registry, config, next) => {
       copier.copyFilesAsync(srcIntRN, destIntRN, 'internal rn')
     ], cb);
   });
-};
+}
 
 module.exports = copyContent;

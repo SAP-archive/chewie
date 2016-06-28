@@ -11,7 +11,7 @@ const eachRegTopic = require('../helpers/registryIterator'),
  * @param {Object} [config] - basic integration configuration
  * @param {Function} [next] - callback for async operations
  */
-const copyTutorials = (registry, config, next) => {
+function copyTutorials(registry, config, next) {
 
   let isGs, shortName, shortNameInternal, version, src, srcInt, tutorialsDest, matrixFileLocation;
 
@@ -32,6 +32,6 @@ const copyTutorials = (registry, config, next) => {
       tutorialHelper.copyAndRenameInteractiveTutorials(srcInt, tutorialsDest, shortNameInternal, version, matrixFileLocation)
     ], cb);
   });
-};
+}
 
 module.exports = copyTutorials;

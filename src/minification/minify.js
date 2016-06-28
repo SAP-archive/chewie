@@ -8,7 +8,7 @@ const minifyCSS = require('gulp-minify-css'),
   async = require('async'),
   minifier = require('../helpers/minifier');
 
-const minify = (config, next) => {
+function minify(config, next) {
 
   const minification = config.minification;
 
@@ -27,7 +27,7 @@ const minify = (config, next) => {
 
   async.series(min, next);
 
-};
+}
 
 function _prepareMinTaskArray(injector, arrOfConfig, min) {
 

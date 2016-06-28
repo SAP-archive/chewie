@@ -10,14 +10,14 @@ const gulp = require('gulp'),
  * @param {String} [expectedCloneLocation] - where to clone it to the file system
  * @param {Function} [cb] - callback for asynchronous operation
  */
-const cloneRepo = (repoLocation, branchTag, expectedCloneLocation, cb) => {
+function cloneRepo(repoLocation, branchTag, expectedCloneLocation, cb) {
 
   git.clone(repoLocation, {args: `${expectedCloneLocation} --depth 1 -b ${branchTag}`}, (err) => {
 
     cb(err);
   });
 
-};
+}
 
 /**
  * This function is a helper for parallel operations. Reuses copyFiles function
@@ -26,7 +26,7 @@ const cloneRepo = (repoLocation, branchTag, expectedCloneLocation, cb) => {
  * @param {String} [expectedCloneLocation] - where to clone it to the file system
  * @return {Function} anonymous function that triggers cloning and accepts a callback
  */
-const cloneRepoAsync = (repoLocation, branchTag, expectedCloneLocation, name) => {
+function cloneRepoAsync(repoLocation, branchTag, expectedCloneLocation, name) {
 
   return (cb) => {
 
@@ -36,7 +36,7 @@ const cloneRepoAsync = (repoLocation, branchTag, expectedCloneLocation, name) =>
 
     });
   };
-};
+}
 
 const cloners = {
   cloneRepo,

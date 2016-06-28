@@ -6,7 +6,7 @@ const log = require('../helpers/logger'),
  * This function modifies all glossary partials during copy
  * @return {Function} - anonymous function that can be used in tap operations on streap during gulp copy
  */
-const modifyGlossary = () => {
+function modifyGlossary() {
 
   return (file) => {
 
@@ -38,6 +38,6 @@ const modifyGlossary = () => {
       return;
     }
   };
-};
+}
 
 module.exports = modifyGlossary;

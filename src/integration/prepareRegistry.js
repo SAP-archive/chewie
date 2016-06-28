@@ -15,7 +15,8 @@ const cloner = require('../helpers/cloner'),
  * @param {Object} [config] - basic integration configuration
  * @param {Function} [next] - callback for asynch operations
  */
-const prepareRegistry = (topics, config, next) => {
+
+function prepareRegistry(topics, config, next) {
 
   const registrySource = config.registry.path;
   const registryOrigin = config.registry.location;
@@ -44,7 +45,7 @@ const prepareRegistry = (topics, config, next) => {
     throw new Error(`You need to specify a proper location of your registry.
            It should be local or remote and not something that you have currently: ${config.registry.location}`);
   }
-};
+}
 
 function prepareRegistryForLocal(registrySource, config, next) {
 
