@@ -54,24 +54,22 @@ config.minification = {
   css: [{
     src: [`${out}/styles/zombieipsum.css`, `${out}/styles/hipsteripsum.css`],
     dest: `${out}/minResult`,
-    name: 'miniIpsum.css',
-    opts: {benchmark:true, noAdvanced:false}
+    name: 'miniIpsum.css'
   },
   {
     src: [`${out}/styles/zombieipsum.css`, `${out}/styles/hipsteripsum.css`],
     dest: `${out}/minResult`,
-    name: 'miniIpsum2.css',
-    opts: {benchmark:true, noAdvanced:false}
+    name: 'miniIpsum2.css'
   }],
   html: [{
     src: [`${out}/html/baconipsum.html`],
     dest: `${out}/minResult`,
-    opts: {spare:true, conditionals:true, empty:true}
+    opts: {collapseWhitespace: true}
   },
   {
     src: [`${out}/html/baconipsum2.html`],
     dest: `${out}/minResult`,
-    opts: {spare:true, conditionals:true, empty:true}
+    opts: {collapseWhitespace: true}
   }],
   img: [{
     src: `${out}/img/chewie.png`,
