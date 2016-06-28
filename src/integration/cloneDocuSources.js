@@ -2,6 +2,7 @@
 const eachRegTopic = require('../helpers/registryIterator'),
   misc = require('../helpers/misc'),
   creator = require('../helpers/creator'),
+  validator = require('../helpers/validator'),
   async = require('async'),
   fs = require('fs'),
   git = require('gulp-git'),
@@ -43,9 +44,9 @@ function cloneDocuRepo(topicDetails, cb) {
   const origPath = path.resolve(process.cwd(), topicDetails.location);
   const destPath = path.resolve(process.cwd(), topicDetails.sourcesCloneLoc);
 
-  fs.stat(origPath, (err, stats) => {
+  validator.dirCheck(origPath, (err, stats) => {
 
-    if(!err && stats.isDirectory()) {
+    if(!err) {
 
       return copier.copyFiles(`${origPath}/**`, destPath, (err, data) => {
 
