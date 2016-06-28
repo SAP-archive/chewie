@@ -2,7 +2,7 @@
 
 const minifyCSS = require('gulp-clean-css'),
   uglify = require('gulp-uglify'),
-  minifyHTML = require('gulp-htmlmin'),
+  minifyHTML = require('gulp-minify-html'),
   imagemin = require('gulp-imagemin'),
   jsonminify = require('gulp-jsonminify'),
   async = require('async'),
