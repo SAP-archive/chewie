@@ -44,6 +44,31 @@ function cloneDocuRepo(topicDetails, cb) {
   const origPath = path.resolve(process.cwd(), topicDetails.location);
   const destPath = path.resolve(process.cwd(), topicDetails.sourcesCloneLoc);
 
+  const locationRegEx = /((git|ssh|http(s)?)|(git@[\w\.]+))(:(\/\/)?)([\w\.@\:\/\-~]+)(\.git)(\/)?/;
+
+  if(!topicDetails.location.match(locationRegEx)){
+
+    return validator.dirCheck(topicDetails.location, (err) => {
+
+      if(err) {
+        log.error(`${topicDetails.type} - ${topicDetails.name} ${version} wasn't successfully cloned because there is no documentation in path: ${path.resolve(__dirname, topicDetails.location)}`);
+        return cb(err);
+      }
+
+      copier.copyFiles(`${origPath}/**`, destPath, (err, data) => {
+        if (err) {
+          log.error(`${topicDetails.type} - ${topicDetails.name} ${version}  wasn't successfully cloned from local directory`);
+        }
+        else {
+          log.info(`${topicDetails.type} - ${topicDetails.name} ${version} successfully cloned into ${destPath} using local directory`);
+        }
+        cb();
+      });
+
+    });
+
+  }
+
   git.clone(topicDetails.location, {args: `${topicDetails.sourcesCloneLoc} -b ${topicDetails.branchTag}`}, (err) => {
 
     if (err) {
