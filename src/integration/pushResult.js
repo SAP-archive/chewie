@@ -5,8 +5,9 @@ const git = require('gulp-git'),
   gulp = require('gulp'),
   del = require('del'),
   async = require('async'),
+  fs = require('fs'),
+  path = require('path'),
   log = require('../helpers/logger');
-
 
 /**
  * This function prepares a commit with changes and then pushes it to repository.
@@ -32,9 +33,13 @@ function pushResult(opt, next) {
     notUsedFiles = opt.notUsedFiles;
 
   async.series([
-    clone(repo, branch, dest),
+
+    // that does not work - clone(repo, branch, dest),
+    backupOfNotClonedRepositories(dest, independent),
     deleteNotNeeded(independent, notUsedFiles),
+    deleteAll(independent, dest),
     copier.copyFilesAsync(src, dest),
+    restoreBackup(dest, independent),
     addCommit(dest, message),
     push(branch, dest)
   ], next);
@@ -48,11 +53,49 @@ function clone(repo, branch, dest) {
 }
 
 //delete previous cloned results
+function backupOfNotClonedRepositories(dest, independent){
+  return (cb) => {
+    if (independent) return cb();
+
+    fs.readFile('./tmp/notClonedRepositories.json', (err, data) => {
+      const array = data.toString().split(',');
+      array.forEach((item) => {
+        copier.copyFiles(`${item}/*`, `./tmp/backup/${path.normalize(item)}/`, () => {
+        });
+      });
+    });
+  };
+}
+
+//delete previous cloned results
 function deleteNotNeeded(independent, notUsedFiles){
   return (cb) => {
     if (!independent) return cb();
 
     del(notUsedFiles).then(cb);
+  };
+}
+
+//delete previous cloned results
+function deleteAll(independent, dest){
+  return (cb) => {
+    if (independent) return cb();
+
+    del(`${dest}/*`).then(cb);
+  };
+}
+
+function restoreBackup(dest, independent){
+  return (cb) => {
+    if (independent) return cb();
+
+    fs.readFile('./tmp/notClonedRepositories.json', (err, data) => {
+      const array = data.toString().split(',');
+      array.forEach((item) => {
+        copier.copyFiles(`./tmp/backup/${path.normalize(item)}/*`, `${item}/`, () => {
+        });
+      });
+    });
   };
 }
 
@@ -63,8 +106,7 @@ function addCommit(src, msg){
       .pipe(git.add({args: '-f', cwd: src}))
       .pipe(git.commit(msg, {cwd: src}))
       .on('error', (err) => {
-
-        cb(`There are no changes that can be commit or you are performing operations not on a local repo but normal folder.`);
+        cb('There are no changes that can be commit or you are performing operations not on a local repo but normal folder.');
       })
       .pipe(gulp.dest(src))
       .on('end', cb);
@@ -73,9 +115,7 @@ function addCommit(src, msg){
 
 //pushing to remote repo
 function push(branch, src){
-
   return (cb) => {
-
     git.push('origin', branch, {cwd: src}, (err) => {
       cb(err);
     });

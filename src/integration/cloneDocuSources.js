@@ -7,7 +7,6 @@ const eachRegTopic = require('../helpers/registryIterator'),
   git = require('gulp-git'),
   log = require('../helpers/logger');
 
-
 /**
  * This function clones all provided sources or only specified topics
  * @param {Array} [registry] - array of full registry
@@ -26,27 +25,31 @@ function iterateRegClone(registry, config, next) {
   eachRegTopic.async(registry, config, next, (topicDetails, cb) => {
 
     //clone repo to a given location basing on data provided in the registry
-    cloneDocuRepo(topicDetails, cb);
+    cloneDocuRepo(topicDetails, config, cb);
   });
 }
+
 
 /**
  * This function clones a given topic's repository to a given location and logouts proper custom info
  * @param {Object} [topicDetails] - holds details of the repo that needs to be cloned.
  * @param {Function} [cb] - callback for asynchronous operation
  */
-function cloneDocuRepo(topicDetails, cb) {
+function cloneDocuRepo(topicDetails, config, cb) {
 
   const version = topicDetails.version || '';
 
   git.clone(topicDetails.location, {args: `${topicDetails.sourcesCloneLoc} -b ${topicDetails.branchTag}`}, (err) => {
 
     if (err) {
-      if(err.message && err.message.indexOf('already exists and is not an empty directory')) {
+      if(err.message && err.message.indexOf('already exists and is not an empty directory') !== -1) {
         log.warning(`${topicDetails.type} - ${topicDetails.name} ${version} is already cloned, use --force to download repository again`);
       }
       else {
         log.error(`${topicDetails.type} - ${topicDetails.name} ${version} wasn't successfully cloned because of: ${err}`);
+
+        // take care of not cloned repositories
+        _createMatrixWithNotClonedRepositories(topicDetails, config, cb);
       }
     }
     else {
@@ -56,5 +59,22 @@ function cloneDocuRepo(topicDetails, cb) {
   });
 }
 
-
 module.exports = cloneDocuSources;
+
+/**
+ * This function creates a JSON object in which names of not cloned repositories are stored.
+ * @param {Object} [topicDetails] - holds details of the repo that needs to be cloned.
+ * @param {Function} [cb] - callback for asynchronous operation
+ */
+function _createMatrixWithNotClonedRepositories(topicDetails, config, cb) {
+
+  const notClonedArray = [];
+
+  //push to array all not cloned repositories
+  notClonedArray.push(topicDetails.clonedGenRNDestLocation, topicDetails.clonedGenRNDestLocationInternal, topicDetails.clonedGenDestLocation, topicDetails.clonedGenDestLocationInternal);
+
+  //write array the file
+  creator.createFile(`${config.tempLocation}/notClonedRepositories.json`, notClonedArray, (err) => {
+  });
+
+}
