@@ -101,7 +101,7 @@ function copyAndRenameInteractiveTutorials(src, dest, nameShort, version, matrix
 
             const newId = version ? `${md.id}_${nameShort}_${version}` : `${md.id}_${nameShort}`;
 
-            const newFileName = `${newId}.md`;
+            const newFileName = `${newId}.md.eco`;
 
             const newPath = misc.changeFileName(filePath, newFileName);
             _versionApinotebookFile(filePath, md.id, newId, newFileName, (err) => {
