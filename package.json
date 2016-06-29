@@ -47,7 +47,7 @@
   "scripts": {
     "test": "NODE_ENV=master npm run test-unit && npm run test-integration",
     "test-unit": "NODE_ENV=master ./node_modules/mocha/bin/mocha test/unit/*.spec.js",
-    "test-integration": "REGISTRY_PATH=https://github.com/hybris/chewie-sample-data.git ./node_modules/mocha/bin/mocha --timeout 40000 test/integration/*.spec.js"
+    "test-integration": "./node_modules/mocha/bin/mocha --timeout 40000 test/integration/*.spec.js"
   },
   "repository": {
     "type": "git",
