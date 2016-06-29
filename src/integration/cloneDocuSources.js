@@ -44,32 +44,20 @@ function cloneDocuRepo(topicDetails, cb) {
   const origPath = path.resolve(process.cwd(), topicDetails.location);
   const destPath = path.resolve(process.cwd(), topicDetails.sourcesCloneLoc);
 
-  validator.dirCheck(origPath, (err, stats) => {
+  git.clone(topicDetails.location, {args: `${topicDetails.sourcesCloneLoc} -b ${topicDetails.branchTag}`}, (err) => {
 
-    if(!err) {
-
-      return copier.copyFiles(`${origPath}/**`, destPath, (err, data) => {
-
-        log.info(`${topicDetails.type} - ${topicDetails.name} ${version} successfully cloned into ${destPath} using local repository`);
-        cb();
-      });
-    }
-
-    git.clone(topicDetails.location, {args: `${topicDetails.sourcesCloneLoc} -b ${topicDetails.branchTag}`}, (err) => {
-
-      if (err) {
-        if(err.message && err.message.indexOf('already exists and is not an empty directory')) {
-          log.warning(`${topicDetails.type} - ${topicDetails.name} ${version} is already cloned, use --force to download repository again`);
-        }
-        else {
-          log.error(`${topicDetails.type} - ${topicDetails.name} ${version} wasn't successfully cloned because of: ${err}`);
-        }
+    if (err) {
+      if(err.message && err.message.indexOf('already exists and is not an empty directory')) {
+        log.warning(`${topicDetails.type} - ${topicDetails.name} ${version} is already cloned, use --force to download repository again`);
       }
       else {
-        log.info(`${topicDetails.type} - ${topicDetails.name} ${version} successfully cloned into ${topicDetails.sourcesCloneLoc} using ${topicDetails.branchTag} branch or tag`);
+        log.error(`${topicDetails.type} - ${topicDetails.name} ${version} wasn't successfully cloned because of: ${err}`);
       }
-      cb();
-    });
+    }
+    else {
+      log.info(`${topicDetails.type} - ${topicDetails.name} ${version} successfully cloned into ${topicDetails.sourcesCloneLoc} using ${topicDetails.branchTag} branch or tag`);
+    }
+    cb();
   });
 }
 

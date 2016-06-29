@@ -14,13 +14,7 @@ const gulp = require('gulp'),
  * @param {Function} [cb] - callback for asynchronous operation
  */
 function cloneRepo(repoLocation, branchTag, expectedCloneLocation, cb) {
-  validator.dirCheck(repoLocation, (err) => {
-    if(!err) {
-      return copier.copyFiles(repoLocation, expectedCloneLocation, cb);
-    }
-    git.clone(repoLocation, {args: `${expectedCloneLocation} --depth 1 -b ${branchTag}`}, cb);
-  });
-
+  git.clone(repoLocation, {args: `${expectedCloneLocation} --depth 1 -b ${branchTag}`}, cb);
 }
 
 /**
