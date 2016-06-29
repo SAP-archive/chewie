@@ -32,7 +32,7 @@ function cloneRepo(repoLocation, branchTag, expectedCloneLocation, cb) {
           log.error(`${repoLocation} wasn't successfully cloned from local directory`, err);
         }
         else {
-          log.info(`${repoLocation} was successfully cloned into using local directory`);
+          log.info(`${repoLocation} was successfully cloned using local directory`);
         }
         cb();
       });
