@@ -33,16 +33,14 @@ function pushResult(opt, next) {
     notUsedFiles = opt.notUsedFiles;
 
   async.series([
-
-    // that does not work - clone(repo, branch, dest),
+    clone(repo, branch, dest),
     backupOfNotClonedRepositories(dest, independent),
-    deleteNotNeeded(independent, notUsedFiles),
+    deleteNotNeeded(notUsedFiles, independent),
     prepareForCopy(dest, independent),
     copier.copyFilesAsync(src, dest),
-    restoreBackup(dest, independent)
-
-    // addCommit(dest, message),
-    // push(branch, dest)
+    restoreBackupOfNotClonedRepositories(dest, independent),
+    addCommit(dest, message),
+    push(branch, dest)
   ], next);
 }
 
@@ -58,21 +56,12 @@ function backupOfNotClonedRepositories(dest, independent){
   return (cb) => {
     if (independent) return cb();
 
-    const data = fs.readFileSync('./tmp/notClonedRepositories.json', 'utf-8');
-    const array = data.toString().split(',');
-    let itemsProcessed = 0;
-
-    array.forEach((item) => {
-      copier.copyFiles(`${item}/*`, `./tmp/backup/${path.normalize(item)}/`, () => {
-        itemsProcessed++;
-        if(itemsProcessed === array.length) cb();
-      });
-    });
+    _backup(true, false, cb);
   };
 }
 
 //delete previous cloned results
-function deleteNotNeeded(independent, notUsedFiles){
+function deleteNotNeeded(notUsedFiles, independent){
   return (cb) => {
     if (!independent) return cb();
 
@@ -85,24 +74,16 @@ function prepareForCopy(dest, independent) {
   return (cb) => {
     if (independent) return cb();
 
-    del(dest).then(cb);
+    del.sync(dest);
+    cb();
   };
 }
 
-function restoreBackup(dest, independent){
+function restoreBackupOfNotClonedRepositories(dest, independent){
   return (cb) => {
     if (independent) return cb();
 
-    const data = fs.readFileSync('./tmp/notClonedRepositories.json', 'utf-8');
-    const array = data.toString().split(',');
-    let itemsProcessed = 0;
-
-    array.forEach((item) => {
-      copier.copyFiles(`./tmp/backup/${path.normalize(item)}/*`, `${item}/`, () => {
-        itemsProcessed++;
-        if(itemsProcessed === array.length) cb();
-      });
-    });
+    _backup(false, true, cb);
   };
 }
 
@@ -130,3 +111,24 @@ function push(branch, src){
 }
 
 module.exports = pushResult;
+
+/**
+ * Function resposible for moving files between two directories in order to backup them or restore them
+ * @param {Boolean} [from] - responsible for choosing the src folder: `${item}/*` or `./tmp/backup/${path.normalize(item)}/*`
+ * @param {Boolean} [to] - responsible for choosing the destination folder: `${item}/` or `./tmp/backup/${path.normalize(item)}/`
+ * @param {Function} [cb] - callback for asynchronous operation
+*/
+
+function _backup(from, to, cb){
+  const data = fs.readFileSync('./tmp/notClonedRepositories.json', 'utf-8');
+  const array = data.toString().split(',');
+  let itemsProcessed = 0;
+
+  array.forEach((item) => {
+    copier.copyFiles((from ? `${item}/*` : `./tmp/backup/${path.normalize(item)}/*`), (to ? `${item}/` : `./tmp/backup/${path.normalize(item)}/`), () => {
+      itemsProcessed++;
+
+      if(itemsProcessed === array.length) return cb();
+    });
+  });
+}
