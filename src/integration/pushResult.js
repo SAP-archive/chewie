@@ -37,11 +37,12 @@ function pushResult(opt, next) {
     // that does not work - clone(repo, branch, dest),
     backupOfNotClonedRepositories(dest, independent),
     deleteNotNeeded(independent, notUsedFiles),
-    deleteAll(independent, dest),
+    prepareForCopy(dest, independent),
     copier.copyFilesAsync(src, dest),
-    restoreBackup(dest, independent),
-    addCommit(dest, message),
-    push(branch, dest)
+    restoreBackup(dest, independent)
+
+    // addCommit(dest, message),
+    // push(branch, dest)
   ], next);
 }
 
@@ -57,11 +58,14 @@ function backupOfNotClonedRepositories(dest, independent){
   return (cb) => {
     if (independent) return cb();
 
-    fs.readFile('./tmp/notClonedRepositories.json', (err, data) => {
-      const array = data.toString().split(',');
-      array.forEach((item) => {
-        copier.copyFiles(`${item}/*`, `./tmp/backup/${path.normalize(item)}/`, () => {
-        });
+    const data = fs.readFileSync('./tmp/notClonedRepositories.json', 'utf-8');
+    const array = data.toString().split(',');
+    let itemsProcessed = 0;
+
+    array.forEach((item) => {
+      copier.copyFiles(`${item}/*`, `./tmp/backup/${path.normalize(item)}/`, () => {
+        itemsProcessed++;
+        if(itemsProcessed === array.length) cb();
       });
     });
   };
@@ -77,11 +81,11 @@ function deleteNotNeeded(independent, notUsedFiles){
 }
 
 //delete previous cloned results
-function deleteAll(independent, dest){
+function prepareForCopy(dest, independent) {
   return (cb) => {
     if (independent) return cb();
 
-    del(`${dest}/*`).then(cb);
+    del(dest).then(cb);
   };
 }
 
@@ -89,11 +93,14 @@ function restoreBackup(dest, independent){
   return (cb) => {
     if (independent) return cb();
 
-    fs.readFile('./tmp/notClonedRepositories.json', (err, data) => {
-      const array = data.toString().split(',');
-      array.forEach((item) => {
-        copier.copyFiles(`./tmp/backup/${path.normalize(item)}/*`, `${item}/`, () => {
-        });
+    const data = fs.readFileSync('./tmp/notClonedRepositories.json', 'utf-8');
+    const array = data.toString().split(',');
+    let itemsProcessed = 0;
+
+    array.forEach((item) => {
+      copier.copyFiles(`./tmp/backup/${path.normalize(item)}/*`, `${item}/`, () => {
+        itemsProcessed++;
+        if(itemsProcessed === array.length) cb();
       });
     });
   };
