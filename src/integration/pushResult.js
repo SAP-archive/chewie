@@ -5,8 +5,9 @@ const git = require('gulp-git'),
   gulp = require('gulp'),
   del = require('del'),
   async = require('async'),
+  fs = require('fs'),
+  path = require('path'),
   log = require('../helpers/logger');
-
 
 /**
  * This function prepares a commit with changes and then pushes it to repository.
@@ -33,8 +34,11 @@ function pushResult(opt, next) {
 
   async.series([
     clone(repo, branch, dest),
-    deleteNotNeeded(independent, notUsedFiles),
+    backupOfNotClonedRepositories(dest, independent),
+    deleteNotNeeded(notUsedFiles, independent),
+    prepareForCopy(dest, independent),
     copier.copyFilesAsync(src, dest),
+    restoreBackupOfNotClonedRepositories(dest, independent),
     addCommit(dest, message),
     push(branch, dest)
   ], next);
@@ -48,11 +52,38 @@ function clone(repo, branch, dest) {
 }
 
 //delete previous cloned results
-function deleteNotNeeded(independent, notUsedFiles){
+function backupOfNotClonedRepositories(dest, independent){
+  return (cb) => {
+    if (independent) return cb();
+
+    _backup(true, false, cb);
+  };
+}
+
+//delete previous cloned results
+function deleteNotNeeded(notUsedFiles, independent){
   return (cb) => {
     if (!independent) return cb();
 
     del(notUsedFiles).then(cb);
+  };
+}
+
+//delete previous cloned results
+function prepareForCopy(dest, independent) {
+  return (cb) => {
+    if (independent) return cb();
+
+    del.sync(dest);
+    cb();
+  };
+}
+
+function restoreBackupOfNotClonedRepositories(dest, independent){
+  return (cb) => {
+    if (independent) return cb();
+
+    _backup(false, true, cb);
   };
 }
 
@@ -63,8 +94,7 @@ function addCommit(src, msg){
       .pipe(git.add({args: '-f', cwd: src}))
       .pipe(git.commit(msg, {cwd: src}))
       .on('error', (err) => {
-
-        cb(`There are no changes that can be commit or you are performing operations not on a local repo but normal folder.`);
+        cb('There are no changes that can be commit or you are performing operations not on a local repo but normal folder.');
       })
       .pipe(gulp.dest(src))
       .on('end', cb);
@@ -73,9 +103,7 @@ function addCommit(src, msg){
 
 //pushing to remote repo
 function push(branch, src){
-
   return (cb) => {
-
     git.push('origin', branch, {cwd: src}, (err) => {
       cb(err);
     });
@@ -83,3 +111,24 @@ function push(branch, src){
 }
 
 module.exports = pushResult;
+
+/**
+ * Function resposible for moving files between two directories in order to backup them or restore them
+ * @param {Boolean} [from] - responsible for choosing the src folder: `${item}/*` or `./tmp/backup/${path.normalize(item)}/*`
+ * @param {Boolean} [to] - responsible for choosing the destination folder: `${item}/` or `./tmp/backup/${path.normalize(item)}/`
+ * @param {Function} [cb] - callback for asynchronous operation
+*/
+
+function _backup(from, to, cb){
+  const data = fs.readFileSync('./tmp/notClonedRepositories.json', 'utf-8');
+  const array = data.toString().split(',');
+  let itemsProcessed = 0;
+
+  array.forEach((item) => {
+    copier.copyFiles((from ? `${item}/*` : `./tmp/backup/${path.normalize(item)}/*`), (to ? `${item}/` : `./tmp/backup/${path.normalize(item)}/`), () => {
+      itemsProcessed++;
+
+      if(itemsProcessed === array.length) return cb();
+    });
+  });
+}
