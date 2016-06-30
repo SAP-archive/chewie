@@ -106,7 +106,8 @@ describe('Clone all docu topics listed specified in the topic array', () => {
         area: 'Overview',
         source: [
           {
-            location: './tymczas/docuSourceros/overview/tupacipsum'
+            location: './tymczas/docuSourceros/overview/tupacipsum',
+            local: true
           }
         ]
       }

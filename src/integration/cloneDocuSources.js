@@ -44,14 +44,12 @@ function cloneDocuRepo(topicDetails, cb) {
   const origPath = path.resolve(process.cwd(), topicDetails.location);
   const destPath = path.resolve(process.cwd(), topicDetails.sourcesCloneLoc);
 
-  const locationRegEx = /((git|ssh|http(s)?)|(git@[\w\.]+))(:(\/\/)?)([\w\.@\:\/\-~]+)(\.git)(\/)?/;
-
-  if(!topicDetails.location.match(locationRegEx)){
+  if(topicDetails.local){
 
     return validator.dirCheck(topicDetails.location, (err) => {
 
       if(err) {
-        log.error(`${topicDetails.type} - ${topicDetails.name} ${version} wasn't successfully cloned because there is no documentation in path: ${path.resolve(__dirname, topicDetails.location)}`);
+        log.error(`${topicDetails.type} - ${topicDetails.name} ${version} wasn't successfully cloned because there is no documentation in path: ${path.resolve(process.cwd(), topicDetails.location)}`);
         return cb(err);
       }
 

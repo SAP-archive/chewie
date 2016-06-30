@@ -234,6 +234,8 @@ function topicPropsBuilder(regEntry, sourceEntry, config) {
   const isService = type === 'services';
   const isGS = type === 'gettingstarted';
 
+  const local = sourceEntry.local === true || sourceEntry.local === 'true';
+
   const topicDetails = {
     name,
     service : name,
@@ -323,7 +325,8 @@ function topicPropsBuilder(regEntry, sourceEntry, config) {
     clonedDocuFolderTypes,
     isInternalNameExists,
     isService,
-    isGS
+    isGS,
+    local
   };
 
   return topicDetails;
