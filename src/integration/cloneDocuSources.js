@@ -5,8 +5,10 @@ const eachRegTopic = require('../helpers/registryIterator'),
   async = require('async'),
   fs = require('fs'),
   git = require('gulp-git'),
-  log = require('../helpers/logger');
+  log = require('../helpers/logger'),
+  notClonedArray = [];
 
+  
 /**
  * This function clones all provided sources or only specified topics
  * @param {Array} [registry] - array of full registry
@@ -67,8 +69,6 @@ module.exports = cloneDocuSources;
  * @param {Function} [cb] - callback for asynchronous operation
  */
 function _createMatrixWithNotClonedRepositories(topicDetails, config, cb) {
-
-  const notClonedArray = [];
 
   //push to array all not cloned repositories
   notClonedArray.push(topicDetails.clonedGenRNDestLocation, topicDetails.clonedGenRNDestLocationInternal, topicDetails.clonedGenDestLocation, topicDetails.clonedGenDestLocationInternal);
