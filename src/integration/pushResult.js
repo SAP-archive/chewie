@@ -30,15 +30,16 @@ function pushResult(opt, next) {
     message = opt.message || 'Robot commit',
     repo = opt.repo,
     independent = opt.independent,
-    notUsedFiles = opt.notUsedFiles;
+    notUsedFiles = opt.notUsedFiles,
+    tempLocation = opt.tempLocation;
 
   async.series([
     clone(repo, branch, dest),
-    backupOfNotClonedRepositories(dest, independent),
+    backupOfNotClonedRepositories(dest, independent, tempLocation),
     deleteNotNeeded(notUsedFiles, independent),
-    prepareForCopy(dest, independent),
+    deletePreviouslyClonedResultsRepo(dest, independent),
     copier.copyFilesAsync(src, dest),
-    restoreBackupOfNotClonedRepositories(dest, independent),
+    restoreBackupOfNotClonedRepositories(dest, independent, tempLocation),
     addCommit(dest, message),
     push(branch, dest)
   ], next);
@@ -52,11 +53,11 @@ function clone(repo, branch, dest) {
 }
 
 //delete previous cloned results
-function backupOfNotClonedRepositories(dest, independent){
+function backupOfNotClonedRepositories(dest, independent, tempLocation){
   return (cb) => {
     if (independent) return cb();
 
-    _backup(true, false, cb);
+    _backup(true, false, tempLocation, cb);
   };
 }
 
@@ -80,11 +81,11 @@ function prepareForCopy(dest, independent) {
   };
 }
 
-function restoreBackupOfNotClonedRepositories(dest, independent){
+function restoreBackupOfNotClonedRepositories(dest, independent, tempLocation){
   return (cb) => {
     if (independent) return cb();
 
-    _backup(false, true, cb);
+    _backup(false, true, tempLocation, cb);
   };
 }
 
@@ -120,13 +121,13 @@ module.exports = pushResult;
  * @param {Function} [cb] - callback for asynchronous operation
 */
 
-function _backup(from, to, cb){
-  const data = fs.readFileSync('./tmp/notClonedRepositories.json', 'utf-8');
+function _backup(from, to, tempLocation, cb){
+  const data = fs.readFileSync(`./${tempLocation}/notClonedRepositories.json`, 'utf-8');
   const array = data.toString().split(',');
   let itemsProcessed = 0;
 
   array.forEach((item) => {
-    copier.copyFiles((from ? `${item}/*` : `./tmp/backup/${path.normalize(item)}/*`), (to ? `${item}/` : `./tmp/backup/${path.normalize(item)}/`), () => {
+    copier.copyFiles((from ? `${item}/*` : `./${tempLocation}/backup/${path.normalize(item)}/*`), (to ? `${item}/` : `./${tempLocation}/backup/${path.normalize(item)}/`), () => {
       itemsProcessed++;
 
       if(itemsProcessed === array.length) return cb();
