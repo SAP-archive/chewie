@@ -1,11 +1,6 @@
 'use strict';
 const gulp = require('gulp'),
-  log = require('./logger'),
-  git = require('gulp-git'),
-  copier = require('./copier'),
-  validator = require('./validator'),
-  path = require('path'),
-  fs = require('fs');
+  git = require('gulp-git');
 
 /**
  * This function clones any given repository and logouts a generic info about successfull clone
