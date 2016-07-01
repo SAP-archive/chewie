@@ -51,7 +51,7 @@ function cloneDocuRepo(topicDetails, config, cb) {
         log.error(`${topicDetails.type} - ${topicDetails.name} ${version} wasn't successfully cloned because of: ${err}`);
 
         // take care of not cloned repositories
-        _createMatrixWithNotClonedRepositories(topicDetails, config, cb);
+        return _createMatrixWithNotClonedRepositories(topicDetails, config, cb);
       }
     }
     else {
