@@ -41,15 +41,15 @@ function cloneDocuRepo(topicDetails, cb) {
 
   const version = topicDetails.version || '';
 
-  const origPath = path.resolve(process.cwd(), topicDetails.location);
-  const destPath = path.resolve(process.cwd(), topicDetails.sourcesCloneLoc);
-
   if(topicDetails.local){
 
-    return validator.dirCheck(topicDetails.location, (err) => {
+    const origPath = path.resolve(process.cwd(), topicDetails.location);
+    const destPath = path.resolve(process.cwd(), topicDetails.sourcesCloneLoc);
+
+    return validator.dirCheck(origPath, (err) => {
 
       if(err) {
-        log.error(`${topicDetails.type} - ${topicDetails.name} ${version} wasn't successfully cloned because there is no documentation in path: ${path.resolve(process.cwd(), topicDetails.location)}`);
+        log.error(`${topicDetails.type} - ${topicDetails.name} ${version} wasn't successfully cloned because there is no documentation in path: ${origPath}`);
         return cb(err);
       }
 
@@ -70,7 +70,7 @@ function cloneDocuRepo(topicDetails, cb) {
   git.clone(topicDetails.location, {args: `${topicDetails.sourcesCloneLoc} -b ${topicDetails.branchTag}`}, (err) => {
 
     if (err) {
-      if(err.message && err.message.indexOf('already exists and is not an empty directory')) {
+      if(err.message && err.message.indexOf('already exists and is not an empty directory') !== -1) {
         log.warning(`${topicDetails.type} - ${topicDetails.name} ${version} is already cloned, use --force to download repository again`);
       }
       else {
