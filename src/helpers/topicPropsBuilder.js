@@ -234,9 +234,19 @@ function topicPropsBuilder(regEntry, sourceEntry, config) {
   const isService = type === 'services';
   const isGS = type === 'gettingstarted';
 
+  //additional metadatas
+  const tags = regEntry.tags;
+  const category = regEntry.category;
+  const packages = regEntry.packages;
+
+  //for local directories
   const local = sourceEntry.local === true || sourceEntry.local === 'true';
 
+
   const topicDetails = {
+    packages,
+    tags,
+    category,
     name,
     service : name,
     nameInternal,

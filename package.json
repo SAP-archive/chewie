@@ -2,7 +2,7 @@
   "name": "chewie",
   "version": "0.0.1",
   "description": "Helper module for documentation independent generation concept.",
-  "homepage": "https://yaas.io",
+  "homepage": "https://github.com/hybris/chewie#readme",
   "license": "Apache 2.0",
   "engines": {
     "node": "4.2.1",
@@ -15,12 +15,12 @@
     "filendir": "^1.0.0",
     "gulp": "3.9.0",
     "gulp-buffer": "0.0.2",
+    "gulp-clean-css": "^2.0.10",
     "gulp-concat": "^2.4.2",
     "gulp-concat-util": "^0.5.1",
     "gulp-git": "^0.5.6",
     "gulp-imagemin": "^2.0.0",
     "gulp-jsonminify": "^1.0.0",
-    "gulp-minify-css": "^0.3.11",
     "gulp-minify-html": "^0.1.7",
     "gulp-rename": "^1.2.0",
     "gulp-replace": "0.5.4",
@@ -45,7 +45,7 @@
   },
   "main": "index.js",
   "scripts": {
-    "test": "NODE_ENV=master npm run test-unit && npm run test-integration",
+    "test": "npm run test-unit && npm run test-integration",
     "test-unit": "NODE_ENV=master ./node_modules/mocha/bin/mocha test/unit/*.spec.js",
     "test-integration": "NODE_ENV=master ./node_modules/mocha/bin/mocha --timeout 40000 test/integration/*.spec.js"
   },
@@ -58,6 +58,5 @@
   },
   "bugs": {
     "url": "https://github.com/hybris/chewie/issues"
-  },
-  "homepage": "https://github.com/hybris/chewie#readme"
+  }
 }

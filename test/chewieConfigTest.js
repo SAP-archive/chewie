@@ -7,7 +7,7 @@ const config = {
 
   registry: {
     location: process.env.REGISTRY_LOCATION || 'remote',
-    path: process.env.REGISTRY_PATH || 'git@github.com:hybris/chewie-sample-data.git',
+    path: process.env.REGISTRY_PATH || 'https://github.com/hybris/chewie-sample-data.git',
     fileName: 'whatever.json',
     branch: process.env.NODE_ENV || 'prod',
     shortVersionFileName: 'smallwhatever.json',
@@ -54,14 +54,12 @@ config.minification = {
   css: [{
     src: [`${out}/styles/zombieipsum.css`, `${out}/styles/hipsteripsum.css`],
     dest: `${out}/minResult`,
-    name: 'miniIpsum.css',
-    opts: {benchmark:true, noAdvanced:false}
+    name: 'miniIpsum.css'
   },
   {
     src: [`${out}/styles/zombieipsum.css`, `${out}/styles/hipsteripsum.css`],
     dest: `${out}/minResult`,
-    name: 'miniIpsum2.css',
-    opts: {benchmark:true, noAdvanced:false}
+    name: 'miniIpsum2.css'
   }],
   html: [{
     src: [`${out}/html/baconipsum.html`],

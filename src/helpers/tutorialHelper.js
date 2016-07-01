@@ -93,14 +93,17 @@ function copyAndRenameInteractiveTutorials(src, dest, nameShort, version, matrix
             });
             header += '---\n';
 
+            //it means apinotebook was already copied
+            if(filePath.indexOf(`_${nameShort}_${version}`) !== -1 || filePath.indexOf(`_${nameShort}`) !== -1) return;
+
             const fileContent = header + fs.readFileSync(filePath, 'utf8');
             fs.writeFileSync(filePath, fileContent, 'utf8');
 
             const newId = version ? `${md.id}_${nameShort}_${version}` : `${md.id}_${nameShort}`;
 
-            const newFileName = misc.checkExtension(filePath, '.eco') ? `${newId}.md.eco` : `${newId}.md`;
-            const newPath = misc.changeFileName(filePath, newFileName);
+            const newFileName = `${newId}.md.eco`;
 
+            const newPath = misc.changeFileName(filePath, newFileName);
             _versionApinotebookFile(filePath, md.id, newId, newFileName, (err) => {
               if(err) throw err;
 
