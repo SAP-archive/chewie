@@ -49,16 +49,16 @@ function cloneDocuRepo(topicDetails, cb) {
     return validator.dirCheck(origPath, (err) => {
 
       if(err) {
-        log.error(`${topicDetails.type} - ${topicDetails.name} ${version} wasn't successfully cloned because there is no documentation in path: ${origPath}`);
+        log.error(`${topicDetails.type} - ${topicDetails.name} ${version} wasn't successfully copied because there is no documentation in path: ${origPath}`);
         return cb(err);
       }
 
       copier.copyFiles(`${origPath}/**`, destPath, (err, data) => {
         if (err) {
-          log.error(`${topicDetails.type} - ${topicDetails.name} ${version}  wasn't successfully cloned from local directory`);
+          log.error(`${topicDetails.type} - ${topicDetails.name} ${version}  wasn't successfully copied from local directory`);
         }
         else {
-          log.info(`${topicDetails.type} - ${topicDetails.name} ${version} successfully cloned into ${destPath} using local directory`);
+          log.info(`${topicDetails.type} - ${topicDetails.name} ${version} successfully copied into ${destPath} using local directory`);
         }
         cb();
       });
