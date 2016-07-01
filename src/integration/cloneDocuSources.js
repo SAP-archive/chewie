@@ -8,7 +8,7 @@ const eachRegTopic = require('../helpers/registryIterator'),
   log = require('../helpers/logger'),
   notClonedArray = [];
 
-  
+
 /**
  * This function clones all provided sources or only specified topics
  * @param {Array} [registry] - array of full registry
@@ -75,6 +75,7 @@ function _createMatrixWithNotClonedRepositories(topicDetails, config, cb) {
 
   //write array the file
   creator.createFile(`${config.tempLocation}/notClonedRepositories.json`, notClonedArray, (err) => {
+    log.error('Something went wrong. File could not be created. No repositories will be backup.');
   });
 
 }
