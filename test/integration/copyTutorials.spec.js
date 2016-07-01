@@ -33,6 +33,7 @@ describe('Coping and versioning interactive tutorials', () => {
         copyTutorials(registry, config, () => {
 
           fs.readFile(matrixFileLocation, 'utf8', (err, data) => {
+
             testFile = JSON.parse(data);
             done();
           });
@@ -79,7 +80,7 @@ function checkIfAllExist(fileArray) {
   const tutorialsLocation = config.constantLocations.apinotebooksLocation;
 
   const isAllExists =  fileArray.every((element) => {
-    const filePath = `${tutorialsLocation}/${element}.md`;
+    const filePath = `${tutorialsLocation}/${element}.md.eco`;
 
     try {
       fs.statSync(filePath);
