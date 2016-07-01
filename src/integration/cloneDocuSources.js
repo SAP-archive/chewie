@@ -2,13 +2,11 @@
 const eachRegTopic = require('../helpers/registryIterator'),
   misc = require('../helpers/misc'),
   creator = require('../helpers/creator'),
-  validator = require('../helpers/validator'),
   async = require('async'),
   fs = require('fs'),
   git = require('gulp-git'),
   log = require('../helpers/logger'),
-  copier = require('../helpers/copier'),
-  path = require('path');
+  copier = require('../helpers/copier');
 
 
 /**
@@ -27,8 +25,8 @@ function iterateRegClone(registry, config, next) {
 
   eachRegTopic.async(registry, config, next, (topicDetails, cb) => {
 
-    //clone repo to a given location basing on data provided in the registry
-    cloneDocuRepo(topicDetails, cb);
+    topicDetails.local ? copier.copyDocuRepo(topicDetails, cb) : cloneDocuRepo(topicDetails, cb);
+
   });
 }
 
@@ -40,32 +38,6 @@ function iterateRegClone(registry, config, next) {
 function cloneDocuRepo(topicDetails, cb) {
 
   const version = topicDetails.version || '';
-
-  if(topicDetails.local){
-
-    const origPath = path.resolve(process.cwd(), topicDetails.location);
-    const destPath = path.resolve(process.cwd(), topicDetails.sourcesCloneLoc);
-
-    return validator.dirCheck(origPath, (err) => {
-
-      if(err) {
-        log.error(`${topicDetails.type} - ${topicDetails.name} ${version} wasn't successfully copied because there is no documentation in path: ${origPath}`);
-        return cb(err);
-      }
-
-      copier.copyFiles(`${origPath}/**`, destPath, (err, data) => {
-        if (err) {
-          log.error(`${topicDetails.type} - ${topicDetails.name} ${version}  wasn't successfully copied from local directory`);
-        }
-        else {
-          log.info(`${topicDetails.type} - ${topicDetails.name} ${version} successfully copied into ${destPath} using local directory`);
-        }
-        cb();
-      });
-
-    });
-
-  }
 
   git.clone(topicDetails.location, {args: `${topicDetails.sourcesCloneLoc} -b ${topicDetails.branchTag}`}, (err) => {
 
