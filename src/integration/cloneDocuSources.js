@@ -5,7 +5,8 @@ const eachRegTopic = require('../helpers/registryIterator'),
   async = require('async'),
   fs = require('fs'),
   git = require('gulp-git'),
-  log = require('../helpers/logger');
+  log = require('../helpers/logger'),
+  copier = require('../helpers/copier');
 
 
 /**
@@ -15,7 +16,6 @@ const eachRegTopic = require('../helpers/registryIterator'),
  * @param {Function} [next] - callback for asynch operations
  */
 function cloneDocuSources(registry, config, next) {
-  let topicDetails;
 
   iterateRegClone(registry, config, next);
 }
@@ -25,8 +25,8 @@ function iterateRegClone(registry, config, next) {
 
   eachRegTopic.async(registry, config, next, (topicDetails, cb) => {
 
-    //clone repo to a given location basing on data provided in the registry
-    cloneDocuRepo(topicDetails, cb);
+    topicDetails.local ? copier.copyDocuRepo(topicDetails, cb) : cloneDocuRepo(topicDetails, cb);
+
   });
 }
 
@@ -42,7 +42,7 @@ function cloneDocuRepo(topicDetails, cb) {
   git.clone(topicDetails.location, {args: `${topicDetails.sourcesCloneLoc} -b ${topicDetails.branchTag}`}, (err) => {
 
     if (err) {
-      if(err.message && err.message.indexOf('already exists and is not an empty directory')) {
+      if(err.message && err.message.indexOf('already exists and is not an empty directory') !== -1) {
         log.warning(`${topicDetails.type} - ${topicDetails.name} ${version} is already cloned, use --force to download repository again`);
       }
       else {
