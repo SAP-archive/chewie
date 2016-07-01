@@ -124,13 +124,14 @@ module.exports = pushResult;
 function _backup(from, to, tempLocation, cb){
   const data = fs.readFileSync(`./${tempLocation}/notClonedRepositories.json`, 'utf-8');
   const array = data.toString().split(',');
-  let itemsProcessed = 0;
+  const arrOfTasks = [];
 
   array.forEach((item) => {
-    copier.copyFiles((from ? `${item}/*` : `./${tempLocation}/backup/${path.normalize(item)}/*`), (to ? `${item}/` : `./${tempLocation}/backup/${path.normalize(item)}/`), () => {
-      itemsProcessed++;
+    const src = from ? `${item}/*` : `./${tempLocation}/backup/${path.normalize(item)}/*`;
+    const dest = to ? `${item}/` : `./${tempLocation}/backup/${path.normalize(item)}/`;
 
-      if(itemsProcessed === array.length) return cb();
-    });
+    arrOfTasks.push(copier.copyFilesAsync(src, dest, 'Backup operation'));
   });
+
+  async.series(arrOfTasks, cb);
 }
