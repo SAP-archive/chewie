@@ -76,6 +76,7 @@ function _createMatrixWithNotClonedRepositories(topicDetails, config, cb) {
   //write array the file
   creator.createFile(`${config.tempLocation}/notClonedRepositories.json`, notClonedArray, (err) => {
     if (err) log.error('Something went wrong. File could not be created. No repositories will be backup.');
+    return cb();
   });
 
 }
