@@ -72,7 +72,7 @@ function deleteNotNeeded(notUsedFiles, independent){
 }
 
 //delete previous cloned results
-function prepareForCopy(dest, independent) {
+function deletePreviouslyClonedResultsRepo(dest, independent) {
   return (cb) => {
     if (independent) return cb();
 
