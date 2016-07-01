@@ -1,7 +1,10 @@
 'use strict';
 
 const gulp = require('gulp'),
-  tap = require('gulp-tap');
+  tap = require('gulp-tap'),
+  path = require('path'),
+  log = require('./logger.js'),
+  validator = require('./validator.js');
 
 /**
  * This function copies files from provided source to provided destiny
@@ -77,11 +80,38 @@ function copyFilesTapAsync(src, dest, tapFunction, name) {
   };
 }
 
+function copyDocuRepo(topicDetails, cb) {
+
+  const version = topicDetails.version || '';
+  
+  const origPath = path.resolve(process.cwd(), topicDetails.location);
+  const destPath = path.resolve(process.cwd(), topicDetails.sourcesCloneLoc);
+
+  return validator.dirCheck(origPath, (err) => {
+
+    if(err) {
+      log.error(`${topicDetails.type} - ${topicDetails.name} ${version} wasn't successfully copied because there is no documentation in path: ${origPath}`);
+      return cb(err);
+    }
+
+    copyFiles(`${origPath}/**`, destPath, (err, data) => {
+      if (err) {
+        log.error(`${topicDetails.type} - ${topicDetails.name} ${version}  wasn't successfully copied from local directory`);
+      }
+      else {
+        log.info(`${topicDetails.type} - ${topicDetails.name} ${version} successfully copied into ${destPath} using local directory`);
+      }
+      cb();
+    });
+  });
+}
+
 const copiers = {
   copyFiles,
   copyFilesTap,
   copyFilesTapAsync,
-  copyFilesAsync
+  copyFilesAsync,
+  copyDocuRepo
 };
 
 

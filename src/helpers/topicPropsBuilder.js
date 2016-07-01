@@ -239,6 +239,10 @@ function topicPropsBuilder(regEntry, sourceEntry, config) {
   const category = regEntry.category;
   const packages = regEntry.packages;
 
+  //for local directories
+  const local = sourceEntry.local === true || sourceEntry.local === 'true';
+
+
   const topicDetails = {
     packages,
     tags,
@@ -331,7 +335,8 @@ function topicPropsBuilder(regEntry, sourceEntry, config) {
     clonedDocuFolderTypes,
     isInternalNameExists,
     isService,
-    isGS
+    isGS,
+    local
   };
 
   return topicDetails;
