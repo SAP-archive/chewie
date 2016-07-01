@@ -65,7 +65,8 @@ function deleteNotNeeded(notUsedFiles, independent){
   return (cb) => {
     if (!independent) return cb();
 
-    del(notUsedFiles).then(cb);
+    del.sync(notUsedFiles);
+    cb();
   };
 }
 
