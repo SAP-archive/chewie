@@ -7,7 +7,8 @@ const git = require('gulp-git'),
   async = require('async'),
   fs = require('fs'),
   path = require('path'),
-  log = require('../helpers/logger');
+  log = require('../helpers/logger'),
+  reader = require('../helpers/reader');
 
 /**
  * This function prepares a commit with changes and then pushes it to repository.
@@ -67,6 +68,7 @@ function deleteNotNeeded(notUsedFiles, independent){
     if (!independent) return cb();
 
     del(notUsedFiles).then(() => cb());
+    cb();
   };
 }
 
@@ -122,16 +124,17 @@ module.exports = pushResult;
 */
 
 function backup(from, to, tempLocation, cb){
-  const notClonedRepositoresMatrix = fs.readFileSync(`./${tempLocation}/notClonedRepositories.json`, 'utf-8');
-  const arrayOfNotClonedRepositories = notClonedRepositoresMatrix.toString().split(',');
-  const arrOfTasks = [];
+  reader.readFile(`./${tempLocation}/notClonedRepositories.json`, (err, notClonedRepositoresMatrix) => {
+    const arrayOfNotClonedRepositories = notClonedRepositoresMatrix.toString().split(',');
+    const arrOfTasks = [];
 
-  arrayOfNotClonedRepositories.forEach((item) => {
-    const src = from ? `${item}/*` : `./${tempLocation}/backup/${path.normalize(item)}/*`;
-    const dest = to ? `${item}/` : `./${tempLocation}/backup/${path.normalize(item)}/`;
+    arrayOfNotClonedRepositories.forEach((item) => {
+      const src = from ? `${item}/*` : `./${tempLocation}/backup/${path.normalize(item)}/*`;
+      const dest = to ? `${item}/` : `./${tempLocation}/backup/${path.normalize(item)}/`;
 
-    arrOfTasks.push(copier.copyFilesAsync(src, dest, 'Backup operation'));
+      arrOfTasks.push(copier.copyFilesAsync(src, dest, 'Backup operation'));
+    });
+
+    async.series(arrOfTasks, cb);
   });
-
-  async.series(arrOfTasks, cb);
 }
