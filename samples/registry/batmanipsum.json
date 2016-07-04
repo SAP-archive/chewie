@@ -25,6 +25,14 @@
       "branch_or_tag": "master",
       "raml": "src/main/resources/api/batman-ipsum.raml",
       "ramlInternal": "src/main/resources/api/batman-ipsum.raml"
+    },
+    {
+      "builder_identifier": "batman-ipsum",
+      "internal_builder_identifier": "robin-ipsum",
+      "version": "v4",
+      "latest": false,
+      "location": "../projects/feedbackservice",
+      "branch_or_tag": "master"
     }
   ]
 }

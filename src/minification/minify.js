@@ -1,6 +1,6 @@
 'use strict';
 
-const minifyCSS = require('gulp-minify-css'),
+const minifyCSS = require('gulp-clean-css'),
   uglify = require('gulp-uglify'),
   minifyHTML = require('gulp-minify-html'),
   imagemin = require('gulp-imagemin'),

@@ -1,6 +1,5 @@
 'use strict';
 const gulp = require('gulp'),
-  log = require('./logger'),
   git = require('gulp-git');
 
 /**
@@ -12,11 +11,7 @@ const gulp = require('gulp'),
  */
 function cloneRepo(repoLocation, branchTag, expectedCloneLocation, cb) {
 
-  git.clone(repoLocation, {args: `${expectedCloneLocation} --depth 1 -b ${branchTag}`}, (err) => {
-
-    cb(err);
-  });
-
+  git.clone(repoLocation, {args: `${expectedCloneLocation} --depth 1 -b ${branchTag}`}, cb);
 }
 
 /**

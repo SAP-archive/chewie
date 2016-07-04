@@ -8,7 +8,7 @@ const config = {
 
   registry: {
     location: 'remote',
-    path: 'git@github.com:hybris/chewie-sample-data.git',
+    path: 'https://github.com/hybris/chewie-sample-data.git',
     fileName: 'docu_registry.json',
     branch: process.env.docuBranch || 'prod',
     shortVersionFileName: 'shrinkedRegistry.json',

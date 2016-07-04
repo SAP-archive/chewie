@@ -6,6 +6,7 @@ const eachRegTopic = require('../helpers/registryIterator'),
   fs = require('fs'),
   git = require('gulp-git'),
   log = require('../helpers/logger'),
+  copier = require('../helpers/copier'),
   notClonedArray = [];
 
 
@@ -16,7 +17,6 @@ const eachRegTopic = require('../helpers/registryIterator'),
  * @param {Function} [next] - callback for asynch operations
  */
 function cloneDocuSources(registry, config, next) {
-  let topicDetails;
 
   iterateRegClone(registry, config, next);
 }
@@ -27,7 +27,7 @@ function iterateRegClone(registry, config, next) {
   eachRegTopic.async(registry, config, next, (topicDetails, cb) => {
 
     //clone repo to a given location basing on data provided in the registry
-    cloneDocuRepo(topicDetails, config, cb);
+    topicDetails.local ? copier.copyDocuRepo(topicDetails, cb) : cloneDocuRepo(topicDetails, cb);
   });
 }
 
