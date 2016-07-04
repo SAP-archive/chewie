@@ -35,11 +35,11 @@ function pushResult(opt, next) {
 
   async.series([
     clone(repo, branch, dest),
-    backupOfNotClonedRepositories(dest, independent, tempLocation),
+    backupOfNotClonedRepositories(independent, tempLocation),
     deleteNotNeeded(notUsedFiles, independent),
     deletePreviouslyClonedResultsRepo(dest, independent),
     copier.copyFilesAsync(src, dest),
-    restoreBackupOfNotClonedRepositories(dest, independent, tempLocation),
+    restoreBackupOfNotClonedRepositories(independent, tempLocation),
     addCommit(dest, message),
     push(branch, dest)
   ], next);
@@ -53,11 +53,11 @@ function clone(repo, branch, dest) {
 }
 
 //responsible for backup of not cloned repositories
-function backupOfNotClonedRepositories(dest, independent, tempLocation){
+function backupOfNotClonedRepositories(independent, tempLocation){
   return (cb) => {
     if (independent) return cb();
 
-    _backup(true, false, tempLocation, cb);
+    backup(true, false, tempLocation, cb);
   };
 }
 
@@ -82,11 +82,11 @@ function deletePreviouslyClonedResultsRepo(dest, independent) {
 }
 
 //responsible for restoring of not cloned repositories
-function restoreBackupOfNotClonedRepositories(dest, independent, tempLocation){
+function restoreBackupOfNotClonedRepositories(independent, tempLocation){
   return (cb) => {
     if (independent) return cb();
 
-    _backup(false, true, tempLocation, cb);
+    backup(false, true, tempLocation, cb);
   };
 }
 
@@ -123,12 +123,12 @@ module.exports = pushResult;
  * @param {Function} [cb] - callback for asynchronous operation
 */
 
-function _backup(from, to, tempLocation, cb){
-  const data = fs.readFileSync(`./${tempLocation}/notClonedRepositories.json`, 'utf-8');
-  const array = data.toString().split(',');
+function backup(from, to, tempLocation, cb){
+  const notClonedRepositoresMatrix = fs.readFileSync(`./${tempLocation}/notClonedRepositories.json`, 'utf-8');
+  const arrayOfNotClonedRepositories = notClonedRepositoresMatrix.toString().split(',');
   const arrOfTasks = [];
 
-  array.forEach((item) => {
+  arrayOfNotClonedRepositories.forEach((item) => {
     const src = from ? `${item}/*` : `./${tempLocation}/backup/${path.normalize(item)}/*`;
     const dest = to ? `${item}/` : `./${tempLocation}/backup/${path.normalize(item)}/`;
 
