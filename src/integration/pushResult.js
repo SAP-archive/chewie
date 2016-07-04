@@ -52,7 +52,7 @@ function clone(repo, branch, dest) {
   };
 }
 
-//delete previous cloned results
+//responsible for backup of not cloned repositories
 function backupOfNotClonedRepositories(dest, independent, tempLocation){
   return (cb) => {
     if (independent) return cb();
@@ -61,7 +61,7 @@ function backupOfNotClonedRepositories(dest, independent, tempLocation){
   };
 }
 
-//delete previous cloned results
+//delete not used files during independent generation
 function deleteNotNeeded(notUsedFiles, independent){
   return (cb) => {
     if (!independent) return cb();
@@ -71,7 +71,7 @@ function deleteNotNeeded(notUsedFiles, independent){
   };
 }
 
-//delete previous cloned results
+//delete previously cloned results
 function deletePreviouslyClonedResultsRepo(dest, independent) {
   return (cb) => {
     if (independent) return cb();
@@ -81,6 +81,7 @@ function deletePreviouslyClonedResultsRepo(dest, independent) {
   };
 }
 
+//responsible for restoring of not cloned repositories
 function restoreBackupOfNotClonedRepositories(dest, independent, tempLocation){
   return (cb) => {
     if (independent) return cb();
@@ -118,6 +119,7 @@ module.exports = pushResult;
  * Function resposible for moving files between two directories in order to backup them or restore them
  * @param {Boolean} [from] - responsible for choosing the src folder: `${item}/*` or `./tmp/backup/${path.normalize(item)}/*`
  * @param {Boolean} [to] - responsible for choosing the destination folder: `${item}/` or `./tmp/backup/${path.normalize(item)}/`
+ * @param {String} [tempLocation] - indicates folder with cloned repositories
  * @param {Function} [cb] - callback for asynchronous operation
 */
 
