@@ -27,7 +27,7 @@ function iterateRegClone(registry, config, next) {
   eachRegTopic.async(registry, config, next, (topicDetails, cb) => {
 
     //clone repo to a given location basing on data provided in the registry
-    topicDetails.local ? copier.copyDocuRepo(topicDetails, cb) : cloneDocuRepo(topicDetails, cb);
+    topicDetails.local ? copier.copyDocuRepo(topicDetails, cb) : cloneDocuRepo(topicDetails, config, cb);
   });
 }
 
