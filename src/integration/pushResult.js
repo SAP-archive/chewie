@@ -5,7 +5,6 @@ const git = require('gulp-git'),
   gulp = require('gulp'),
   del = require('del'),
   async = require('async'),
-  fs = require('fs'),
   path = require('path'),
   log = require('../helpers/logger'),
   reader = require('../helpers/reader');
