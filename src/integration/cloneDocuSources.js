@@ -35,6 +35,7 @@ function iterateRegClone(registry, config, next) {
 /**
  * This function clones a given topic's repository to a given location and logouts proper custom info
  * @param {Object} [topicDetails] - holds details of the repo that needs to be cloned.
+ * @param {Object} [config] - basic integration configuration
  * @param {Function} [cb] - callback for asynchronous operation
  */
 function cloneDocuRepo(topicDetails, config, cb) {
@@ -66,6 +67,7 @@ module.exports = cloneDocuSources;
 /**
  * This function creates a JSON object in which names of not cloned repositories are stored.
  * @param {Object} [topicDetails] - holds details of the repo that needs to be cloned.
+ * @param {Object} [config] - basic integration configuration
  * @param {Function} [cb] - callback for asynchronous operation
  */
 function _createMatrixWithNotClonedRepositories(topicDetails, config, cb) {
