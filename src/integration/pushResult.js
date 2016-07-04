@@ -66,8 +66,7 @@ function deleteNotNeeded(notUsedFiles, independent){
   return (cb) => {
     if (!independent) return cb();
 
-    del.sync(notUsedFiles);
-    cb();
+    del(notUsedFiles).then(() => cb());
   };
 }
 
@@ -76,8 +75,7 @@ function deletePreviouslyClonedResultsRepo(dest, independent) {
   return (cb) => {
     if (independent) return cb();
 
-    del.sync(dest);
-    cb();
+    del(dest).then(() => cb());
   };
 }
 
