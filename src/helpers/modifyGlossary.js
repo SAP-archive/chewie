@@ -28,8 +28,8 @@ function modifyGlossary() {
         //new line is added here as this metadata is not common and we don't want to have an extra white space in metadatas
         lockCase = (md.lock_case) ? `\nlock_case: ${md.lock_case}` : '';
 
-        // we have to change " to ' because otherwise HTML syntax is invalid
-        const description = md.description.replace(/"/g,'\'');
+        // we have escape " because otherwise html syntax is invalid
+        const description = md.description.replace(/"/g,'&quot;');
 
         file.contents = Buffer.concat([
           new Buffer(`---\nterm: ${md.term}\ndescription: ${description}\n${serviceOrTool}${lockCase}\ninternal: false\n---\n`),
