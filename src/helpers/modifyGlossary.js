@@ -28,9 +28,12 @@ function modifyGlossary() {
         //new line is added here as this metadata is not common and we don't want to have an extra white space in metadatas
         lockCase = (md.lock_case) ? `\nlock_case: ${md.lock_case}` : '';
 
+        // we have escape " because otherwise html syntax is invalid
+        const description = md.description.replace(/"/g,'&quot;');
+
         file.contents = Buffer.concat([
-          new Buffer(`---\nterm: ${md.term}\ndescription: ${md.description}\n${serviceOrTool}${lockCase}\ninternal: false\n---\n`),
-          new Buffer(`<span class="u-help-label" data-toggle="tooltip" data-placement="top" title="${md.description}">${md.term}</span>`)
+          new Buffer(`---\nterm: ${md.term}\ndescription: ${description}\n${serviceOrTool}${lockCase}\ninternal: false\n---\n`),
+          new Buffer(`<span class="u-help-label" data-toggle="tooltip" data-placement="top" title="${description}">${md.term}</span>`)
         ]);
       }
     }
