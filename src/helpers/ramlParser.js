@@ -8,36 +8,40 @@ const gulp = require('gulp'),
   path = require('path'),
   toRAML = require('raml-object-to-raml'),
   creator = require('./creator'),
+  validator = require('./validator'),
   _ = require('underscore');
 
 
-  /**
-   * This function parses RAML files
-   * @param {string} [source] - src directory
-   * @param {string} [dest] - dest directory
-   * @param {string} [baseUri] - baseUri to be replaced
-   */
+/**
+ * This function parses RAML files
+ * @param {string} [source] - src directory
+ * @param {string} [dest] - dest directory
+ * @param {string} [baseUri] - baseUri to be replaced
+ */
+
 function parse(source, dest, baseUri, listTraits, next) {
-  gulp.src(source)
-     .pipe(tap((file) => {
-       let retries = 0;
-       async.whilst(
-         () => retries < 3,
-         (cb) => {
-           retries++;
-           _parseRAML(file, source, dest, baseUri, listTraits, cb);
-         },
-         (err) => {
-           if(retries === 3) {
-             logger.error(`Couldn't download traits for RAML because server isn't responding`);
-             return process.exit(1);
-           }
-         }
-       );
-     })
-   )
-   .on('error', next)
-   .on('end', next);
+
+  validator.fileCheck(source, (err) => {
+
+    if(err) return next(err);
+
+    let retries = 0;
+    async.whilst(
+      () => retries < 3,
+      (cb) => {
+        retries++;
+        _parseRAML(source, dest, baseUri, listTraits, cb);
+      },
+      (err) => {
+        if(retries === 3) {
+          logger.error(`Couldn't download traits for RAML because server isn't responding`);
+          return process.exit(1);
+        }
+        else return next()
+      }
+    );
+
+  })
 }
 
 function _avoidRepetitiousTraits (listOfTraits) {
@@ -56,9 +60,8 @@ function _avoidDuplications (listOfTraits) {
   return result;
 }
 
-function _parseRAML(file, source, dest, baseUri, listTraits, cb) {
-  raml.loadFile(`./${path.relative(process.cwd(), file.path)}`).then((data) => {
-
+function _parseRAML(filePath, dest, baseUri, listTraits, cb) {
+  raml.loadFile(filePath).then((data) => {
     const givenTrait = data.traits;
 
     // traits avoid duplications
@@ -66,7 +69,10 @@ function _parseRAML(file, source, dest, baseUri, listTraits, cb) {
 
     // traits cleanup - not used
     data.traits && data.traits.forEach((trait) => {
-      if (!listTraits) return;
+
+       if(!listTraits) {
+         return;
+       }
 
       const listOfTraits = listTraits.split(' ');
 
@@ -93,10 +99,8 @@ function _parseRAML(file, source, dest, baseUri, listTraits, cb) {
     const result = toRAML(data);
 
     creator.createFilesSync(dest, result, 'utf-8');
-
-    cb('Generation went fine');
+    return cb('Generation went fine');
   }, (err) => {
-
     if(err && err.message && err.message.indexOf('ECONNREFUSED') !== -1) {
       logger.warning(`Couldn't download traits, retrying...`);
       return cb();
@@ -104,7 +108,7 @@ function _parseRAML(file, source, dest, baseUri, listTraits, cb) {
 
     logger.error(`Failed rewriting for service with base uri: ${baseUri}`);
     logger.error(err);
-    cb('Other error, move on');
+    return cb('Other error, move on');
   });
 }
 
