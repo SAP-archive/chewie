@@ -17,6 +17,8 @@ const gulp = require('gulp'),
  * @param {string} [source] - src directory
  * @param {string} [dest] - dest directory
  * @param {string} [baseUri] - baseUri to be replaced
+ * @param {string} [listTraits] - string with traits
+ * @param {Function} [next] - callback for operation
  */
 
 function parse(source, dest, baseUri, listTraits, next) {
@@ -62,9 +64,7 @@ function _parseRAML(filePath, dest, baseUri, listTraits, cb) {
     // traits cleanup - not used
     data.traits && data.traits.forEach((trait) => {
 
-      if(!listTraits) {
-        return;
-      }
+      if(!listTraits) return ;
 
       const listOfTraits = listTraits.split(' ');
 
