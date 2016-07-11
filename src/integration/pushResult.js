@@ -36,6 +36,7 @@ function pushResult(opt, next) {
     deleteNotNeeded(independent, notUsedFiles),
     copier.copyFilesAsync(src, dest),
     addCommit(dest, message),
+    pull(branch, dest),
     push(branch, dest)
   ], next);
 }
@@ -75,10 +76,14 @@ function addCommit(src, msg){
 function push(branch, src){
 
   return (cb) => {
+    git.push('origin', branch, {cwd: src}, cb);
+  };
+}
 
-    git.push('origin', branch, {cwd: src}, (err) => {
-      cb(err);
-    });
+function pull(branch, src){
+
+  return (cb) => {
+    git.pull('origin', branch, {cwd: src}, cb);
   };
 }
 
