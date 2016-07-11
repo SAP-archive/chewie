@@ -9,8 +9,8 @@ const gulp = require('gulp'),
   toRAML = require('raml-object-to-raml'),
   creator = require('./creator'),
   validator = require('./validator'),
-  _ = require('underscore');
-
+  _ = require('underscore'),
+  vinylPaths = require('vinyl-paths');
 
 /**
  * This function parses RAML files
@@ -20,28 +20,17 @@ const gulp = require('gulp'),
  */
 
 function parse(source, dest, baseUri, listTraits, next) {
+  const vp = vinylPaths();
 
-  validator.fileCheck(source, (err) => {
+  gulp.src(source)
+    .pipe(vp)
+    .pipe(gulp.dest('./tmp'))
+    .on('end', () => {
+      const path = vp.paths[0];
 
-    if(err) return next(err);
+      path && _processRamlFile(path, dest, baseUri, listTraits, next);
+    });
 
-    let retries = 0;
-    async.whilst(
-      () => retries < 3,
-      (cb) => {
-        retries++;
-        _parseRAML(source, dest, baseUri, listTraits, cb);
-      },
-      (err) => {
-        if(retries === 3) {
-          logger.error(`Couldn't download traits for RAML because server isn't responding`);
-          return process.exit(1);
-        }
-        else return next()
-      }
-    );
-
-  })
 }
 
 function _avoidRepetitiousTraits (listOfTraits) {
@@ -70,9 +59,9 @@ function _parseRAML(filePath, dest, baseUri, listTraits, cb) {
     // traits cleanup - not used
     data.traits && data.traits.forEach((trait) => {
 
-       if(!listTraits) {
-         return;
-       }
+      if(!listTraits) {
+        return;
+      }
 
       const listOfTraits = listTraits.split(' ');
 
@@ -111,6 +100,32 @@ function _parseRAML(filePath, dest, baseUri, listTraits, cb) {
     return cb('Other error, move on');
   });
 }
+
+function _processRamlFile(source, dest, baseUri, listTraits, next) {
+  validator.fileCheck(source, (err) => {
+    if(err) return next(err);
+
+    let retries = 0;
+    async.whilst(
+      () => retries < 3,
+      (cb) => {
+        retries++;
+        _parseRAML(source, dest, baseUri, listTraits, cb);
+      },
+      (err) => {
+        if(retries === 3) {
+          logger.error(`Couldn't download traits for RAML because server isn't responding`);
+          return process.exit(1);
+        }
+
+        return next();
+      }
+    );
+
+  });
+}
+
+
 
 const ramlParser = {
   parse

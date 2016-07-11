@@ -73,15 +73,15 @@ function ramlToHtml(files, name){
   const config = raml2html.getDefaultConfig(path.resolve(__dirname, '../raml2htmlTemplates/template.nunjucks'), path.resolve(__dirname, '../raml2htmlTemplates'));
 
   return (cb) => {
-    validator.dirCheck(files, (err) => {
+    validator.fileCheck(`${files}/api.raml`, (err) => {
 
       if (err) return cb(null, name);
 
       raml2html.render(`${files}/api.raml`, config)
         .then((result) => {
           fs.writeFile(`${files}/apireferenceTempContent.html`, result, 'utf-8', cb);
-        }, cb)
-        .catch(cb);
+        }, cb);
+
     });
   };
 }
@@ -89,7 +89,7 @@ function ramlToHtml(files, name){
 function ramlToClient(dirPath, name){
 
   return (cb) => {
-    validator.dirCheck(dirPath, (err) => {
+    validator.dirCheck(`${dirPath}/api.raml`, (err) => {
 
       if (err) return cb(null, name);
 
