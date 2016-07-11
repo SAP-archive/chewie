@@ -25,10 +25,13 @@ function parse(source, dest, baseUri, listTraits, next) {
   gulp.src(source)
     .pipe(vp)
     .pipe(gulp.dest('./tmp'))
+    .on('eror', next)
     .on('end', () => {
+      if(!vp.paths.length) return next();
+
       const path = vp.paths[0];
 
-      path && _processRamlFile(path, dest, baseUri, listTraits, next);
+      _processRamlFile(path, dest, baseUri, listTraits, next);
     });
 
 }
