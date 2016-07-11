@@ -26,6 +26,9 @@ function topicPropsBuilder(regEntry, sourceEntry, config) {
   //internal name all lower case without spaces
   const shortNameInternal = regEntry.nameInternal ? misc.trimAdvanced(nameInternal) : shortName;
 
+  //description of the docu topic.
+  const description = regEntry.description;
+
   //type of the content
   const type = misc.trimAdvanced(regEntry.type);
 
@@ -252,6 +255,7 @@ function topicPropsBuilder(regEntry, sourceEntry, config) {
     nameInternal,
     shortName,
     shortNameInternal,
+    description,
     type,
     envLink,
     docuUrl,
