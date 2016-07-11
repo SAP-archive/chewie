@@ -89,7 +89,7 @@ function ramlToHtml(files, name){
 function ramlToClient(dirPath, name){
 
   return (cb) => {
-    validator.dirCheck(`${dirPath}/api.raml`, (err) => {
+    validator.fileCheck(`${dirPath}/api.raml`, (err) => {
 
       if (err) return cb(null, name);
 
