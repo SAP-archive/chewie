@@ -129,11 +129,11 @@ function topicPropsBuilder(regEntry, sourceEntry, config) {
   /*
   adding base uri - service proxy url
   */
-  //building env link basing on specified node environment
-  const envLink = envLinkBuilder(config);
+
+  const defaultBaseUriDomain = config.defaultBaseUriDomain || '';
 
   //defining base uri for external
-  const baseUri = sourceEntry.baseUri ? sourceEntry.baseUri : `https://api${envLink}.yaas.io/${builderOrg}/${builderIdentifier}/${version}`;
+  const baseUri = sourceEntry.baseUri ? sourceEntry.baseUri : `${defaultBaseUriDomain}/${builderOrg}/${builderIdentifier}/${version}`;
 
   //defining base uri for internal
   let baseUriInternal;
@@ -142,7 +142,7 @@ function topicPropsBuilder(regEntry, sourceEntry, config) {
     baseUriInternal = sourceEntry.internalBaseUri;
   }
   else if (sourceEntry.internal_builder_identifier) {
-    baseUriInternal = `https://api${envLink}.yaas.io/${builderOrg}/${builderIdentifierInternal}/${version}`;
+    baseUriInternal = `${defaultBaseUriDomain}/${builderOrg}/${builderIdentifierInternal}/${version}`;
   }
   else {
     baseUriInternal = baseUri;
@@ -251,7 +251,6 @@ function topicPropsBuilder(regEntry, sourceEntry, config) {
     shortName,
     shortNameInternal,
     type,
-    envLink,
     docuUrl,
     version,
     latest,
@@ -340,30 +339,6 @@ function topicPropsBuilder(regEntry, sourceEntry, config) {
 
   return topicDetails;
 
-}
-
-//helper to build a part of baseUri specific per environment
-function envLinkBuilder(config){
-
-  const env = config.registry.branch;
-
-  let envLink = '';
-  switch (env) {
-
-  case 'prod':
-    envLink = '';
-    break;
-  case 'stage':
-    envLink = '.stage';
-    break;
-  case 'dev':
-    envLink = '.stage';
-    break;
-  default:
-    envLink = '';
-  }
-
-  return envLink;
 }
 
 function checkLatest(type, latest){

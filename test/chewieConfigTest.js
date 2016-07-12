@@ -49,7 +49,9 @@ const config = {
     'gettingstarted',
     'architecture',
     'solutions'
-  ]
+  ],
+
+  defaultBaseUriDomain: 'localhost'
 };
 
 const out = `${config.skeletonDestination}/${config.registry.clonedRegistryFolder}/out`;
