@@ -94,7 +94,7 @@ function _parseRAML(filePath, dest, baseUri, listTraits, cb) {
     return cb('Generation went fine');
   }, (err) => {
     if(err && err.message && err.message.indexOf('ECONNREFUSED') !== -1) {
-      logger.warning(`Couldn't download traits, retrying...`);
+      logger.warning('Couldn\'t download traits, retrying...');
       return cb();
     }
 
@@ -117,7 +117,7 @@ function _processRamlFile(source, dest, baseUri, listTraits, next) {
       },
       (err) => {
         if(retries === 3) {
-          logger.error(`Couldn't download traits for RAML because server isn't responding`);
+          logger.error('Couldn\'t download traits for RAML because server isn\'t responding');
           return process.exit(1);
         }
 
