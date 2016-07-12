@@ -1,6 +1,7 @@
 'use strict';
 const misc = require('../helpers/misc'),
-  log = require('../helpers/logger');
+  log = require('../helpers/logger'),
+  _ = require('underscore');
 
 
 /**
@@ -61,6 +62,12 @@ function topicPropsBuilder(regEntry, sourceEntry, config) {
   const leftNavArea = regEntry.left_nav_area ? regEntry.left_nav_area : false;
   const leftNavAreaElement = regEntry.left_nav_area_element ? regEntry.left_nav_area_element : false;
 
+  // helpers for types of register
+  const isService = type === 'services';
+  const isGS = type === 'gettingstarted';
+  const isTools = type === 'tools';
+  const isWithoutReleaseNotes = _.contains(config.typesWithoutReleaseNotes, type);
+  const isSrcLocNotMainDocu = _.contains(config.typesSrcLocNotMainDocu, type);
 
   //cloned src location by topic type
   const clonedDocuFolderTypes = `${config.docu.clonedRepoFolderPath}/${type}`;
@@ -74,7 +81,7 @@ function topicPropsBuilder(regEntry, sourceEntry, config) {
   const basicSrcLocation = `${clonedDocuFolderTypes}/${shortName}${versionPath}${docuDir}${config.docu.srcRepoDocuFolder}`;
 
   //if it is a getting started topic, then the sources location is not files but gettingstarted folder
-  const ifGetStart = (type === 'gettingstarted' || type === 'overview' || type === 'solutions' || type === 'architecture' || type === 'docu_guide') ? `${type}/${shortName}` : config.docu.folders.mainDocu;
+  const ifGetStart = isSrcLocNotMainDocu ? `${type}/${shortName}` : config.docu.folders.mainDocu;
 
   //building src and destiny locations for copy operations
   //source links
@@ -85,14 +92,9 @@ function topicPropsBuilder(regEntry, sourceEntry, config) {
   const srcLocationInternal = version ? [`${topicSrcLocationInternal}/**`, '!./**/apireferenceTempContent.html']: [`${topicSrcLocationInternal}/**`];
 
   //internal and external location used for example at interactive tutorials where //we need not-recursive iteration on directory
-  const srcLocationFiles = version ? [`${topicSrcLocation}/*.*`, '!./**/apireferenceTempContent.html']: [`${topicSrcLocation}/*.*`];
-  const srcLocationFilesInternal = version ? [`${topicSrcLocationInternal}/*.*`, '!./**/apireferenceTempContent.html']: [`${topicSrcLocationInternal}/*.*`];
-
-  //internal and external location used for example at interactive tutorials where //we need not-recursive iteration on directory
-  const srcLocationGsFiles = version ? [`${topicSrcLocation}/**/*.*`, '!./**/apireferenceTempContent.html']: [`${topicSrcLocation}/**/*.*`];
-  const srcLocationGsFilesInternal = version ? [`${topicSrcLocationInternal}/**/*.*`, '!./**/apireferenceTempContent.html']: [`${topicSrcLocationInternal}/**/*.*`];
-
-
+  const srcLocFilesPattern = isGS ? '/**/*.*' : '/*.*';
+  const srcLocationFiles = version ? [`${topicSrcLocation}${srcLocFilesPattern}`, '!./**/apireferenceTempContent.html']: [`${topicSrcLocation}${srcLocFilesPattern}`];
+  const srcLocationFilesInternal = version ? [`${topicSrcLocationInternal}${srcLocFilesPattern}`, '!./**/apireferenceTempContent.html']: [`${topicSrcLocationInternal}${srcLocFilesPattern}`];
 
   //destination links
   const destLocation = `${config.skeletonSrcDestination}/${type}/${shortName}/latest`;
@@ -115,14 +117,14 @@ function topicPropsBuilder(regEntry, sourceEntry, config) {
 
   // building src and dest locations for release notes
   const releaseNotes = config.docu.folders.releaseNotes;
-  const rnBaseLocation = (type === 'gettingstarted' || type === 'architecture' || type === 'solutions') ? false : `${basicSrcLocation}/${releaseNotes}`;
+  const rnBaseLocation = isWithoutReleaseNotes ? false : `${basicSrcLocation}/${releaseNotes}`;
   const rnSrcLocation = (rnBaseLocation) ? `${rnBaseLocation}/**` : false;
-  const rnBaseLocationInternal = (type === 'gettingstarted' || type === 'architecture' || type === 'solutions') ? false : `${basicSrcLocation}/internal/${releaseNotes}`;
+  const rnBaseLocationInternal = isWithoutReleaseNotes ? false : `${basicSrcLocation}/internal/${releaseNotes}`;
   const rnSrcLocationInternal = (rnBaseLocationInternal) ? `${rnBaseLocationInternal}/**` : false;
-  const rnDestLocation = (type === 'gettingstarted' || type === 'architecture' || type === 'solutions') ? false : `${config.skeletonSrcDestination}/rn/${type}/${shortName}/latest`;
-  const rnDestLocationWithoutVersion = (type === 'gettingstarted' || type === 'architecture' || type === 'solutions') ? false : `${config.skeletonSrcDestination}/rn/${type}/${shortName}`;
-  const rnDestLocationInternal = (type === 'gettingstarted' || type === 'architecture' || type === 'solutions') ? false : `${config.skeletonSrcDestination}/internal/rn/${type}/${shortNameInternal}/latest`;
-  const rnDestLocationInternalWithoutVersion = (type === 'gettingstarted' || type === 'architecture' || type === 'solutions') ? false : `${config.skeletonSrcDestination}/internal/rn/${type}/${shortNameInternal}`;
+  const rnDestLocation = isWithoutReleaseNotes ? false : `${config.skeletonSrcDestination}/rn/${type}/${shortName}/latest`;
+  const rnDestLocationWithoutVersion = isWithoutReleaseNotes ? false : `${config.skeletonSrcDestination}/rn/${type}/${shortName}`;
+  const rnDestLocationInternal = isWithoutReleaseNotes ? false : `${config.skeletonSrcDestination}/internal/rn/${type}/${shortNameInternal}/latest`;
+  const rnDestLocationInternalWithoutVersion = isWithoutReleaseNotes ? false : `${config.skeletonSrcDestination}/internal/rn/${type}/${shortNameInternal}`;
 
   /*
   adding base uri - service proxy url
@@ -186,12 +188,12 @@ function topicPropsBuilder(regEntry, sourceEntry, config) {
   const clonedGenDestLocationInternal = `${config.generationResult.pathFolderWithClonedResult}/internal/${type}/${shortNameInternal}${versionPath}`;
 
   //same as above but for release notes
-  const clonedGenRNDestLocation = (type === 'gettingstarted' || type === 'architecture' || type === 'solutions') ? '' : `${config.generationResult.pathFolderWithClonedResult}/rn/${type}/${shortName}${versionPath}`;
-  const clonedGenRNDestLocationInternal = (type === 'gettingstarted' || type === 'architecture' || type === 'solutions') ? '' : `${config.generationResult.pathFolderWithClonedResult}/internal/rn/${type}/${shortNameInternal}${versionPath}`;
+  const clonedGenRNDestLocation = isWithoutReleaseNotes ? '' : `${config.generationResult.pathFolderWithClonedResult}/rn/${type}/${shortName}${versionPath}`;
+  const clonedGenRNDestLocationInternal = isWithoutReleaseNotes ? '' : `${config.generationResult.pathFolderWithClonedResult}/internal/rn/${type}/${shortNameInternal}${versionPath}`;
 
-  const clonedGenRNDestLocationLatest = (type === 'gettingstarted' || type === 'architecture' || type === 'solutions') ? '' : (type === 'tools') ? `${config.generationResult.pathFolderWithClonedResult}/rn/${type}/${shortName}${versionPath}` : `${config.generationResult.pathFolderWithClonedResult}/rn/${type}/${shortName}/latest`;
+  const clonedGenRNDestLocationLatest = isWithoutReleaseNotes ? '' : isTools ? `${config.generationResult.pathFolderWithClonedResult}/rn/${type}/${shortName}${versionPath}` : `${config.generationResult.pathFolderWithClonedResult}/rn/${type}/${shortName}/latest`;
 
-  const clonedGenRNDestLocationInternalLatest = (type === 'gettingstarted' || type === 'architecture' || type === 'solutions') ? '' : (type === 'tools') ? `${config.generationResult.pathFolderWithClonedResult}/internal/rn/${type}/${shortNameInternal}${versionPath}` : `${config.generationResult.pathFolderWithClonedResult}/internal/rn/${type}/${shortNameInternal}/latest`;
+  const clonedGenRNDestLocationInternalLatest = isWithoutReleaseNotes ? '' : isTools ? `${config.generationResult.pathFolderWithClonedResult}/internal/rn/${type}/${shortNameInternal}${versionPath}` : `${config.generationResult.pathFolderWithClonedResult}/internal/rn/${type}/${shortNameInternal}/latest`;
 
   //building link to a placeholder for specific topic
   const placeholderMainLoc = config.placeholdersLocation;
@@ -222,17 +224,13 @@ function topicPropsBuilder(regEntry, sourceEntry, config) {
   const genDocuLocationInternal = `${genBasicDocuLocationInternal}${versionPath}`;
 
   //location of release notes after generation
-  const genBasicRNLocation = (type === 'gettingstarted' || type === 'architecture' || type === 'solutions') ? false : `${generatedDir}/rn/${type}/${shortName}`;
+  const genBasicRNLocation = isWithoutReleaseNotes ? false : `${generatedDir}/rn/${type}/${shortName}`;
   const genRNLocationLatest = (genBasicRNLocation) ? `${genBasicRNLocation}${versionLatest}` : false;
   const genRNLocation = (genBasicRNLocation) ? `${genBasicRNLocation}${versionPath}` : false;
-  const genBasicRNLocationInternal = (type === 'gettingstarted' || type === 'architecture' || type === 'solutions') ? false :  `${generatedDir}/internal/rn/${type}/${shortNameInternal}`;
+  const genBasicRNLocationInternal = isWithoutReleaseNotes ? false :  `${generatedDir}/internal/rn/${type}/${shortNameInternal}`;
   const genRNLocationLatestInternal = (genBasicRNLocationInternal) ? `${genBasicRNLocationInternal}${versionLatest}` : false;
   const genRNLocationInternal = (genBasicRNLocationInternal) ? `${genBasicRNLocationInternal}${versionPath}` : false;
   const matrixFileLocation = config.constantLocations.apinotebooksTestMatrixFile;
-
-  //helpers for service types
-  const isService = type === 'services';
-  const isGS = type === 'gettingstarted';
 
   //additional metadatas
   const tags = regEntry.tags;
@@ -275,8 +273,6 @@ function topicPropsBuilder(regEntry, sourceEntry, config) {
     srcLocationInternal,
     srcLocationFiles,
     srcLocationFilesInternal,
-    srcLocationGsFiles,
-    srcLocationGsFilesInternal,
     destLocation,
     destLocationWithoutVersion,
     destLocationInternal,
@@ -336,6 +332,9 @@ function topicPropsBuilder(regEntry, sourceEntry, config) {
     isInternalNameExists,
     isService,
     isGS,
+    isTools,
+    isWithoutReleaseNotes,
+    isSrcLocNotMainDocu,
     local
   };
 

@@ -35,7 +35,21 @@ const config = {
   constantLocations: {
     apinotebooksLocation: './src/raw/apinotebooks',
     apinotebooksTestMatrixFile: './src/raw/matrix/apinotebook.txt'
-  }
+  },
+
+  typesSrcLocNotMainDocu: [
+    'gettingstarted',
+    'overview',
+    'solutions',
+    'architecture',
+    'docu_guide'
+  ],
+
+  typesWithoutReleaseNotes: [
+    'gettingstarted',
+    'architecture',
+    'solutions'
+  ]
 };
 
 const out = `${config.skeletonDestination}/${config.registry.clonedRegistryFolder}/out`;

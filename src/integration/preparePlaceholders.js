@@ -31,8 +31,8 @@ function preparePlaceholders(registry, config, next) {
 
     //API CONSOLES
     placeholderAPIConsoleLocation = topicDetails.placeholderAPIConsoleLocation;
-    apiConsoleLocation = (topicDetails.type === 'services') ? topicDetails.topicSrcLocation : false;
-    apiConsoleLocationInternal = (topicDetails.type === 'services') ? topicDetails.topicSrcLocationInternal : false;
+    apiConsoleLocation = (topicDetails.isService) ? topicDetails.topicSrcLocation : false;
+    apiConsoleLocationInternal = (topicDetails.isService) ? topicDetails.topicSrcLocationInternal : false;
 
     async.parallel([
       moveContentAsyncDir(docuSrcLocation, placeholderLocation, topicDetails, 'external docu'),
