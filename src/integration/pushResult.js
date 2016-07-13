@@ -61,11 +61,11 @@ function deleteNotNeeded(independent, notUsedFiles){
 function addCommit(src, msg){
   return (cb) => {
     gulp.src([`${src}/`])
-      .pipe(git.add({args: '-f', cwd: src}))
+      .pipe(git.add({cwd: src, args:'-f'}))
       .pipe(git.commit(msg, {cwd: src}))
       .on('error', (err) => {
 
-        cb(`There are no changes that can be commit or you are performing operations not on a local repo but normal folder.`);
+        cb('There are no changes that can be commit or you are performing operations not on a local repo but normal folder.');
       })
       .pipe(gulp.dest(src))
       .on('end', cb);
@@ -83,7 +83,7 @@ function push(branch, src){
 function pull(branch, src){
 
   return (cb) => {
-    git.pull('origin', branch, {cwd: src}, cb);
+    git.pull('origin', branch, {cwd: src, args: '--depth=1'}, cb);
   };
 }
 
