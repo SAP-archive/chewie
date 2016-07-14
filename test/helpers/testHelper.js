@@ -97,7 +97,12 @@ const dirCheckSync = (dir) => {
 };
 
 function makeRegistryLocal() {
-  process.env.REGISTRY_PATH = path.resolve(__dirname, './samples/registry');
+  process.env.REGISTRY_PATH = path.resolve(__dirname, './../../samples/registry');
+  process.env.REGISTRY_LOCATION = 'local';
+}
+
+function makeRegistryLocalWithOneFailingRepo() {
+  process.env.REGISTRY_PATH = path.resolve(__dirname, './../../samples/registryFailing');
   process.env.REGISTRY_LOCATION = 'local';
 }
 
@@ -113,7 +118,8 @@ const testHelper = {
   checkFileContentSync,
   dirCheckSync,
   makeRegistryLocal,
-  makeRegistryRemote
+  makeRegistryRemote,
+  makeRegistryLocalWithOneFailingRepo
 };
 
 module.exports = testHelper;

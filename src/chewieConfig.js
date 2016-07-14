@@ -7,10 +7,10 @@ const config = {
   docuUrl: process.env.docuURL || 'https://devportal.yaas.io',
 
   registry: {
-    location: 'remote',
-    path: 'https://github.com/hybris/chewie-sample-data.git',
+    location: process.env.REGISTRY_LOCATION || 'remote',
+    path: process.env.REGISTRY_PATH || 'https://github.com/hybris/chewie-sample-data.git',
     fileName: 'docu_registry.json',
-    branch: process.env.docuBranch || 'prod',
+    branch: process.env.NODE_ENV || 'prod',
     shortVersionFileName: 'shrinkedRegistry.json',
     clonedRegistryFolder: 'registry'
   },

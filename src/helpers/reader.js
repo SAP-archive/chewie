@@ -1,7 +1,8 @@
 'use strict';
 const fs = require('fs'),
   async = require('async'),
-  path = require('path');
+  path = require('path'),
+  log = require('./logger');
 
 
 /**
