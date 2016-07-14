@@ -73,15 +73,22 @@ function ramlToHtml(files, name){
   const config = raml2html.getDefaultConfig(path.resolve(__dirname, '../raml2htmlTemplates/template.nunjucks'), path.resolve(__dirname, '../raml2htmlTemplates'));
 
   return (cb) => {
-    validator.dirCheck(files, (err) => {
+    const ramlFilePath = `${files}/api.raml`;
+
+    validator.fileCheck(ramlFilePath, (err) => {
 
       if (err) return cb(null, name);
 
-      raml2html.render(`${files}/api.raml`, config)
+      raml2html.render(ramlFilePath, config)
         .then((result) => {
           fs.writeFile(`${files}/apireferenceTempContent.html`, result, 'utf-8', cb);
-        }, cb)
-        .catch(cb);
+        }, (err) => {
+          logger.warning(`The APIReference section will not be displayed(file: ${files})`);
+
+          //workaround for error at raml2html.. ATM throwing error at few raml files. If we invoke cb(err), it would break other steps since its async.series
+          cb();
+        });
+
     });
   };
 }
@@ -89,7 +96,7 @@ function ramlToHtml(files, name){
 function ramlToClient(dirPath, name){
 
   return (cb) => {
-    validator.dirCheck(dirPath, (err) => {
+    validator.fileCheck(`${dirPath}/api.raml`, (err) => {
 
       if (err) return cb(null, name);
 
