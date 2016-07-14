@@ -83,8 +83,9 @@ function ramlToHtml(files, name){
         .then((result) => {
           fs.writeFile(`${files}/apireferenceTempContent.html`, result, 'utf-8', cb);
         }, (err) => {
+          logger.warning(`The APIReference section will not be displayed(file: ${files})`);
 
-          //workaround for error at raml2html.. ATM throwing error at few raml files. If we invoke cb(err), it would break other steps since its async.series 
+          //workaround for error at raml2html.. ATM throwing error at few raml files. If we invoke cb(err), it would break other steps since its async.series
           cb();
         });
 

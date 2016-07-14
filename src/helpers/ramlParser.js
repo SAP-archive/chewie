@@ -64,7 +64,7 @@ function _parseRAML(filePath, dest, baseUri, listTraits, cb) {
     // traits cleanup - not used
     data.traits && data.traits.forEach((trait) => {
 
-      if(!listTraits) return ;
+      if(!listTraits) return;
 
       const listOfTraits = listTraits.split(' ');
 
@@ -94,7 +94,7 @@ function _parseRAML(filePath, dest, baseUri, listTraits, cb) {
     return cb('Generation went fine');
   }, (err) => {
     if(err && err.message && err.message.indexOf('ECONNREFUSED') !== -1) {
-      logger.warning('Couldn\'t download traits, retrying...');
+      logger.warning('Could not download traits.');
       return cb();
     }
 
