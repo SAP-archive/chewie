@@ -7,7 +7,7 @@ npm install https://github.com/hybris/chewie.git
 
 ### Quick start
 
-One of many tools, you can use is for example: gulp.js. To use chewie with gulp.js, in the gulp file add:
+One of many tools, that you can use, is for example gulp.js. To use chewie with gulp.js, in the gulp file add:
 
 ```
 const chewie = require('chewie');

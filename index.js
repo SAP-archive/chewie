@@ -1,8 +1,5 @@
 'use strict';
 
-// config
-const config = require('./src/chewieConfig');
-
 // integration
 const prepareRegistry = require('./src/integration/prepareRegistry'),
   cloneDocuSources = require('./src/integration/cloneDocuSources'),
