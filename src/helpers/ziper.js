@@ -31,7 +31,7 @@ function zipFolderAsync(src, dest, zipName, serviceName) {
   return (cb) => {
     validator.dirCheck(src, (err) => {
 
-      if (err) return cb(null, serviceName); // in case of interal/files/docu/client we have to pass null to error, otherwise task would fail
+      if (err) return cb(err, serviceName);
 
       zipFolder(src, dest, zipName, serviceName, (err) => {
 
