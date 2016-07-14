@@ -1,0 +1,12 @@
+{
+  "name": "Veggie Ipsum",
+  "type": "tools",
+  "area": "Tools",
+  "source": [
+    {
+      "location": "https://github.com/hybris/chewie-sample-data.git",
+      "docu_dir": "/content/tools/veggieipsum",
+      "branch_or_tag": "master"
+    }
+  ]
+}

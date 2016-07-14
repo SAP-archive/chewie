@@ -1,0 +1,12 @@
+{
+  "name": "Star Wars Ipsum",
+  "type": "tools",
+  "area": "Tools",
+  "source": [
+    {
+      "location": "https://github.com/hybris/chewie-sample-data.git",
+      "docu_dir": "/content/tools/starwarsipsum",
+      "branch_or_tag": "master"
+    }
+  ]
+}

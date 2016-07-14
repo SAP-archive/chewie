@@ -6,7 +6,8 @@ const eachRegTopic = require('../helpers/registryIterator'),
   fs = require('fs'),
   git = require('gulp-git'),
   log = require('../helpers/logger'),
-  copier = require('../helpers/copier');
+  copier = require('../helpers/copier'),
+  notClonedArray = [];
 
 
 /**
@@ -25,17 +26,19 @@ function iterateRegClone(registry, config, next) {
 
   eachRegTopic.async(registry, config, next, (topicDetails, cb) => {
 
-    topicDetails.local ? copier.copyDocuRepo(topicDetails, cb) : cloneDocuRepo(topicDetails, cb);
-
+    //clone repo to a given location basing on data provided in the registry
+    topicDetails.local ? copier.copyDocuRepo(topicDetails, cb) : cloneDocuRepo(topicDetails, config, cb);
   });
 }
+
 
 /**
  * This function clones a given topic's repository to a given location and logouts proper custom info
  * @param {Object} [topicDetails] - holds details of the repo that needs to be cloned.
+ * @param {Object} [config] - basic integration configuration
  * @param {Function} [cb] - callback for asynchronous operation
  */
-function cloneDocuRepo(topicDetails, cb) {
+function cloneDocuRepo(topicDetails, config, cb) {
 
   const version = topicDetails.version || '';
 
@@ -47,6 +50,9 @@ function cloneDocuRepo(topicDetails, cb) {
       }
       else {
         log.error(`${topicDetails.type} - ${topicDetails.name} ${version} wasn't successfully cloned because of: ${err}`);
+
+        // take care of not cloned repositories
+        return _createMatrixWithNotClonedRepositories(topicDetails, config, cb);
       }
     }
     else {
@@ -56,5 +62,23 @@ function cloneDocuRepo(topicDetails, cb) {
   });
 }
 
-
 module.exports = cloneDocuSources;
+
+/**
+ * This function creates a JSON object in which names of not cloned repositories are stored.
+ * @param {Object} [topicDetails] - holds details of the repo that needs to be cloned.
+ * @param {Object} [config] - basic integration configuration
+ * @param {Function} [cb] - callback for asynchronous operation
+ */
+function _createMatrixWithNotClonedRepositories(topicDetails, config, cb) {
+
+  //push to array all not cloned repositories
+  notClonedArray.push(topicDetails.clonedGenRNDestLocation, topicDetails.clonedGenRNDestLocationInternal, topicDetails.clonedGenDestLocation, topicDetails.clonedGenDestLocationInternal);
+
+  //write array the file
+  creator.createFile(`${config.tempLocation}/notClonedRepositories.json`, notClonedArray, (err) => {
+    if (err) log.error('Something went wrong. File could not be created. No repositories will be backup.');
+    return cb();
+  });
+
+}
