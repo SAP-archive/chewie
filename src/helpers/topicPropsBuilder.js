@@ -130,7 +130,12 @@ function topicPropsBuilder(regEntry, sourceEntry, config) {
   adding base uri - service proxy url
   */
 
-  const defaultBaseUriDomain = config.defaultBaseUriDomain || '';
+  if(!sourceEntry.baseUri && !config.defaultBaseUriDomain){
+    throw new Error(`Base URI register ${name} is not set.
+                     Please set default base URI in configuration.`);
+  }
+
+  const defaultBaseUriDomain = config.defaultBaseUriDomain;
 
   //defining base uri for external
   const baseUri = sourceEntry.baseUri ? sourceEntry.baseUri : `${defaultBaseUriDomain}/${builderOrg}/${builderIdentifier}/${version}`;
