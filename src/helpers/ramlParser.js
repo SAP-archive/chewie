@@ -64,7 +64,7 @@ function _parseRAML(filePath, dest, baseUri, listTraits, cb) {
     // traits cleanup - not used
     data.traits && data.traits.forEach((trait) => {
 
-      if(!listTraits) return;
+      if(!listTraits) return cb('List of traits not present.');
 
       const listOfTraits = listTraits.split(' ');
 
