@@ -1,7 +1,8 @@
 const config = {
   tempLocation: './tymczas',
   skeletonDestination: './tymczas',
-  skeletonOutDestination: './tymczas/document',
+  skeletonOutDestination: './out',
+  placeholdersLocation: './placeholders',
   docuUrl: 'https://devportal.yaas.io',
   test: 'yes',
 
@@ -9,7 +10,7 @@ const config = {
     location: process.env.REGISTRY_LOCATION || 'remote',
     path: process.env.REGISTRY_PATH || 'https://github.com/hybris/chewie-sample-data.git',
     fileName: 'whatever.json',
-    branch: process.env.NODE_ENV || 'prod',
+    branch: 'master',
     shortVersionFileName: 'smallwhatever.json',
     clonedRegistryFolder: 'registeros'
   },
@@ -27,8 +28,8 @@ const config = {
   },
 
   generationResult: {
-    srcLocation: 'git@github.com:hybris/chewie-sample-result.git',
-    branch: process.env.NODE_ENV || 'dev',
+    srcLocation: 'https://github.com/hybris/chewie-sample-result.git',
+    branch: 'master',
     cloneLocation: 'latestStarWarsRepo'
   },
 
@@ -117,7 +118,7 @@ config.docu.clonedRepoFolderPath = `${config.tempLocation}/${config.docu.clonedR
 
 //add attributes to generationResult
 config.generationResult.clonedResultFolderPath = `${config.tempLocation}/${config.generationResult.cloneLocation}`;
-config.generationResult.pathFolderWithClonedResult = `${config.generationResult.clonedResultFolderPath}/generatedDevportal`;
+config.generationResult.pathFolderWithClonedResult = `${config.generationResult.clonedResultFolderPath}`;
 
 //add location with docu files
 config.skeletonSrcDestination = `${config.skeletonDestination}/document`;
