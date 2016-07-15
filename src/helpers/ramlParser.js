@@ -65,7 +65,7 @@ function _parseRAML(filePath, dest, baseUri, listTraits, cb) {
     data.traits && data.traits.length && data.traits.forEach((trait) => {
 
       if(!listTraits) return;
-      
+
       const listOfTraits = listTraits.split(' ');
 
       /**
@@ -83,7 +83,7 @@ function _parseRAML(filePath, dest, baseUri, listTraits, cb) {
     data.baseUri = baseUri;
 
     // avoiding repetitions in is: [trait, trait2]
-    data && data.resources && data.resources.length && data.resources.forEach((trait) => {
+    data.resources && data.resources.length && data.resources.forEach((trait) => {
       trait.is = _avoidRepetitiousTraits(trait.is);
     });
 
