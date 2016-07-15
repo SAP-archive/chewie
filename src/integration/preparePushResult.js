@@ -1,12 +1,10 @@
 'use strict';
-const git = require('gulp-git'),
+const async = require('async'),
   copier = require('../helpers/copier'),
   cloner = require('../helpers/cloner'),
   gulp = require('gulp'),
   del = require('del'),
-  async = require('async'),
   path = require('path'),
-  log = require('../helpers/logger'),
   validator = require('../helpers/validator'),
   reader = require('../helpers/reader');
 
@@ -16,8 +14,7 @@ const git = require('gulp-git'),
  * It should contain 5 different attributes:
  * src - where to collect new things,
  * dest - where you keep clone of the repo where you want to push,
- * branch - to which branch push (default is master),
- * message - what is the commit message (default is 'Robot commit')
+ * branch - from which branch it should clone (default is master),
  * repo - optional, if provided you will first clone this repo
  * and perform operations on it, but if not provided then it is expected that 'dest' dir is a repo dir with .git folder
  * @param {Function} [next] - callback for asynch operations
@@ -26,7 +23,6 @@ function preparePushResult(opt, next) {
   const src = opt.src,
     dest = opt.dest,
     branch = opt.branch || 'master',
-    message = opt.message || 'Robot commit',
     repo = opt.repo,
     independent = opt.independent,
     notUsedFiles = opt.notUsedFiles,
