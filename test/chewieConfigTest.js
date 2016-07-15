@@ -1,5 +1,3 @@
-const path = require('path');
-
 const config = {
   tempLocation: './tymczas',
   skeletonDestination: './tymczas',
