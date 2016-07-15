@@ -62,10 +62,10 @@ function _parseRAML(filePath, dest, baseUri, listTraits, cb) {
     data.traits = _avoidDuplications(givenTrait);
 
     // traits cleanup - not used
-    data.traits && data.traits.forEach((trait) => {
+    data.traits && data.traits.length && data.traits.forEach((trait) => {
 
-      if(!listTraits) return cb('List of traits not present.');
-
+      if(!listTraits) return;
+      
       const listOfTraits = listTraits.split(' ');
 
       /**
@@ -83,7 +83,7 @@ function _parseRAML(filePath, dest, baseUri, listTraits, cb) {
     data.baseUri = baseUri;
 
     // avoiding repetitions in is: [trait, trait2]
-    data.resources.forEach((trait) => {
+    data && data.resources && data.resources.length && data.resources.forEach((trait) => {
       trait.is = _avoidRepetitiousTraits(trait.is);
     });
 
