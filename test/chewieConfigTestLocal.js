@@ -1,5 +1,3 @@
-const path = require('path');
-
 const config = {
   tempLocation: './tymczas',
   skeletonDestination: './tymczas',
@@ -10,10 +8,9 @@ const config = {
 
 
   registry: {
-    location: process.env.REGISTRY_LOCATION || 'local',
-    path: path.resolve(__dirname, './../samples/registryFailing'),
+    location: 'local',
+    path: './samples/registryFailing',
     fileName: 'whatever.json',
-    branch: 'master',
     shortVersionFileName: 'smallwhatever.json',
     clonedRegistryFolder: 'registeros'
   },
