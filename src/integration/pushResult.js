@@ -1,13 +1,7 @@
 'use strict';
 const git = require('gulp-git'),
-  copier = require('../helpers/copier'),
-  cloner = require('../helpers/cloner'),
   gulp = require('gulp'),
-  del = require('del'),
-  async = require('async'),
-  path = require('path'),
-  log = require('../helpers/logger'),
-  reader = require('../helpers/reader');
+  async = require('async');
 
 /**
  * This function pushes changes to repository.
@@ -20,12 +14,14 @@ const git = require('gulp-git'),
  */
 
 function pushResult(opt, next) {
+
   const dest = opt.dest,
     branch = opt.branch || 'master',
     message = opt.message || 'Robot commit';
 
   async.series([
     addCommit(dest, message),
+    pull(branch, dest),
     push(branch, dest)
   ], next);
 }
@@ -34,7 +30,7 @@ function pushResult(opt, next) {
 function addCommit(src, msg){
   return (cb) => {
     gulp.src([`${src}/`])
-      .pipe(git.add({args: '-f', cwd: src}))
+      .pipe(git.add({cwd: src, args:'-f'}))
       .pipe(git.commit(msg, {cwd: src}))
       .on('error', (err) => {
         cb('There are no changes that can be commit or you are performing operations not on a local repo but normal folder.');
@@ -46,10 +42,16 @@ function addCommit(src, msg){
 
 //pushing to remote repo
 function push(branch, src){
+
   return (cb) => {
-    git.push('origin', branch, {cwd: src}, (err) => {
-      cb(err);
-    });
+    git.push('origin', branch, {cwd: src}, cb);
+  };
+}
+
+function pull(branch, src){
+
+  return (cb) => {
+    git.pull('origin', branch, {cwd: src, args: '--depth=1'}, cb);
   };
 }
 
