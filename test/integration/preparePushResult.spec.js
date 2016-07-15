@@ -1,5 +1,6 @@
 'use strict';
-const preparePushResult = require('../../src/integration/preparePushResult'),
+const config = require('../chewieConfigTestLocal'),
+  preparePushResult = require('../../src/integration/preparePushResult'),
   prepareRegistry = require('../../src/integration/prepareRegistry'),
   cloneDocuSources = require('../../src/integration/cloneDocuSources'),
   createMetaInfo = require('../../src/integration/createMetaInfo'),
@@ -13,11 +14,6 @@ const preparePushResult = require('../../src/integration/preparePushResult'),
   rimraf = require('rimraf'),
   path = require('path'),
   async = require('async');
-
-//use local config
-testHelper.makeRegistryLocalWithOneFailingRepo();
-
-const config = require('../chewieConfigTest');
 
 describe('Check if backup works for full generation', () => {
 
@@ -38,7 +34,6 @@ describe('Check if backup works for full generation', () => {
       };
 
       cloneDocuSources(registry, config, () => {
-        testHelper.makeRegistryRemote();  //use remote config
         preparePlaceholders(registry, config, () => {
           createMetaInfo(registry, null, config, () => {
             cloner.cloneRepo(config.generationResult.srcLocation, 'preparePushResultTest', './out', () => {

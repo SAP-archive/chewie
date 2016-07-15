@@ -10,8 +10,8 @@ const config = {
 
 
   registry: {
-    location: process.env.REGISTRY_LOCATION || 'remote',
-    path: process.env.REGISTRY_PATH || 'https://github.com/hybris/chewie-sample-data.git',
+    location: process.env.REGISTRY_LOCATION || 'local',
+    path: path.resolve(__dirname, './../samples/registryFailing'),
     fileName: 'whatever.json',
     branch: 'master',
     shortVersionFileName: 'smallwhatever.json',
