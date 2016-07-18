@@ -42,7 +42,8 @@
     "raml2html": "^2.4.0",
     "raml2obj": "^2.2.0",
     "rimraf": "2.4.3",
-    "underscore": "^1.8.3"
+    "underscore": "^1.8.3",
+    "vinyl-paths": "^2.1.0"
   },
   "main": "index.js",
   "scripts": {

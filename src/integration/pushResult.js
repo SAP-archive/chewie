@@ -36,6 +36,7 @@ function pushResult(opt, next) {
     deleteNotNeeded(independent, notUsedFiles),
     copier.copyFilesAsync(src, dest),
     addCommit(dest, message),
+    pull(branch, dest),
     push(branch, dest)
   ], next);
 }
@@ -60,11 +61,11 @@ function deleteNotNeeded(independent, notUsedFiles){
 function addCommit(src, msg){
   return (cb) => {
     gulp.src([`${src}/`])
-      .pipe(git.add({args: '-f', cwd: src}))
+      .pipe(git.add({cwd: src, args:'-f'}))
       .pipe(git.commit(msg, {cwd: src}))
       .on('error', (err) => {
 
-        cb(`There are no changes that can be commit or you are performing operations not on a local repo but normal folder.`);
+        cb('There are no changes that can be commit or you are performing operations not on a local repo but normal folder.');
       })
       .pipe(gulp.dest(src))
       .on('end', cb);
@@ -75,10 +76,14 @@ function addCommit(src, msg){
 function push(branch, src){
 
   return (cb) => {
+    git.push('origin', branch, {cwd: src}, cb);
+  };
+}
 
-    git.push('origin', branch, {cwd: src}, (err) => {
-      cb(err);
-    });
+function pull(branch, src){
+
+  return (cb) => {
+    git.pull('origin', branch, {cwd: src, args: '--depth=1'}, cb);
   };
 }
 
