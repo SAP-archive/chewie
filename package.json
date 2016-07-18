@@ -39,7 +39,7 @@
     "raml-javascript-generator": "^0.1.2",
     "raml-object-to-raml": "0.0.7",
     "raml-parser": "^0.8.16",
-    "raml2html": "^2.4.0",
+    "raml2html": "git://github.com/mjasinski5/raml2html",
     "raml2obj": "^2.2.0",
     "rimraf": "2.4.3",
     "underscore": "^1.8.3",
