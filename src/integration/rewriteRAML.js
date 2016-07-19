@@ -87,7 +87,7 @@ function _jsonRefSolver (source) {
       .pipe(tap((file) => {
         try {
           const path = require(file.path);
-          const fullSchema = deref(path);
+          const fullSchema = deref(path, { baseFolder: `${source}/src/main/resources/api/schemas` });
 
           creator.createFile(file.path, JSON.stringify(fullSchema, null, 4), (err) => {
             if (err) logger.warning(err);
