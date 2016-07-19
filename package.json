@@ -32,6 +32,7 @@
     "gulp-util": "3.0.7",
     "gulp-zip": "3.0.2",
     "json-schema-deref": "^0.3.2",
+    "json-schema-deref-sync": "^0.3.1",
     "marked-metadata": "0.0.6",
     "mkdirp": "^0.5.1",
     "mocha": "2.3.3",
