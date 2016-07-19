@@ -12,7 +12,7 @@ const eachRegTopic = require('../helpers/registryIterator'),
   path = require('path'),
   fs = require('fs'),
   logger = require('../helpers/logger'),
-  deref = require('json-schema-deref');
+  deref = require('json-schema-deref-sync');
 
 
 /**
@@ -87,14 +87,11 @@ function _jsonRefSolver (source) {
       .pipe(tap((file) => {
         try {
           const path = require(file.path);
+          const fullSchema = deref(path, { baseFolder: `${source}/src/main/resources/api/schemas` });
 
-          const fullSchema = deref(path, { baseFolder: `${source}/src/main/resources/api/schemas` }, (err, fullSchema) => {
+          creator.createFile(file.path, JSON.stringify(fullSchema, null, 4), (err) => {
             if (err) logger.warning(err);
-            creator.createFile(file.path, JSON.stringify(fullSchema, null, 4), (err) => {
-              if (err) logger.warning(err);
-            });
           });
-
         }
         catch (err) {
           logger.warning(err);
