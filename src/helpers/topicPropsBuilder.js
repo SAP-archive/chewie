@@ -66,7 +66,7 @@ function topicPropsBuilder(regEntry, sourceEntry, config) {
   const isService = type === 'services';
   const isGS = type === 'gettingstarted';
   const isTools = type === 'tools';
-  const isWithoutReleaseNotes = _.contains(config.typesWithoutReleaseNotes, type);
+  const hasReleaseNotes = _.contains(config.typesWithReleaseNotes, type);
   const isSrcLocNotMainDocu = _.contains(config.typesSrcLocNotMainDocu, type);
 
   //cloned src location by topic type
@@ -117,14 +117,14 @@ function topicPropsBuilder(regEntry, sourceEntry, config) {
 
   // building src and dest locations for release notes
   const releaseNotes = config.docu.folders.releaseNotes;
-  const rnBaseLocation = isWithoutReleaseNotes ? false : `${basicSrcLocation}/${releaseNotes}`;
+  const rnBaseLocation = hasReleaseNotes ? `${basicSrcLocation}/${releaseNotes}` : false;
   const rnSrcLocation = (rnBaseLocation) ? `${rnBaseLocation}/**` : false;
-  const rnBaseLocationInternal = isWithoutReleaseNotes ? false : `${basicSrcLocation}/internal/${releaseNotes}`;
+  const rnBaseLocationInternal = hasReleaseNotes ? `${basicSrcLocation}/internal/${releaseNotes}` : false;
   const rnSrcLocationInternal = (rnBaseLocationInternal) ? `${rnBaseLocationInternal}/**` : false;
-  const rnDestLocation = isWithoutReleaseNotes ? false : `${config.skeletonSrcDestination}/rn/${type}/${shortName}/latest`;
-  const rnDestLocationWithoutVersion = isWithoutReleaseNotes ? false : `${config.skeletonSrcDestination}/rn/${type}/${shortName}`;
-  const rnDestLocationInternal = isWithoutReleaseNotes ? false : `${config.skeletonSrcDestination}/internal/rn/${type}/${shortNameInternal}/latest`;
-  const rnDestLocationInternalWithoutVersion = isWithoutReleaseNotes ? false : `${config.skeletonSrcDestination}/internal/rn/${type}/${shortNameInternal}`;
+  const rnDestLocation = hasReleaseNotes ? `${config.skeletonSrcDestination}/rn/${type}/${shortName}/latest` : false;
+  const rnDestLocationWithoutVersion = hasReleaseNotes ? `${config.skeletonSrcDestination}/rn/${type}/${shortName}` : false;
+  const rnDestLocationInternal = hasReleaseNotes ? `${config.skeletonSrcDestination}/internal/rn/${type}/${shortNameInternal}/latest` : false;
+  const rnDestLocationInternalWithoutVersion = hasReleaseNotes ? `${config.skeletonSrcDestination}/internal/rn/${type}/${shortNameInternal}` : false;
 
   /*
   adding base uri - service proxy url
@@ -193,12 +193,12 @@ function topicPropsBuilder(regEntry, sourceEntry, config) {
   const clonedGenDestLocationInternal = `${config.generationResult.pathFolderWithClonedResult}/internal/${type}/${shortNameInternal}${versionPath}`;
 
   //same as above but for release notes
-  const clonedGenRNDestLocation = isWithoutReleaseNotes ? '' : `${config.generationResult.pathFolderWithClonedResult}/rn/${type}/${shortName}${versionPath}`;
-  const clonedGenRNDestLocationInternal = isWithoutReleaseNotes ? '' : `${config.generationResult.pathFolderWithClonedResult}/internal/rn/${type}/${shortNameInternal}${versionPath}`;
+  const clonedGenRNDestLocation = hasReleaseNotes ? `${config.generationResult.pathFolderWithClonedResult}/rn/${type}/${shortName}${versionPath}` : '';
+  const clonedGenRNDestLocationInternal = hasReleaseNotes ? `${config.generationResult.pathFolderWithClonedResult}/internal/rn/${type}/${shortNameInternal}${versionPath}` : '';
 
-  const clonedGenRNDestLocationLatest = isWithoutReleaseNotes ? '' : isTools ? `${config.generationResult.pathFolderWithClonedResult}/rn/${type}/${shortName}${versionPath}` : `${config.generationResult.pathFolderWithClonedResult}/rn/${type}/${shortName}/latest`;
+  const clonedGenRNDestLocationLatest = hasReleaseNotes ? (isTools ? `${config.generationResult.pathFolderWithClonedResult}/rn/${type}/${shortName}${versionPath}` : `${config.generationResult.pathFolderWithClonedResult}/rn/${type}/${shortName}/latest`) : '';
 
-  const clonedGenRNDestLocationInternalLatest = isWithoutReleaseNotes ? '' : isTools ? `${config.generationResult.pathFolderWithClonedResult}/internal/rn/${type}/${shortNameInternal}${versionPath}` : `${config.generationResult.pathFolderWithClonedResult}/internal/rn/${type}/${shortNameInternal}/latest`;
+  const clonedGenRNDestLocationInternalLatest = hasReleaseNotes ? (isTools ? `${config.generationResult.pathFolderWithClonedResult}/internal/rn/${type}/${shortNameInternal}${versionPath}` : `${config.generationResult.pathFolderWithClonedResult}/internal/rn/${type}/${shortNameInternal}/latest`) : '';
 
   //building link to a placeholder for specific topic
   const placeholderMainLoc = config.placeholdersLocation;
@@ -229,10 +229,10 @@ function topicPropsBuilder(regEntry, sourceEntry, config) {
   const genDocuLocationInternal = `${genBasicDocuLocationInternal}${versionPath}`;
 
   //location of release notes after generation
-  const genBasicRNLocation = isWithoutReleaseNotes ? false : `${generatedDir}/rn/${type}/${shortName}`;
+  const genBasicRNLocation = hasReleaseNotes ? `${generatedDir}/rn/${type}/${shortName}` : false;
   const genRNLocationLatest = (genBasicRNLocation) ? `${genBasicRNLocation}${versionLatest}` : false;
   const genRNLocation = (genBasicRNLocation) ? `${genBasicRNLocation}${versionPath}` : false;
-  const genBasicRNLocationInternal = isWithoutReleaseNotes ? false :  `${generatedDir}/internal/rn/${type}/${shortNameInternal}`;
+  const genBasicRNLocationInternal = hasReleaseNotes ? `${generatedDir}/internal/rn/${type}/${shortNameInternal}` : false;
   const genRNLocationLatestInternal = (genBasicRNLocationInternal) ? `${genBasicRNLocationInternal}${versionLatest}` : false;
   const genRNLocationInternal = (genBasicRNLocationInternal) ? `${genBasicRNLocationInternal}${versionPath}` : false;
   const matrixFileLocation = config.constantLocations.apinotebooksTestMatrixFile;
@@ -337,7 +337,7 @@ function topicPropsBuilder(regEntry, sourceEntry, config) {
     isService,
     isGS,
     isTools,
-    isWithoutReleaseNotes,
+    hasReleaseNotes,
     isSrcLocNotMainDocu,
     local
   };
