@@ -13,9 +13,6 @@ const config = require('../chewieConfigTest'),
   testHelper = require('../helpers/testHelper'),
   eachRegTopic = require('../../src/helpers/registryIterator');
 
-//use local config
-testHelper.makeRegistryLocal();
-
 describe('Create meta inf files for whole registry', () => {
 
   let registry;
@@ -23,7 +20,7 @@ describe('Create meta inf files for whole registry', () => {
   before((done) => {
 
     prepareRegistry(null, config, () => {
-      registry = require(`${config.registry.testRegistryPath}`);
+      registry = JSON.parse(fs.readFileSync(`${config.registry.registryPath}`, 'utf8'));
 
       async.series([
         misc.asyncTaskCreator(cloneDocuSources, [registry, config]),
@@ -50,7 +47,7 @@ describe('Create meta inf files for topics and registry', () => {
   before((done) => {
 
     prepareRegistry([{'type':'overview', 'name':'Tupac Ipsum'}, {'type':'services', 'name':'Samuel L Ipsum'}], config, () => {
-      registry = require(`${config.registry.testRegistryPath}`);
+      registry = JSON.parse(fs.readFileSync(`${config.registry.registryPath}`, 'utf8'));
 
       async.series([
         misc.asyncTaskCreator(cloneDocuSources, [registry, config]),

@@ -13,16 +13,13 @@ const config = require('../chewieConfigTest'),
   testHelper = require('../helpers/testHelper'),
   async = require('async');
 
-//use local config
-testHelper.makeRegistryLocal();
-
 describe('Copy all services docu files and its release notes from location with version to location "latest"', () => {
 
   let registry;
 
   before((done) => {
     prepareRegistry(null, config, () => {
-      registry = require(`${config.registry.testRegistryPath}`);
+      registry = JSON.parse(fs.readFileSync(`${config.registry.registryPath}`, 'utf8'));
 
       async.series([
         misc.asyncTaskCreator(cloneDocuSources, [registry, config]),

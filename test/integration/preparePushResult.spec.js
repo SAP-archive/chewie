@@ -13,6 +13,7 @@ const config = require('../chewieConfigTestLocal'),
   misc = require('../../src/helpers/misc'),
   rimraf = require('rimraf'),
   path = require('path'),
+  fs = require('fs'),
   async = require('async');
 
 describe('Check if backup works for full generation', () => {
@@ -21,7 +22,8 @@ describe('Check if backup works for full generation', () => {
 
   before((done) => {
     prepareRegistry(null, config, () => {
-      registry = require(`${config.registry.testRegistryPath}`);
+
+      registry = JSON.parse(fs.readFileSync(`${config.registry.registryPath}`, 'utf8'));
 
       const opt = {
         'src': `${config.skeletonOutDestination}/**`,

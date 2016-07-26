@@ -26,7 +26,7 @@
 //
 //   before((done) => {
 //     prepareRegistry(null, config, () => {
-//       registry = require(`${config.registry.testRegistryPath}`);
+//       registry = JSON.parse(fs.readFileSync(`${config.registry.registryPath}`, 'utf8'));
 //
 //       async.series([
 //         misc.asyncTaskCreator(cloneDocuSources, [registry, config]),
@@ -132,9 +132,9 @@
 //     });
 //   });
 //
-//   after((done) => {
-//     rimraf(`${config.tempLocation}`, done);
-//   });
+//   // after((done) => {
+//   //   rimraf(`${config.tempLocation}`, done);
+//   // });
 //
 // });
 //

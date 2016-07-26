@@ -96,30 +96,13 @@ const dirCheckSync = (dir) => {
 
 };
 
-function makeRegistryLocal() {
-  process.env.REGISTRY_PATH = path.resolve(__dirname, './../../samples/registry');
-  process.env.REGISTRY_LOCATION = 'local';
-}
-
-function makeRegistryLocalWithOneFailingRepo() {
-  process.env.REGISTRY_PATH = path.resolve(__dirname, './../../samples/registryFailing');
-  process.env.REGISTRY_LOCATION = 'local';
-}
-
-function makeRegistryRemote() {
-  process.env.REGISTRY_PATH = 'git@github.com:hybris/chewie-sample-data.git';
-  process.env.REGISTRY_LOCATION = 'remote';
-}
 
 const testHelper = {
   validateObjVersion,
   checkAndExpect,
   fileCheckSync,
   checkFileContentSync,
-  dirCheckSync,
-  makeRegistryLocal,
-  makeRegistryRemote,
-  makeRegistryLocalWithOneFailingRepo
+  dirCheckSync
 };
 
 module.exports = testHelper;

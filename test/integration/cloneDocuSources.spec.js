@@ -13,9 +13,6 @@ const config = require('../chewieConfigTest'),
   testHelper = require('../helpers/testHelper'),
   eachRegTopic = require('../../src/helpers/registryIterator');
 
-//use local config
-testHelper.makeRegistryLocal();
-
 describe('Clone all docu topics listed in the registry', () => {
 
   let registry;
@@ -23,7 +20,7 @@ describe('Clone all docu topics listed in the registry', () => {
   before((done) => {
 
     prepareRegistry(null, config, () => {
-      registry = require(`${config.registry.testRegistryPath}`);
+      registry = registry = JSON.parse(fs.readFileSync(`${config.registry.registryPath}`, 'utf8'));
 
       cloneDocuSources(registry, config, done);
     });
@@ -67,7 +64,7 @@ describe('Clone all docu topics listed specified in the topic array', () => {
 
     prepareRegistry([{'type':'overview', 'name':'Tupac Ipsum'}, {'type':'services', 'name':'Samuel L Ipsum'}], config, () => {
 
-      registry = require(`${config.registry.testRegistryShortPath}`);
+      registry = JSON.parse(fs.readFileSync(`${config.registry.shortRegistryPath}`, 'utf8'));
 
       cloneDocuSources(registry, config, () => {
         done();

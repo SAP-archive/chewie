@@ -13,9 +13,6 @@ const config = require('../chewieConfigTest'),
   fs = require('fs'),
   expect = chai.expect;
 
-//use local config
-testHelper.makeRegistryLocal();
-
 describe('Cleaner function with specific sections', () => {
 
   let registry;
@@ -23,7 +20,7 @@ describe('Cleaner function with specific sections', () => {
 
   before((done) => {
     prepareRegistry(null, config, () => {
-      registry = require(`${config.registry.testRegistryPath}`);
+      registry = JSON.parse(fs.readFileSync(`${config.registry.registryPath}`, 'utf8'));
       cloneDocuSources(registry, config, () => {
         copyContent(registry, config, () => {
           eachRegTopic.sync(registry, config, () => cleanSkeleton.clean(registry, config, 'services', done), (topicDetails, cb) => {
@@ -67,7 +64,7 @@ describe('Cleaner function that is cleaning every section', () => {
 
   before((done) => {
     prepareRegistry(null, config, () => {
-      registry = require(`${config.registry.testRegistryPath}`);
+      registry = JSON.parse(fs.readFileSync(`${config.registry.registryPath}`, 'utf8'));
       cloneDocuSources(registry, config, () => {
         copyContent(registry, config, () => {
           eachRegTopic.sync(registry, config, () => cleanSkeleton.clean(registry, config, null, done), (topicDetails, cb) => {
