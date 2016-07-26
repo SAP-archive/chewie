@@ -92,22 +92,21 @@ module.exports = preparePushResult;
 */
 
 function backup(from, to, tempLocation, cb){
-  validator.fileCheck(`./${tempLocation}/notClonedRepositories.json`, (err) => {
+  const notClonedRepoPath = `./${tempLocation}/notClonedRepositories.json`;
 
-    if (err) return cb(null);
+  reader.readFile(notClonedRepoPath, (err, notClonedRepositoresMatrix) => {
+    if (err) return cb();
 
-    reader.readFile(`./${tempLocation}/notClonedRepositories.json`, (err, notClonedRepositoresMatrix) => {
-      const arrayOfNotClonedRepositories = notClonedRepositoresMatrix.toString().split(',');
-      const arrOfTasks = [];
+    const arrayOfNotClonedRepositories = notClonedRepositoresMatrix.toString().split(',');
+    const arrOfTasks = [];
 
-      arrayOfNotClonedRepositories.forEach((item) => {
-        const src = from ? `${item}/*` : `./${tempLocation}/backup/${path.normalize(item)}/*`;
-        const dest = to ? `${item}/` : `./${tempLocation}/backup/${path.normalize(item)}/`;
+    arrayOfNotClonedRepositories.forEach((item) => {
+      const src = from ? `${item}/*` : `./${tempLocation}/backup/${path.normalize(item)}/*`;
+      const dest = to ? `${item}/` : `./${tempLocation}/backup/${path.normalize(item)}/`;
 
-        arrOfTasks.push(copier.copyFilesAsync(src, dest, 'Backup operation'));
-      });
-
-      async.series(arrOfTasks, cb);
+      arrOfTasks.push(copier.copyFilesAsync(src, dest, 'Backup operation'));
     });
+
+    async.series(arrOfTasks, cb);
   });
 }
