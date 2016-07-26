@@ -107,10 +107,8 @@ config.placeholdersLocation = `${config.tempLocation}/${config.registry.clonedRe
 
 //add attributes to registry
 config.registry.registryPath = `${config.tempLocation}/${config.registry.fileName}`;
-config.registry.testRegistryPath = `./../../${config.registry.registryPath}`;
 config.registry.clonedRegistryFolderPath = `${config.tempLocation}/${config.registry.clonedRegistryFolder}`;
 config.registry.shortRegistryPath = `${config.tempLocation}/${config.registry.shortVersionFileName}`;
-config.registry.testRegistryShortPath = `./../../${config.registry.shortRegistryPath}`;
 config.registry.pathFolderWithClonedRegistry = `${config.tempLocation}/${config.registry.clonedRegistryFolder}/registry`;
 
 //add attributes to docu
