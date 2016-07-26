@@ -20,7 +20,7 @@ describe('Clone all docu topics listed in the registry', () => {
   before((done) => {
 
     prepareRegistry(null, config, () => {
-      registry = registry = JSON.parse(fs.readFileSync(`${config.registry.registryPath}`, 'utf8'));
+      registry = testHelper.getRegistry(config.registry.registryPath);
 
       cloneDocuSources(registry, config, done);
     });
@@ -64,7 +64,7 @@ describe('Clone all docu topics listed specified in the topic array', () => {
 
     prepareRegistry([{'type':'overview', 'name':'Tupac Ipsum'}, {'type':'services', 'name':'Samuel L Ipsum'}], config, () => {
 
-      registry = JSON.parse(fs.readFileSync(`${config.registry.shortRegistryPath}`, 'utf8'));
+      registry = testHelper.getRegistry(config.registry.shortRegistryPath);
 
       cloneDocuSources(registry, config, () => {
         done();

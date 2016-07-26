@@ -24,7 +24,7 @@ describe('Create Url Partials', () => {
   before((done) => {
 
     prepareRegistry(null, config, () => {
-      registry = JSON.parse(fs.readFileSync(`${config.registry.registryPath}`, 'utf8'));
+      registry = testHelper.getRegistry(config.registry.registryPath);
 
       async.series([
         misc.asyncTaskCreator(cloneDocuSources, [registry, config]),

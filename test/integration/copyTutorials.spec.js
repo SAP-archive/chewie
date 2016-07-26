@@ -23,7 +23,7 @@ describe('Coping and versioning interactive tutorials', () => {
   before((done) => {
 
     prepareRegistry(null, config, () => {
-      registry = JSON.parse(fs.readFileSync(`${config.registry.registryPath}`, 'utf8'));
+      registry = testHelper.getRegistry(config.registry.registryPath);
 
       cloneDocuSources(registry, config, () => {
 

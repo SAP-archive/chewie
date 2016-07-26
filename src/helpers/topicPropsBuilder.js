@@ -182,16 +182,16 @@ function topicPropsBuilder(regEntry, sourceEntry, config) {
   */
 
   //building cloned generation result location link. Place where result of generation is copied over. It helps to determine if speicfic registered topic contains content
-  const clonedGenDestLocation = `${config.generationResult.pathFolderWithClonedResult}/${type}/${shortName}${versionPath}`;
-  const clonedGenDestLocationInternal = `${config.generationResult.pathFolderWithClonedResult}/internal/${type}/${shortNameInternal}${versionPath}`;
+  const clonedGenDestLocation = `${config.generationResult.clonedResultFolderPath}/${type}/${shortName}${versionPath}`;
+  const clonedGenDestLocationInternal = `${config.generationResult.clonedResultFolderPath}/internal/${type}/${shortNameInternal}${versionPath}`;
 
   //same as above but for release notes
-  const clonedGenRNDestLocation = (type === 'gettingstarted' || type === 'architecture' || type === 'solutions') ? '' : `${config.generationResult.pathFolderWithClonedResult}/rn/${type}/${shortName}${versionPath}`;
-  const clonedGenRNDestLocationInternal = (type === 'gettingstarted' || type === 'architecture' || type === 'solutions') ? '' : `${config.generationResult.pathFolderWithClonedResult}/internal/rn/${type}/${shortNameInternal}${versionPath}`;
+  const clonedGenRNDestLocation = (type === 'gettingstarted' || type === 'architecture' || type === 'solutions') ? '' : `${config.generationResult.clonedResultFolderPath}/rn/${type}/${shortName}${versionPath}`;
+  const clonedGenRNDestLocationInternal = (type === 'gettingstarted' || type === 'architecture' || type === 'solutions') ? '' : `${config.generationResult.clonedResultFolderPath}/internal/rn/${type}/${shortNameInternal}${versionPath}`;
 
-  const clonedGenRNDestLocationLatest = (type === 'gettingstarted' || type === 'architecture' || type === 'solutions') ? '' : (type === 'tools') ? `${config.generationResult.pathFolderWithClonedResult}/rn/${type}/${shortName}${versionPath}` : `${config.generationResult.pathFolderWithClonedResult}/rn/${type}/${shortName}/latest`;
+  const clonedGenRNDestLocationLatest = (type === 'gettingstarted' || type === 'architecture' || type === 'solutions') ? '' : (type === 'tools') ? `${config.generationResult.clonedResultFolderPath}/rn/${type}/${shortName}${versionPath}` : `${config.generationResult.clonedResultFolderPath}/rn/${type}/${shortName}/latest`;
 
-  const clonedGenRNDestLocationInternalLatest = (type === 'gettingstarted' || type === 'architecture' || type === 'solutions') ? '' : (type === 'tools') ? `${config.generationResult.pathFolderWithClonedResult}/internal/rn/${type}/${shortNameInternal}${versionPath}` : `${config.generationResult.pathFolderWithClonedResult}/internal/rn/${type}/${shortNameInternal}/latest`;
+  const clonedGenRNDestLocationInternalLatest = (type === 'gettingstarted' || type === 'architecture' || type === 'solutions') ? '' : (type === 'tools') ? `${config.generationResult.clonedResultFolderPath}/internal/rn/${type}/${shortNameInternal}${versionPath}` : `${config.generationResult.clonedResultFolderPath}/internal/rn/${type}/${shortNameInternal}/latest`;
 
   //building link to a placeholder for specific topic
   const placeholderMainLoc = config.placeholdersLocation;

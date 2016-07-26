@@ -96,13 +96,24 @@ const dirCheckSync = (dir) => {
 
 };
 
+const getRegistry = (path) => {
+  try {
+    return JSON.parse(fs.readFileSync(path, 'utf8'));
+  }
+  catch(err) {
+    log.error(err);
+  }
+
+};
+
 
 const testHelper = {
   validateObjVersion,
   checkAndExpect,
   fileCheckSync,
   checkFileContentSync,
-  dirCheckSync
+  dirCheckSync,
+  getRegistry
 };
 
 module.exports = testHelper;

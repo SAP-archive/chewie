@@ -20,7 +20,7 @@ describe('Cleaner function with specific sections', () => {
 
   before((done) => {
     prepareRegistry(null, config, () => {
-      registry = JSON.parse(fs.readFileSync(`${config.registry.registryPath}`, 'utf8'));
+      registry = testHelper.getRegistry(config.registry.registryPath);
       cloneDocuSources(registry, config, () => {
         copyContent(registry, config, () => {
           eachRegTopic.sync(registry, config, () => cleanSkeleton.clean(registry, config, 'services', done), (topicDetails, cb) => {
@@ -64,7 +64,7 @@ describe('Cleaner function that is cleaning every section', () => {
 
   before((done) => {
     prepareRegistry(null, config, () => {
-      registry = JSON.parse(fs.readFileSync(`${config.registry.registryPath}`, 'utf8'));
+      registry = testHelper.getRegistry(config.registry.registryPath);
       cloneDocuSources(registry, config, () => {
         copyContent(registry, config, () => {
           eachRegTopic.sync(registry, config, () => cleanSkeleton.clean(registry, config, null, done), (topicDetails, cb) => {

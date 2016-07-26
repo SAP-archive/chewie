@@ -118,7 +118,6 @@ config.docu.clonedRepoFolderPath = `${config.tempLocation}/${config.docu.clonedR
 
 //add attributes to generationResult
 config.generationResult.clonedResultFolderPath = `${config.tempLocation}/${config.generationResult.cloneLocation}`;
-config.generationResult.pathFolderWithClonedResult = `${config.generationResult.clonedResultFolderPath}`;
 
 //add location with docu files
 config.skeletonSrcDestination = `${config.skeletonDestination}/document`;

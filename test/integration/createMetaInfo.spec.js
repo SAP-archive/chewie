@@ -20,7 +20,7 @@ describe('Create meta inf files for whole registry', () => {
   before((done) => {
 
     prepareRegistry(null, config, () => {
-      registry = JSON.parse(fs.readFileSync(`${config.registry.registryPath}`, 'utf8'));
+      registry = testHelper.getRegistry(config.registry.registryPath);
 
       async.series([
         misc.asyncTaskCreator(cloneDocuSources, [registry, config]),
@@ -47,7 +47,7 @@ describe('Create meta inf files for topics and registry', () => {
   before((done) => {
 
     prepareRegistry([{'type':'overview', 'name':'Tupac Ipsum'}, {'type':'services', 'name':'Samuel L Ipsum'}], config, () => {
-      registry = JSON.parse(fs.readFileSync(`${config.registry.registryPath}`, 'utf8'));
+      registry = testHelper.getRegistry(config.registry.registryPath);
 
       async.series([
         misc.asyncTaskCreator(cloneDocuSources, [registry, config]),
