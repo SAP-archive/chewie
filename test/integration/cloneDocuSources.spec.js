@@ -84,7 +84,7 @@ describe('Clone all docu topics listed specified in the topic array', () => {
     let stats,
       topicDetails;
 
-    registry = require(`${config.registry.testRegistryShortPath}`);
+    registry = testHelper.getRegistry(config.registry.shortRegistryPath);
 
     eachRegTopic.async(registry, config, done, (topicDetails, cb) => {
       stats = fs.statSync(topicDetails.sourcesCloneLoc);
