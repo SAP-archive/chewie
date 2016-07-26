@@ -26,6 +26,15 @@ function topicPropsBuilder(regEntry, sourceEntry, config) {
   //internal name all lower case without spaces
   const shortNameInternal = regEntry.nameInternal ? misc.trimAdvanced(nameInternal) : shortName;
 
+  //author of the docu topic.
+  const author = regEntry.author;
+
+  //description of the docu topic.
+  const description = regEntry.description;
+
+  //creation date of the docu topic.
+  const date = regEntry.date;
+
   //type of the content
   const type = misc.trimAdvanced(regEntry.type);
 
@@ -252,6 +261,9 @@ function topicPropsBuilder(regEntry, sourceEntry, config) {
     nameInternal,
     shortName,
     shortNameInternal,
+    author,
+    description,
+    date,
     type,
     envLink,
     docuUrl,
