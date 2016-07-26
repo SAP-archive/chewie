@@ -40,18 +40,17 @@ function addCommit(src, msg){
   };
 }
 
-//pushing to remote repo
-function push(branch, src){
-
+//pulling from remote repo
+function pull(branch, src){
   return (cb) => {
-    git.push('origin', branch, {cwd: src}, cb);
+    git.pull('origin', branch, {cwd: src, args: '--depth=1'}, cb);
   };
 }
 
-function pull(branch, src){
-
+//pushing to remote repo
+function push(branch, src){
   return (cb) => {
-    git.pull('origin', branch, {cwd: src, args: '--depth=1'}, cb);
+    git.push('origin', branch, {cwd: src}, cb);
   };
 }
 

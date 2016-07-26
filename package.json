@@ -31,7 +31,7 @@
     "gulp-uglify": "^1.0.2",
     "gulp-util": "3.0.7",
     "gulp-zip": "3.0.2",
-    "json-schema-deref-sync": "0.2.9",
+    "json-schema-deref-sync": "^0.3.1",
     "marked-metadata": "0.0.6",
     "mkdirp": "^0.5.1",
     "mocha": "2.3.3",
@@ -39,10 +39,11 @@
     "raml-javascript-generator": "^0.1.2",
     "raml-object-to-raml": "0.0.7",
     "raml-parser": "^0.8.16",
-    "raml2html": "^2.4.0",
+    "raml2html": "https://github.com/mjasinski5/raml2html.git",
     "raml2obj": "^2.2.0",
     "rimraf": "2.4.3",
-    "underscore": "^1.8.3"
+    "underscore": "^1.8.3",
+    "vinyl-paths": "^2.1.0"
   },
   "main": "index.js",
   "scripts": {
