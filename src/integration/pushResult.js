@@ -1,6 +1,7 @@
 'use strict';
 const git = require('gulp-git'),
   gulp = require('gulp'),
+  log = require('./../helpers/logger'),
   async = require('async');
 
 /**
@@ -33,6 +34,7 @@ function addCommit(src, msg){
       .pipe(git.add({cwd: src, args:'-f'}))
       .pipe(git.commit(msg, {cwd: src}))
       .on('error', (err) => {
+        log.warning(err);
         cb('There are no changes that can be commit or you are performing operations not on a local repo but normal folder.');
       })
       .pipe(gulp.dest(src))
