@@ -68,7 +68,7 @@ function deletePreviouslyClonedResultsRepo(dest, independent) {
   return (cb) => {
     if (independent) return cb();
 
-    del(dest).then(() => cb());
+    del([`${dest}/**/*`, `!${dest}/.git`]).then(() => cb());
   };
 }
 
