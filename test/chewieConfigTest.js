@@ -1,7 +1,7 @@
 const config = {
   tempLocation: './tymczas',
   skeletonDestination: './tymczas',
-  skeletonOutDestination: './out',
+  skeletonOutDestination: './tymczas/document',
   placeholdersLocation: './placeholders',
   docuUrl: 'https://devportal.yaas.io',
   test: 'yes',
