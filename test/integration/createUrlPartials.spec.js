@@ -9,17 +9,12 @@ const config = require('../chewieConfigTest'),
   nameCreator = require('../../src/helpers/nameCreator'),
   testHelper = require('../helpers/testHelper'),
   eachRegTopic = require('../../src/helpers/registryIterator'),
-
   fs = require('fs'),
   rimraf = require('rimraf'),
   chai = require('chai'),
   expect = chai.expect,
   async = require('async'),
   misc = require('../../src/helpers/misc');
-
-
-//use local config
-testHelper.makeRegistryLocal();
 
 describe('Create Url Partials', () => {
 
@@ -29,7 +24,7 @@ describe('Create Url Partials', () => {
   before((done) => {
 
     prepareRegistry(null, config, () => {
-      registry = require(`${config.registry.testRegistryPath}`);
+      registry = testHelper.getRegistry(config.registry.registryPath);
 
       async.series([
         misc.asyncTaskCreator(cloneDocuSources, [registry, config]),

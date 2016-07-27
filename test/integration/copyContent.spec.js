@@ -12,9 +12,6 @@ const config = require('../chewieConfigTest'),
   testHelper = require('../helpers/testHelper'),
   misc = require('../../src/helpers/misc');
 
-//use local config
-testHelper.makeRegistryLocal();
-
 describe('Copy all docu files for topics listed in the registry', () => {
 
   let registry;
@@ -22,7 +19,7 @@ describe('Copy all docu files for topics listed in the registry', () => {
   before((done) => {
 
     prepareRegistry(null, config, () => {
-      registry = require(`${config.registry.testRegistryPath}`);
+      registry = testHelper.getRegistry(config.registry.registryPath);
 
       async.series([
         misc.asyncTaskCreator(cloneDocuSources, [registry, config]),
