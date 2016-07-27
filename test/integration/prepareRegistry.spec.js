@@ -7,11 +7,9 @@ const config = require('../chewieConfigTest'),
   testHelper = require('../helpers/testHelper'),
   expect = chai.expect;
 
-
 describe('Get registry remote', () => {
 
   before((done) => {
-    testHelper.makeRegistryRemote();
     prepareRegistry(null, config, done);
   });
 
@@ -31,7 +29,6 @@ describe('Get registry remote', () => {
 describe('Get registry local', () => {
 
   before((done) => {
-    testHelper.makeRegistryLocal();
     prepareRegistry(null, config, done);
   });
 

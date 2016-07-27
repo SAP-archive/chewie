@@ -18,12 +18,11 @@ const config = require('../chewieConfigTest'),
 describe('Move placeholders to a proper locations and on the move perform search&replace operation', () => {
 
   let registry;
-  testHelper.makeRegistryRemote();
 
   before((done) => {
 
     prepareRegistry(null, config, () => {
-      registry = require(`${config.registry.testRegistryPath}`);
+      registry = testHelper.getRegistry(config.registry.registryPath);
 
       async.series([
         misc.asyncTaskCreator(cloneDocuSources, [registry, config]),
@@ -81,8 +80,8 @@ describe('Do not move placeholders to not existing locations', () => {
   before((done) => {
 
     prepareRegistry([topicsIndependent], config, () => {
-      registry = require(`${config.registry.testRegistryShortPath}`);
-
+      registry = testHelper.getRegistry(config.registry.shortRegistryPath);
+      
       async.series([
         misc.asyncTaskCreator(cloneDocuSources, [registry, config]),
         misc.asyncTaskCreator(rewriteRAML, [registry, config, false]),

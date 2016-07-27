@@ -1,0 +1,28 @@
+{
+  "name": "Samuel L Ipsum",
+  "nameInternal": "Jackson Ipsum",
+  "type": "services",
+  "area": "Movies",
+  "source": [
+    {
+      "version": "v2",
+      "latest": true,
+      "location": "https://github.com/hybris/chewie-sample-data.git",
+      "docu_dir": "/content/services/samuellipsum",
+      "baseUri": "http://slipsum.com",
+      "internalBaseUri": "http://www.pulpfiction.com",
+      "branch_or_tag": "master",
+      "raml": "src/main/resources/api/samuel-ipsum.raml"
+    },
+    {
+      "version": "v1",
+      "latest": false,
+      "location": "https://github.com/hybris/chewie-sample-data.git",
+      "docu_dir": "/content/services/samuellipsum",
+      "baseUri": "http://slipsum.com",
+      "internalBaseUri": "http://www.pulpfiction.com",
+      "branch_or_tag": "master",
+      "raml": "src/main/resources/api/samuel-ipsum.raml"
+    }
+  ]
+}

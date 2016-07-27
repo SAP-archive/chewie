@@ -13,9 +13,6 @@ const config = require('../chewieConfigTest'),
   testHelper = require('../helpers/testHelper'),
   async = require('async');
 
-//use local config
-testHelper.makeRegistryLocal();
-
 describe('Coping and versioning interactive tutorials', () => {
 
   let registry;
@@ -26,7 +23,7 @@ describe('Coping and versioning interactive tutorials', () => {
   before((done) => {
 
     prepareRegistry(null, config, () => {
-      registry = require(`${config.registry.testRegistryPath}`);
+      registry = testHelper.getRegistry(config.registry.registryPath);
 
       cloneDocuSources(registry, config, () => {
 
