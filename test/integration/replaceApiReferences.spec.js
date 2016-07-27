@@ -77,7 +77,7 @@ describe('Run replaceApiReferences task', () => {
     });
   });
 
-  it (`it should replace mainReferencePlaceholder with the content of apireferenceTempContent.html file`, (done) => {
+  it ('it should replace mainReferencePlaceholder with the content of apireferenceTempContent.html file', (done) => {
     let topicDetails;
 
     eachRegTopic.async(registry, config, done, (topicDetails, cb) => {
@@ -132,9 +132,9 @@ describe('Run replaceApiReferences task', () => {
     });
   });
 
-  // after((done) => {
-  //   rimraf(`${config.tempLocation}`, done);
-  // });
+  after((done) => {
+    rimraf(`${config.tempLocation}`, done);
+  });
 
 });
 
