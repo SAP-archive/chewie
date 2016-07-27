@@ -10,8 +10,7 @@ const config = require('../chewieConfigTestLocal'),
   chai = require('chai'),
   expect = chai.expect,
   rimraf = require('rimraf'),
-  path = require('path'),
-  async = require('async');
+  path = require('path');
 
 describe('Check if backup works for full generation', () => {
 
