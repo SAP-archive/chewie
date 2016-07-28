@@ -60,8 +60,7 @@ function readFile(file, next) {
 
     if (err) {
       log.error(err);
-      next();
-      return;
+      return next(err);
     }
 
     return next(null, data);
