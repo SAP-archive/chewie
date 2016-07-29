@@ -31,8 +31,8 @@ function pushResult(opt, next) {
 function addCommit(src, msg){
   return (cb) => {
     gulp.src([`${src}/`])
-      .pipe(git.add({cwd: src, args:'-f'}))
-      .pipe(git.commit(msg, {cwd: src}))
+      .pipe(git.add({cwd: src, args:'-f', maxBuffer: Infinity}))
+      .pipe(git.commit(msg, {cwd: src, maxBuffer: Infinity}))
       .on('error', (err) => {
         log.warning(err);
         cb('There are no changes that can be commit or you are performing operations not on a local repo but normal folder.');
