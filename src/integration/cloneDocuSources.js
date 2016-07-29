@@ -75,6 +75,9 @@ function _createMatrixWithNotClonedRepositories(topicDetails, config, cb) {
   //push to array all not cloned repositories
   notClonedArray.push(topicDetails.clonedGenRNDestLocation, topicDetails.clonedGenRNDestLocationInternal, topicDetails.clonedGenDestLocation, topicDetails.clonedGenDestLocationInternal);
 
+  //push to array all not cloned repositories - latest versions (for services)
+  if (topicDetails.isService) notClonedArray.push(topicDetails.clonedGenRNDestLocationLatest, topicDetails.clonedGenRNDestLocationInternalLatest, topicDetails.clonedGenDestLocationLatest, topicDetails.clonedGenDestLocationInternalLatest);
+
   //write array the file
   creator.createFile(`${config.tempLocation}/notClonedRepositories.json`, notClonedArray, (err) => {
     if (err) log.error('Something went wrong. File could not be created. No repositories will be backup.');
