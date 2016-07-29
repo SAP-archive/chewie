@@ -140,8 +140,8 @@ function topicPropsBuilder(regEntry, sourceEntry, config) {
   */
 
   if(!sourceEntry.baseUri && !config.defaultBaseUriDomain){
-    throw new Error(`Base URI register ${name} is not set.
-                     Please set default base URI in configuration.`);
+    throw new Error(`BaseURI for service ${name} is not set.
+                    Please set baseURI value or provide default in your config file.`);
   }
 
   const defaultBaseUriDomain = config.defaultBaseUriDomain;
