@@ -47,7 +47,7 @@ function latestRepoCloner(config) {
 
       return cb();
     });
-    
+
   };
 }
 

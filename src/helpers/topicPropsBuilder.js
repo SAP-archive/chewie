@@ -27,6 +27,15 @@ function topicPropsBuilder(regEntry, sourceEntry, config) {
   //internal name all lower case without spaces
   const shortNameInternal = regEntry.nameInternal ? misc.trimAdvanced(nameInternal) : shortName;
 
+  //author of the docu topic.
+  const author = regEntry.author;
+
+  //description of the docu topic.
+  const description = regEntry.description;
+
+  //creation date of the docu topic.
+  const date = regEntry.date;
+
   //type of the content
   const type = misc.trimAdvanced(regEntry.type);
 
@@ -189,16 +198,16 @@ function topicPropsBuilder(regEntry, sourceEntry, config) {
   */
 
   //building cloned generation result location link. Place where result of generation is copied over. It helps to determine if speicfic registered topic contains content
-  const clonedGenDestLocation = `${config.generationResult.pathFolderWithClonedResult}/${type}/${shortName}${versionPath}`;
-  const clonedGenDestLocationInternal = `${config.generationResult.pathFolderWithClonedResult}/internal/${type}/${shortNameInternal}${versionPath}`;
+  const clonedGenDestLocation = `${config.generationResult.clonedResultFolderPath}/${type}/${shortName}${versionPath}`;
+  const clonedGenDestLocationInternal = `${config.generationResult.clonedResultFolderPath}/internal/${type}/${shortNameInternal}${versionPath}`;
 
   //same as above but for release notes
-  const clonedGenRNDestLocation = hasReleaseNotes ? `${config.generationResult.pathFolderWithClonedResult}/rn/${type}/${shortName}${versionPath}` : '';
-  const clonedGenRNDestLocationInternal = hasReleaseNotes ? `${config.generationResult.pathFolderWithClonedResult}/internal/rn/${type}/${shortNameInternal}${versionPath}` : '';
+  const clonedGenRNDestLocation = hasReleaseNotes ? `${config.generationResult.clonedResultFolderPath}/rn/${type}/${shortName}${versionPath}` : '';
+  const clonedGenRNDestLocationInternal = hasReleaseNotes ? `${config.generationResult.clonedResultFolderPath}/internal/rn/${type}/${shortNameInternal}${versionPath}` : '';
 
-  const clonedGenRNDestLocationLatest = hasReleaseNotes ? (isTools ? `${config.generationResult.pathFolderWithClonedResult}/rn/${type}/${shortName}${versionPath}` : `${config.generationResult.pathFolderWithClonedResult}/rn/${type}/${shortName}/latest`) : '';
+  const clonedGenRNDestLocationLatest = hasReleaseNotes ? (isTools ? `${config.generationResult.clonedResultFolderPath}/rn/${type}/${shortName}${versionPath}` : `${config.generationResult.clonedResultFolderPath}/rn/${type}/${shortName}/latest`) : '';
 
-  const clonedGenRNDestLocationInternalLatest = hasReleaseNotes ? (isTools ? `${config.generationResult.pathFolderWithClonedResult}/internal/rn/${type}/${shortNameInternal}${versionPath}` : `${config.generationResult.pathFolderWithClonedResult}/internal/rn/${type}/${shortNameInternal}/latest`) : '';
+  const clonedGenRNDestLocationInternalLatest = hasReleaseNotes ? (isTools ? `${config.generationResult.clonedResultFolderPath}/internal/rn/${type}/${shortNameInternal}${versionPath}` : `${config.generationResult.clonedResultFolderPath}/internal/rn/${type}/${shortNameInternal}/latest`) : '';
 
   //building link to a placeholder for specific topic
   const placeholderMainLoc = config.placeholdersLocation;
@@ -255,6 +264,9 @@ function topicPropsBuilder(regEntry, sourceEntry, config) {
     nameInternal,
     shortName,
     shortNameInternal,
+    author,
+    description,
+    date,
     type,
     docuUrl,
     version,

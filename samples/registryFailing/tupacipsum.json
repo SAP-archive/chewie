@@ -1,0 +1,14 @@
+{
+  "name": "Tupac Ipsum",
+  "type": "overview",
+  "area": "Overview",
+  "left_nav_area":"2",
+  "left_nav_area_element": "1",
+  "source": [
+    {
+      "location": "https://github.com/hybris/chewie-sample-data.git",
+      "docu_dir": "/content/overview/tupacipsum",
+      "branch_or_tag": "master"
+    }
+  ]
+}
