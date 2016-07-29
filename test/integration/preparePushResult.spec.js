@@ -49,7 +49,7 @@ describe('Check if backup works for full generation', () => {
    */
   it('It should create notClonedRepositories.json file', (done) => {
 
-    const contentOfNotClonedRepositoriesFile = './tymczas/latestStarWarsRepo/rn/services/failingipsum/v1,./tymczas/latestStarWarsRepo/internal/rn/services/failingipsum/v1,./tymczas/latestStarWarsRepo/services/failingipsum/v1,./tymczas/latestStarWarsRepo/internal/services/failingipsum/v1';
+    const contentOfNotClonedRepositoriesFile = './tymczas/latestStarWarsRepo/rn/services/failingipsum/v1,./tymczas/latestStarWarsRepo/internal/rn/services/failingipsum/v1,./tymczas/latestStarWarsRepo/services/failingipsum/v1,./tymczas/latestStarWarsRepo/internal/services/failingipsum/v1,./tymczas/latestStarWarsRepo/rn/services/failingipsum/latest,./tymczas/latestStarWarsRepo/internal/rn/services/failingipsum/latest,./tymczas/latestStarWarsRepo/services/failingipsum/latest,./tymczas/latestStarWarsRepo/internal/services/failingipsum/latest';
 
     const notClonedRepositoriesFile = testHelper.checkFileContentSync(`${config.tempLocation}/notClonedRepositories.json`, contentOfNotClonedRepositoriesFile);
 
