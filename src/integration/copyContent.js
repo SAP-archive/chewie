@@ -20,9 +20,9 @@ function copyContent(registry, config, next) {
 
     //DOCUMENTATION
     src = topicDetails.srcLocation;
-    dest = (topicDetails.type === 'services' && topicDetails.latest) ? topicDetails.destLocation : topicDetails.destLocationWithoutVersion;
+    dest = (topicDetails.isService && topicDetails.latest) ? topicDetails.destLocation : topicDetails.destLocationWithoutVersion;
     srcInt = topicDetails.srcLocationInternal;
-    destInt = (topicDetails.type === 'services' && topicDetails.latest) ? topicDetails.destLocationInternal : topicDetails.destLocationInternalWithoutVersion;
+    destInt = (topicDetails.isService && topicDetails.latest) ? topicDetails.destLocationInternal : topicDetails.destLocationInternalWithoutVersion;
 
     //PARTIALS
     srcPartial = topicDetails.partialsSrcLocation;
@@ -32,9 +32,9 @@ function copyContent(registry, config, next) {
     //RELEASE NOTES only for latest
     if (topicDetails.latest) {
       srcRN = topicDetails.rnSrcLocation;
-      destRN = (topicDetails.type === 'services') ? topicDetails.rnDestLocation : topicDetails.rnDestLocationWithoutVersion;
+      destRN = (topicDetails.isService) ? topicDetails.rnDestLocation : topicDetails.rnDestLocationWithoutVersion;
       srcIntRN = topicDetails.rnSrcLocationInternal;
-      destIntRN = (topicDetails.type === 'services') ? topicDetails.rnDestLocationInternal : topicDetails.rnDestLocationInternalWithoutVersion;
+      destIntRN = (topicDetails.isService) ? topicDetails.rnDestLocationInternal : topicDetails.rnDestLocationInternalWithoutVersion;
     }
 
     async.series([

@@ -21,8 +21,8 @@ function copyTutorials(registry, config, next) {
     shortNameInternal = topicDetails.shortNameInternal;
     version = topicDetails.version;
 
-    src = topicDetails.isGS ? topicDetails.srcLocationGsFiles : topicDetails.srcLocationFiles;
-    srcInt = topicDetails.isGS ? topicDetails.srcLocationGsFilesInternal : topicDetails.srcLocationFilesInternal;
+    src = topicDetails.srcLocationFiles;
+    srcInt = topicDetails.srcLocationFilesInternal;
 
     tutorialsDest = topicDetails.tutorialsDest;
     matrixFileLocation = topicDetails.matrixFileLocation;
