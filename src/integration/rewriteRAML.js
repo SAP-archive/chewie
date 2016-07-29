@@ -26,7 +26,7 @@ function rewriteRAML(registry, config, traits, next) {
   let baseUri, baseUriInternal, sourcesCloneLoc, raml, ramlInternal, dest, destInternal;
 
   eachRegTopic.async(registry, config, next, (topicDetails, cb) => {
-    if(!topicDetails.isService) return cb();
+    if(topicDetails.type !== 'services') return cb();
 
     baseUri = topicDetails.baseUri;
     baseUriInternal = topicDetails.baseUriInternal;

@@ -19,7 +19,7 @@ function createUrlPartials(registry, config, next) {
 
   eachRegTopic.async(registry, config, next, (topicDetails, cb) => {
 
-    if(!topicDetails.isService)
+    if(topicDetails.type !== 'services')
       return cb();
 
 
