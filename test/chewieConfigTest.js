@@ -37,7 +37,22 @@ const config = {
   constantLocations: {
     apinotebooksLocation: './src/raw/apinotebooks',
     apinotebooksTestMatrixFile: './src/raw/matrix/apinotebook.txt'
-  }
+  },
+
+  typesSrcLocNotMainDocu: [
+    'gettingstarted',
+    'overview',
+    'solutions',
+    'architecture',
+    'docu_guide'
+  ],
+
+  typesWithReleaseNotes: [
+    'tools',
+    'services'
+  ],
+
+  defaultBaseUriDomain: 'localhost'
 };
 
 config.independentGeneration = {
