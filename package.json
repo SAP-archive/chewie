@@ -18,7 +18,7 @@
     "gulp-clean-css": "^2.0.10",
     "gulp-concat": "^2.4.2",
     "gulp-concat-util": "^0.5.1",
-    "gulp-git": "https://github.com/sdomagala/gulp-git",
+    "gulp-git": "1.11.0",
     "gulp-htmlmin": "^2.0.0",
     "gulp-imagemin": "^2.0.0",
     "gulp-jsonminify": "^1.0.0",
