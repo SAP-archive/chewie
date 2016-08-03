@@ -31,7 +31,7 @@ describe('Check if backup works for full generation', () => {
         'tempLocation': config.tempLocation
       };
 
-      cloneDocuSources(registry, config, () => {
+      cloneDocuSources(registry, config, null, () => {
         preparePlaceholders(registry, config, () => {
           createMetaInfo(registry, null, config, () => {
             cloner.cloneRepo(config.generationResult.srcLocation, 'preparePushResultTest', './out', () => {

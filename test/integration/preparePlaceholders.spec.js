@@ -25,7 +25,7 @@ describe('Move placeholders to a proper locations and on the move perform search
       registry = testHelper.getRegistry(config.registry.registryPath);
 
       async.series([
-        misc.asyncTaskCreator(cloneDocuSources, [registry, config]),
+        misc.asyncTaskCreator(cloneDocuSources, [registry, config, null]),
         misc.asyncTaskCreator(createMetaInfo, [registry, null, config]),
         misc.asyncTaskCreator(preparePlaceholders, [registry, config]),
         misc.asyncTaskCreator(copyContent, [registry, config])
@@ -81,9 +81,9 @@ describe('Do not move placeholders to not existing locations', () => {
 
     prepareRegistry([topicsIndependent], config, () => {
       registry = testHelper.getRegistry(config.registry.shortRegistryPath);
-      
+
       async.series([
-        misc.asyncTaskCreator(cloneDocuSources, [registry, config]),
+        misc.asyncTaskCreator(cloneDocuSources, [registry, config, null]),
         misc.asyncTaskCreator(rewriteRAML, [registry, config, false]),
         misc.asyncTaskCreator(createMetaInfo, [registry, [topicsIndependent], config]),
         misc.asyncTaskCreator(preparePlaceholders, [registry, config]),

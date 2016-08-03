@@ -27,7 +27,7 @@ describe('Create Url Partials', () => {
       registry = testHelper.getRegistry(config.registry.registryPath);
 
       async.series([
-        misc.asyncTaskCreator(cloneDocuSources, [registry, config]),
+        misc.asyncTaskCreator(cloneDocuSources, [registry, config, null]),
         misc.asyncTaskCreator(createUrlPartials, [registry, config])
       ], done);
 
