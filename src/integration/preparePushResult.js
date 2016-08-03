@@ -32,7 +32,7 @@ function preparePushResult(opt, next) {
     clone(repo, branch, dest),
     backupOfNotClonedRepositories(independent, tempLocation),
     deleteNotNeeded(notUsedFiles, independent),
-    deletePreviouslyClonedResultsRepo(dest, independent),
+    deletePreviouslyClonedResultsRepo(dest, independent, tempLocation),
     copier.copyFilesAsync(src, dest),
     restoreBackupOfNotClonedRepositories(independent, tempLocation)
   ], next);
@@ -48,8 +48,6 @@ function clone(repo, branch, dest) {
 //responsible for backup of not cloned repositories
 function backupOfNotClonedRepositories(independent, tempLocation){
   return (cb) => {
-    if (independent) return cb();
-
     backup(true, false, tempLocation, cb);
   };
 }
@@ -64,19 +62,20 @@ function deleteNotNeeded(notUsedFiles, independent){
 }
 
 //delete previously cloned results
-function deletePreviouslyClonedResultsRepo(dest, independent) {
+function deletePreviouslyClonedResultsRepo(dest, independent, tempLocation) {
   return (cb) => {
-    if (independent) return cb();
-
-    del([`${dest}/**/*`, `!${dest}/.git`]).then(() => cb());
+    if (independent) {
+      eraseRepositoriesFromDest(tempLocation, cb);
+    }
+    else{
+      del([`${dest}/**/*`, `!${dest}/.git`]).then(() => cb());
+    }
   };
 }
 
 //responsible for restoring of not cloned repositories
 function restoreBackupOfNotClonedRepositories(independent, tempLocation){
   return (cb) => {
-    if (independent) return cb();
-
     backup(false, true, tempLocation, cb);
   };
 }
@@ -108,5 +107,24 @@ function backup(from, to, tempLocation, cb){
     });
 
     async.series(arrOfTasks, cb);
+  });
+}
+
+/**
+ * Function resposible for erasing files in order to enable independent docu generation
+ * @param {String} [tempLocation] - indicates folder with cloned repositories
+ * @param {Function} [cb] - callback for asynchronous operation
+*/
+function eraseRepositoriesFromDest(tempLocation, cb){
+  const repoPath = `./${tempLocation}/indepenedentDocuRepositories.json`;
+
+  reader.readFile(repoPath, (err, repoMatrix) => {
+    if (err) return cb();
+
+    const arrayOfRepositories = repoMatrix.toString().split(',');
+
+    arrayOfRepositories.forEach((item) => del(item));
+
+    return cb();
   });
 }

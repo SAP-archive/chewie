@@ -7,7 +7,7 @@ const eachRegTopic = require('../helpers/registryIterator'),
   git = require('gulp-git'),
   log = require('../helpers/logger'),
   copier = require('../helpers/copier'),
-  notClonedArray = [];
+  repositoriesArray = [];
 
 
 /**
@@ -16,18 +16,18 @@ const eachRegTopic = require('../helpers/registryIterator'),
  * @param {Object} [config] - basic integration configuration
  * @param {Function} [next] - callback for asynch operations
  */
-function cloneDocuSources(registry, config, next) {
+function cloneDocuSources(registry, config, topics, next) {
 
-  iterateRegClone(registry, config, next);
+  iterateRegClone(registry, config, topics, next);
 }
 
 //simple abstraction, helper to use in callback
-function iterateRegClone(registry, config, next) {
+function iterateRegClone(registry, config, topics, next) {
 
   eachRegTopic.async(registry, config, next, (topicDetails, cb) => {
 
     //clone repo to a given location basing on data provided in the registry
-    topicDetails.local ? copier.copyDocuRepo(topicDetails, cb) : cloneDocuRepo(topicDetails, config, cb);
+    topicDetails.local ? copier.copyDocuRepo(topicDetails, cb) : cloneDocuRepo(topicDetails, config, topics, cb);
   });
 }
 
@@ -38,7 +38,7 @@ function iterateRegClone(registry, config, next) {
  * @param {Object} [config] - basic integration configuration
  * @param {Function} [cb] - callback for asynchronous operation
  */
-function cloneDocuRepo(topicDetails, config, cb) {
+function cloneDocuRepo(topicDetails, config, topics, cb) {
 
   const version = topicDetails.version || '';
 
@@ -52,11 +52,13 @@ function cloneDocuRepo(topicDetails, config, cb) {
         log.error(`${topicDetails.type} - ${topicDetails.name} ${version} wasn't successfully cloned because of: ${err}`);
 
         // take care of not cloned repositories
-        return _createMatrixWithNotClonedRepositories(topicDetails, config, cb);
+        return _createMatrixWithRepositories(topicDetails, config, 'notClonedRepositories', cb);
       }
     }
     else {
       log.info(`${topicDetails.type} - ${topicDetails.name} ${version} successfully cloned into ${topicDetails.sourcesCloneLoc} using ${topicDetails.branchTag} branch or tag`);
+
+      if (topics) return _createMatrixWithRepositories(topicDetails, config, 'indepenedentDocuRepositories', cb);
     }
     cb();
   });
@@ -70,16 +72,16 @@ module.exports = cloneDocuSources;
  * @param {Object} [config] - basic integration configuration
  * @param {Function} [cb] - callback for asynchronous operation
  */
-function _createMatrixWithNotClonedRepositories(topicDetails, config, cb) {
+function _createMatrixWithRepositories(topicDetails, config, fileName, cb) {
 
   //push to array all not cloned repositories
-  notClonedArray.push(topicDetails.clonedGenRNDestLocation, topicDetails.clonedGenRNDestLocationInternal, topicDetails.clonedGenDestLocation, topicDetails.clonedGenDestLocationInternal);
+  repositoriesArray.push(topicDetails.clonedGenRNDestLocation, topicDetails.clonedGenRNDestLocationInternal, topicDetails.clonedGenDestLocation, topicDetails.clonedGenDestLocationInternal);
 
   //push to array all not cloned repositories - latest versions (for services)
-  if (topicDetails.isService) notClonedArray.push(topicDetails.clonedGenRNDestLocationLatest, topicDetails.clonedGenRNDestLocationInternalLatest, topicDetails.clonedGenDestLocationLatest, topicDetails.clonedGenDestLocationInternalLatest);
+  if (topicDetails.isService) repositoriesArray.push(topicDetails.clonedGenRNDestLocationLatest, topicDetails.clonedGenRNDestLocationInternalLatest, topicDetails.clonedGenDestLocationLatest, topicDetails.clonedGenDestLocationInternalLatest);
 
   //write array the file
-  creator.createFile(`${config.tempLocation}/notClonedRepositories.json`, notClonedArray, (err) => {
+  creator.createFile(`${config.tempLocation}/${fileName}.json`, repositoriesArray, (err) => {
     if (err) log.error('Something went wrong. File could not be created. No repositories will be backup.');
     return cb();
   });
