@@ -25,13 +25,11 @@ function preparePushResult(opt, next) {
     branch = opt.branch || 'master',
     repo = opt.repo,
     independent = opt.independent,
-    notUsedFiles = opt.notUsedFiles,
     tempLocation = opt.tempLocation;
 
   async.series([
     clone(repo, branch, dest),
     backupOfNotClonedRepositories(independent, tempLocation),
-    deleteNotNeeded(notUsedFiles, independent),
     deletePreviouslyClonedResultsRepo(dest, independent, tempLocation),
     copier.copyFilesAsync(src, dest),
     restoreBackupOfNotClonedRepositories(independent, tempLocation)
@@ -49,15 +47,6 @@ function clone(repo, branch, dest) {
 function backupOfNotClonedRepositories(independent, tempLocation){
   return (cb) => {
     backup(true, false, tempLocation, cb);
-  };
-}
-
-//delete not used files during independent generation
-function deleteNotNeeded(notUsedFiles, independent){
-  return (cb) => {
-    if (!independent) return cb();
-
-    del(notUsedFiles).then(() => cb());
   };
 }
 

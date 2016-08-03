@@ -38,18 +38,6 @@ const config = {
   }
 };
 
-config.independentGeneration = {
-  notUsedFiles: [`${out}/atom.xml`,
-                `${out}/rn/index.html`,
-                `${out}/services/index.html`,
-                `${out}/tools/index.html`,
-                `${out}/internal/rn/index.html`,
-                `${out}/matrix/apinotebook.txt`,
-                `${out}/lunr`,
-                `${out}/internal/rn/internal_atom.xml`,
-                `!${out}/.git`]
-};
-
 const out = config.skeletonOutDestination;
 
 config.minification = {
