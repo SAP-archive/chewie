@@ -6,7 +6,8 @@ const async = require('async'),
   del = require('del'),
   path = require('path'),
   validator = require('../helpers/validator'),
-  reader = require('../helpers/reader');
+  reader = require('../helpers/reader'),
+  vfs = require('vinyl-fs');
 
 /**
  * This function prepares a commit with changes.
@@ -31,7 +32,7 @@ function preparePushResult(opt, next) {
     clone(repo, branch, dest),
     backupOfNotClonedRepositories(independent, tempLocation),
     deletePreviouslyClonedResultsRepo(dest, independent, tempLocation),
-    copier.copyFilesAsync(src, dest),
+    copyFilesToLatestResultRepo(src, dest, tempLocation, independent),
     restoreBackupOfNotClonedRepositories(independent, tempLocation)
   ], next);
 }
@@ -58,6 +59,19 @@ function deletePreviouslyClonedResultsRepo(dest, independent, tempLocation) {
     }
     else{
       del([`${dest}/**/*`, `!${dest}/.git`]).then(() => cb());
+    }
+  };
+}
+
+function copyFilesToLatestResultRepo(src, dest, independent) {
+  return (cb) => {
+    if (independent) {
+      vfs.src([src])
+        .pipe(vfs.dest(dest, {overwrite: false}))
+        .on('end', cb);
+    }
+    else {
+      copier.copyFilesAsync(src, dest);
     }
   };
 }
