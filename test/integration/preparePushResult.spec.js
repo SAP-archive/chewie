@@ -27,7 +27,6 @@ describe('Check if backup works for full generation', () => {
         'branch': config.generationResult.branch,
         'message': 'Push operation for the whole Dev Portal',
         'independent': false,
-        'notUsedFiles': config.independentGeneration.notUsedFiles,
         'tempLocation': config.tempLocation
       };
 
