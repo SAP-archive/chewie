@@ -52,7 +52,7 @@ function pull(branch, src){
 //pushing to remote repo
 function push(branch, src){
   return (cb) => {
-    git.push('origin', branch, {cwd: src}, cb);
+    git.push('origin', branch, {cwd: src, maxBuffer: Infinity}, cb);
   };
 }
 
