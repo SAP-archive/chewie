@@ -78,16 +78,17 @@ function _traitReplacer (traits, source) {
 
 /**
  * This function dereferences JSON pointers in a JSON schemas with their true resolved values.
- * @param {Object} [config] - basic integration configuration
+ * @param {string} [source] - source directory
  */
 function _jsonRefSolver (source) {
   return (cb) => {
-
     gulp.src(`${source}**/*.json`)
       .pipe(tap((file) => {
         try {
-          const path = require(file.path);
-          const fullSchema = deref(path, { baseFolder: `${source}/src/main/resources/api/schemas` });
+          const schema = require(file.path);
+          const schemaBaseFolder = path.dirname(file.path);
+
+          const fullSchema = deref(schema, { baseFolder: schemaBaseFolder });
 
           creator.createFile(file.path, JSON.stringify(fullSchema, null, 4), (err) => {
             if (err) logger.warning(err);
