@@ -82,6 +82,19 @@ const asyncTaskCreator = (func, params) => {
   };
 };
 
+/**
+ * This function reads the registry - it a fix for require issues.
+ * @param {String} [path] - path to registry
+ */
+const getRegistry = (path) => {
+  try {
+    return JSON.parse(fs.readFileSync(path, 'utf8'));
+  }
+  catch(err) {
+    log.error(err);
+  }
+
+};
 
 const misc = {
   trimAdvanced,
@@ -89,7 +102,8 @@ const misc = {
   checkExtension,
   changeFileName,
   asyncTaskCreator,
-  deleteFolderAsync
+  deleteFolderAsync,
+  getRegistry
 };
 
 module.exports = misc;

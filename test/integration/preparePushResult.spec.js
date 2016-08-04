@@ -12,6 +12,8 @@ const config = require('../chewieConfigTestLocal'),
   rimraf = require('rimraf'),
   path = require('path');
 
+const contentOfNotClonedRepositoriesFile = './tymczas/latestStarWarsRepo/rn/services/failingipsum/v1,./tymczas/latestStarWarsRepo/internal/rn/services/failingipsum/v1,./tymczas/latestStarWarsRepo/services/failingipsum/v1,./tymczas/latestStarWarsRepo/internal/services/failingipsum/v1,./tymczas/latestStarWarsRepo/rn/services/failingipsum/latest,./tymczas/latestStarWarsRepo/internal/rn/services/failingipsum/latest,./tymczas/latestStarWarsRepo/services/failingipsum/latest,./tymczas/latestStarWarsRepo/internal/services/failingipsum/latest';
+
 describe('Check if backup works for full generation', () => {
 
   let registry;
@@ -47,9 +49,6 @@ describe('Check if backup works for full generation', () => {
    * Check if notClonedRepositories file was created and contains content (cloneDocuSources -> _createMatrixWithRepositories)
    */
   it('It should create notClonedRepositories.json file', (done) => {
-
-    const contentOfNotClonedRepositoriesFile = './tymczas/latestStarWarsRepo/rn/services/failingipsum/v1,./tymczas/latestStarWarsRepo/internal/rn/services/failingipsum/v1,./tymczas/latestStarWarsRepo/services/failingipsum/v1,./tymczas/latestStarWarsRepo/internal/services/failingipsum/v1,./tymczas/latestStarWarsRepo/rn/services/failingipsum/latest,./tymczas/latestStarWarsRepo/internal/rn/services/failingipsum/latest,./tymczas/latestStarWarsRepo/services/failingipsum/latest,./tymczas/latestStarWarsRepo/internal/services/failingipsum/latest';
-
     const notClonedRepositoriesFile = testHelper.checkFileContentSync(`${config.tempLocation}/notClonedRepositories.json`, contentOfNotClonedRepositoriesFile);
 
     expect(notClonedRepositoriesFile).to.equal(true);
@@ -114,7 +113,7 @@ describe('Check if backup works for full generation', () => {
 
 
   after((done) => {
-    rimraf(config.tempLocation, () => {
+    rimraf(`${config.tempLocation}`, () => {
       rimraf(config.skeletonOutDestination, done);
     });
   });
@@ -142,7 +141,7 @@ describe('Check if backup works for independent document generation', () => {
 
       cloneDocuSources(registry, config, true, () => {
         preparePlaceholders(registry, config, () => {
-          createMetaInfo(registry, null, config, () => {
+          createMetaInfo(registry, [{'type':'services', 'name':'Samuel L Ipsum'}, {'type':'services', 'name':'Failing Ipsum'}], config, () => {
             cloner.cloneRepo(config.generationResult.srcLocation, 'preparePushResultTest', './out', () => {
               preparePushResult(opt, done);
             });
@@ -151,6 +150,18 @@ describe('Check if backup works for independent document generation', () => {
       });
     });
   });
+
+
+  /**
+   * Check if notClonedRepositories file was created and contains content (cloneDocuSources -> _createMatrixWithRepositories)
+   */
+  it('It should create notClonedRepositories.json file', (done) => {
+    const notClonedRepositoriesFile = testHelper.checkFileContentSync(`${config.tempLocation}/notClonedRepositories.json`, contentOfNotClonedRepositoriesFile);
+
+    expect(notClonedRepositoriesFile).to.equal(true);
+    done();
+  });
+
 
   /**
    * Check if indepenedentDocuRepositories file was created and contains content (cloneDocuSources -> _createMatrixWithRepositories)
