@@ -5,6 +5,8 @@ const config = {
   skeletonOutDestination: './out',
   placeholdersLocation: './placeholders',
   docuUrl: process.env.docuURL || 'https://devportal.yaas.io',
+  notClonedRepositoriesFile: 'notClonedRepositories.json',
+  indepenedentDocuRepositoriesFile: 'indepenedentDocuRepositories.json',
 
   registry: {
     location: process.env.REGISTRY_LOCATION || 'remote',

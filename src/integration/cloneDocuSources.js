@@ -52,13 +52,13 @@ function cloneDocuRepo(topicDetails, config, topics, cb) {
         log.error(`${topicDetails.type} - ${topicDetails.name} ${version} wasn't successfully cloned because of: ${err}`);
 
         // take care of not cloned repositories
-        return _createMatrixWithRepositories(topicDetails, config, 'notClonedRepositories', cb);
+        return _createMatrixWithRepositories(topicDetails, config.tempLocation, config.notClonedRepositoriesFile, cb);
       }
     }
     else {
       log.info(`${topicDetails.type} - ${topicDetails.name} ${version} successfully cloned into ${topicDetails.sourcesCloneLoc} using ${topicDetails.branchTag} branch or tag`);
 
-      if (topics) return _createMatrixWithRepositories(topicDetails, config, 'indepenedentDocuRepositories', cb);
+      if (topics) return _createMatrixWithRepositories(topicDetails, config.tempLocation, config.indepenedentDocuRepositoriesFile, cb);
     }
     cb();
   });
@@ -72,7 +72,7 @@ module.exports = cloneDocuSources;
  * @param {Object} [config] - basic integration configuration
  * @param {Function} [cb] - callback for asynchronous operation
  */
-function _createMatrixWithRepositories(topicDetails, config, fileName, cb) {
+function _createMatrixWithRepositories(topicDetails, tempLocation, fileName, cb) {
 
   //push to array all not cloned repositories
   repositoriesArray.push(topicDetails.clonedGenRNDestLocation, topicDetails.clonedGenRNDestLocationInternal, topicDetails.clonedGenDestLocation, topicDetails.clonedGenDestLocationInternal);
@@ -81,7 +81,7 @@ function _createMatrixWithRepositories(topicDetails, config, fileName, cb) {
   if (topicDetails.isService) repositoriesArray.push(topicDetails.clonedGenRNDestLocationLatest, topicDetails.clonedGenRNDestLocationInternalLatest, topicDetails.clonedGenDestLocationLatest, topicDetails.clonedGenDestLocationInternalLatest);
 
   //write array the file
-  creator.createFile(`${config.tempLocation}/${fileName}.json`, repositoriesArray, (err) => {
+  creator.createFile(`${tempLocation}/${fileName}`, repositoriesArray, (err) => {
     if (err) log.error('Something went wrong. File could not be created. No repositories will be backup.');
     return cb();
   });

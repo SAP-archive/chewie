@@ -7,6 +7,7 @@ const async = require('async'),
   path = require('path'),
   validator = require('../helpers/validator'),
   reader = require('../helpers/reader'),
+  log = require('../helpers/logger'),
   vfs = require('vinyl-fs');
 
 /**
@@ -26,14 +27,16 @@ function preparePushResult(opt, next) {
     branch = opt.branch || 'master',
     repo = opt.repo,
     independent = opt.independent,
-    tempLocation = opt.tempLocation;
+    tempLocation = opt.tempLocation,
+    notClonedRepositoriesFile = opt.notClonedRepositoriesFile,
+    indepenedentDocuRepositoriesFile = opt.indepenedentDocuRepositoriesFile;
 
   async.series([
     clone(repo, branch, dest),
-    backupOfNotClonedRepositories(independent, tempLocation),
-    deletePreviouslyClonedResultsRepo(dest, independent, tempLocation),
+    backupOfNotClonedRepositories(independent, tempLocation, notClonedRepositoriesFile),
+    deletePreviouslyClonedResultsRepo(dest, independent, tempLocation, indepenedentDocuRepositoriesFile),
     copyFilesToLatestResultRepo(src, dest, tempLocation, independent),
-    restoreBackupOfNotClonedRepositories(independent, tempLocation)
+    restoreBackupOfNotClonedRepositories(independent, tempLocation, notClonedRepositoriesFile)
   ], next);
 }
 
@@ -45,17 +48,17 @@ function clone(repo, branch, dest) {
 }
 
 //responsible for backup of not cloned repositories
-function backupOfNotClonedRepositories(independent, tempLocation){
+function backupOfNotClonedRepositories(independent, tempLocation, notClonedRepositoriesFile){
   return (cb) => {
-    backup(true, false, tempLocation, cb);
+    backup(true, false, tempLocation, notClonedRepositoriesFile, cb);
   };
 }
 
 //delete previously cloned results
-function deletePreviouslyClonedResultsRepo(dest, independent, tempLocation) {
+function deletePreviouslyClonedResultsRepo(dest, independent, tempLocation, indepenedentDocuRepositoriesFile) {
   return (cb) => {
     if (independent) {
-      eraseRepositoriesFromDest(tempLocation, cb);
+      eraseRepositoriesFromDest(tempLocation, indepenedentDocuRepositoriesFile, cb);
     }
     else{
       del([`${dest}/**/*`, `!${dest}/.git`]).then(() => cb());
@@ -77,9 +80,9 @@ function copyFilesToLatestResultRepo(src, dest, independent) {
 }
 
 //responsible for restoring of not cloned repositories
-function restoreBackupOfNotClonedRepositories(independent, tempLocation){
+function restoreBackupOfNotClonedRepositories(independent, tempLocation, notClonedRepositoriesFile){
   return (cb) => {
-    backup(false, true, tempLocation, cb);
+    backup(false, true, tempLocation, notClonedRepositoriesFile, cb);
   };
 }
 
@@ -93,11 +96,13 @@ module.exports = preparePushResult;
  * @param {Function} [cb] - callback for asynchronous operation
 */
 
-function backup(from, to, tempLocation, cb){
-  const notClonedRepoPath = `./${tempLocation}/notClonedRepositories.json`;
+function backup(from, to, tempLocation, notClonedRepositoriesFile, cb){
+  const notClonedRepoPath = `./${tempLocation}/${notClonedRepositoriesFile}`;
 
   reader.readFile(notClonedRepoPath, (err, notClonedRepositoresMatrix) => {
     if (err) return cb();
+
+    log.info('Backup operation has been performed. Some repositories will be restored with their previous version. To find out more, please check logs.');
 
     const arrayOfNotClonedRepositories = notClonedRepositoresMatrix.toString().split(',');
     const arrOfTasks = [];
@@ -118,8 +123,8 @@ function backup(from, to, tempLocation, cb){
  * @param {String} [tempLocation] - indicates folder with cloned repositories
  * @param {Function} [cb] - callback for asynchronous operation
 */
-function eraseRepositoriesFromDest(tempLocation, cb){
-  const repoPath = `./${tempLocation}/indepenedentDocuRepositories.json`;
+function eraseRepositoriesFromDest(tempLocation, indepenedentDocuRepositoriesFile, cb){
+  const repoPath = `./${tempLocation}/${indepenedentDocuRepositoriesFile}`;
 
   reader.readFile(repoPath, (err, repoMatrix) => {
     if (err) return cb();

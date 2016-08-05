@@ -28,7 +28,9 @@ describe('Check if backup works for full generation', () => {
         'branch': config.generationResult.branch,
         'message': 'Push operation for the whole Dev Portal',
         'independent': false,
-        'tempLocation': config.tempLocation
+        'tempLocation': config.tempLocation,
+        'notClonedRepositoriesFile': config.notClonedRepositoriesFile,
+        'indepenedentDocuRepositoriesFile': config.indepenedentDocuRepositoriesFile
       };
 
       cloneDocuSources(registry, config, null, () => {
@@ -137,7 +139,9 @@ describe('Check if backup works for independent document generation', () => {
         'branch': config.generationResult.branch,
         'message': 'Push operation for the whole Dev Portal',
         'independent': true,
-        'tempLocation': config.tempLocation
+        'tempLocation': config.tempLocation,
+        'notClonedRepositoriesFile': config.notClonedRepositoriesFile,
+        'indepenedentDocuRepositoriesFile': config.indepenedentDocuRepositoriesFile
       };
 
       cloneDocuSources(registry, config, true, () => {

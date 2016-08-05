@@ -5,6 +5,8 @@ const config = {
   placeholdersLocation: './placeholders',
   docuUrl: 'https://devportal.yaas.io',
   test: 'yes',
+  notClonedRepositoriesFile: 'notClonedRepositories.json',
+  indepenedentDocuRepositoriesFile: 'indepenedentDocuRepositories.json',
 
 
   registry: {
