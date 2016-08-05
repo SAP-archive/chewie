@@ -91,7 +91,7 @@ const getRegistry = (path) => {
     return JSON.parse(fs.readFileSync(path, 'utf8'));
   }
   catch(err) {
-    log.error(`Registry was not loaded: ${err}. Generation will be stopped.`);
+    log.error(`Registry was not loaded: ${err}. \nGeneration will be stopped.`);
     process.exit(1);
   }
 
