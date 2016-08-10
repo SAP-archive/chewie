@@ -100,7 +100,7 @@ function backup(from, to, tempLocation, notClonedRepositoriesFile, cb){
   const notClonedRepoPath = `./${tempLocation}/${notClonedRepositoriesFile}`;
 
   reader.readFile(notClonedRepoPath, (err, notClonedRepositoresMatrix) => {
-    if (err) return cb();
+    if (err || notClonedRepositoresMatrix.length === 0) return cb();
 
     log.info('Backup operation has been performed. Some repositories will be restored with their previous version. To find out more, please check logs.');
 
@@ -127,7 +127,7 @@ function eraseRepositoriesFromDest(tempLocation, indepenedentDocuRepositoriesFil
   const repoPath = `./${tempLocation}/${indepenedentDocuRepositoriesFile}`;
 
   reader.readFile(repoPath, (err, repoMatrix) => {
-    if (err) return cb();
+    if (err || repoMatrix.length === 0) return cb();
 
     const arrayOfRepositories = repoMatrix.toString().split(',');
 
