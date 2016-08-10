@@ -50,7 +50,7 @@ function clone(repo, branch, dest) {
 //responsible for backup of not cloned repositories
 function backupOfNotClonedRepositories(independent, tempLocation, notClonedRepositoriesFile){
   return (cb) => {
-    backup(true, false, tempLocation, notClonedRepositoriesFile, cb);
+    backup(true, false, tempLocation, notClonedRepositoriesFile, true, cb);
   };
 }
 
@@ -82,7 +82,7 @@ function copyFilesToLatestResultRepo(src, dest, independent) {
 //responsible for restoring of not cloned repositories
 function restoreBackupOfNotClonedRepositories(independent, tempLocation, notClonedRepositoriesFile){
   return (cb) => {
-    backup(false, true, tempLocation, notClonedRepositoriesFile, cb);
+    backup(false, true, tempLocation, notClonedRepositoriesFile, false, cb);
   };
 }
 
@@ -96,13 +96,13 @@ module.exports = preparePushResult;
  * @param {Function} [cb] - callback for asynchronous operation
 */
 
-function backup(from, to, tempLocation, notClonedRepositoriesFile, cb){
+function backup(from, to, tempLocation, notClonedRepositoriesFile, backupOperationInfo, cb){
   const notClonedRepoPath = `./${tempLocation}/${notClonedRepositoriesFile}`;
 
   reader.readFile(notClonedRepoPath, (err, notClonedRepositoresMatrix) => {
     if (err || notClonedRepositoresMatrix.length === 0) return cb();
 
-    log.info('Backup operation has been performed. Some repositories will be restored with their previous version. To find out more, please check logs.');
+    if (backupOperationInfo) log.info('Backup operation has been performed. Some repositories will be restored with their previous version. To find out more, please check logs.');
 
     const arrayOfNotClonedRepositories = notClonedRepositoresMatrix.toString().split(',');
     const arrOfTasks = [];
