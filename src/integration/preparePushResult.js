@@ -6,7 +6,9 @@ const async = require('async'),
   del = require('del'),
   path = require('path'),
   validator = require('../helpers/validator'),
-  reader = require('../helpers/reader');
+  reader = require('../helpers/reader'),
+  log = require('../helpers/logger'),
+  vfs = require('vinyl-fs');
 
 /**
  * This function prepares a commit with changes.
@@ -15,8 +17,11 @@ const async = require('async'),
  * src - where to collect new things,
  * dest - where you keep clone of the repo where you want to push,
  * branch - from which branch it should clone (default is master),
- * repo - optional, if provided you will first clone this repo
- * and perform operations on it, but if not provided then it is expected that 'dest' dir is a repo dir with .git folder
+ * repo - optional, if provided you will first clone this repo and perform operations on it, but if not provided then it is expected that 'dest' dir is a repo dir with .git folder,
+ * independent - boolean value, which informs if the independent docu generation was used,
+ * tempLocation - location of the tempLocation folder,
+ * notClonedRepositoriesFile - name of the file, which stores the information about not cloned repositories,
+ * indepenedentDocuRepositoriesFile - ame of the file, which stores the information about repositories used during the independent docu generation,
  * @param {Function} [next] - callback for asynch operations
  */
 function preparePushResult(opt, next) {
@@ -25,16 +30,16 @@ function preparePushResult(opt, next) {
     branch = opt.branch || 'master',
     repo = opt.repo,
     independent = opt.independent,
-    notUsedFiles = opt.notUsedFiles,
-    tempLocation = opt.tempLocation;
+    tempLocation = opt.tempLocation,
+    notClonedRepositoriesFile = opt.notClonedRepositoriesFile,
+    indepenedentDocuRepositoriesFile = opt.indepenedentDocuRepositoriesFile;
 
   async.series([
     clone(repo, branch, dest),
-    backupOfNotClonedRepositories(independent, tempLocation),
-    deleteNotNeeded(notUsedFiles, independent),
-    deletePreviouslyClonedResultsRepo(dest, independent),
-    copier.copyFilesAsync(src, dest),
-    restoreBackupOfNotClonedRepositories(independent, tempLocation)
+    backupOfNotClonedRepositories(independent, tempLocation, notClonedRepositoriesFile),
+    deletePreviouslyClonedResultsRepo(dest, independent, tempLocation, indepenedentDocuRepositoriesFile),
+    copyFilesToLatestResultRepo(src, dest, tempLocation, independent),
+    restoreBackupOfNotClonedRepositories(independent, tempLocation, notClonedRepositoriesFile)
   ], next);
 }
 
@@ -46,38 +51,41 @@ function clone(repo, branch, dest) {
 }
 
 //responsible for backup of not cloned repositories
-function backupOfNotClonedRepositories(independent, tempLocation){
+function backupOfNotClonedRepositories(independent, tempLocation, notClonedRepositoriesFile){
   return (cb) => {
-    if (independent) return cb();
-
-    backup(true, false, tempLocation, cb);
-  };
-}
-
-//delete not used files during independent generation
-function deleteNotNeeded(notUsedFiles, independent){
-  return (cb) => {
-    if (!independent) return cb();
-
-    del(notUsedFiles).then(() => cb());
+    backup(true, false, tempLocation, notClonedRepositoriesFile, true, cb);
   };
 }
 
 //delete previously cloned results
-function deletePreviouslyClonedResultsRepo(dest, independent) {
+function deletePreviouslyClonedResultsRepo(dest, independent, tempLocation, indepenedentDocuRepositoriesFile) {
   return (cb) => {
-    if (independent) return cb();
+    if (independent) {
+      eraseRepositoriesFromDest(tempLocation, indepenedentDocuRepositoriesFile, cb);
+    }
+    else{
+      del([`${dest}/**/*`, `!${dest}/.git`]).then(() => cb());
+    }
+  };
+}
 
-    del([`${dest}/**/*`, `!${dest}/.git`]).then(() => cb());
+function copyFilesToLatestResultRepo(src, dest, independent) {
+  return (cb) => {
+    if (independent) {
+      vfs.src([src])
+        .pipe(vfs.dest(dest, {overwrite: false}))
+        .on('end', cb);
+    }
+    else {
+      copier.copyFilesAsync(src, dest);
+    }
   };
 }
 
 //responsible for restoring of not cloned repositories
-function restoreBackupOfNotClonedRepositories(independent, tempLocation){
+function restoreBackupOfNotClonedRepositories(independent, tempLocation, notClonedRepositoriesFile){
   return (cb) => {
-    if (independent) return cb();
-
-    backup(false, true, tempLocation, cb);
+    backup(false, true, tempLocation, notClonedRepositoriesFile, false, cb);
   };
 }
 
@@ -88,14 +96,18 @@ module.exports = preparePushResult;
  * @param {Boolean} [from] - responsible for choosing the src folder: `${item}/*` or `./tmp/backup/${path.normalize(item)}/*`
  * @param {Boolean} [to] - responsible for choosing the destination folder: `${item}/` or `./tmp/backup/${path.normalize(item)}/`
  * @param {String} [tempLocation] - indicates folder with cloned repositories
+ * @param {String} [notClonedRepositoriesFile] -  name of the file with the information about not cloned repositories
+ * @param {Boolean} [backupOperationInfo] - indicates that the backup operation is being performed
  * @param {Function} [cb] - callback for asynchronous operation
 */
 
-function backup(from, to, tempLocation, cb){
-  const notClonedRepoPath = `./${tempLocation}/notClonedRepositories.json`;
+function backup(from, to, tempLocation, notClonedRepositoriesFile, backupOperationInfo, cb){
+  const notClonedRepoPath = `./${tempLocation}/${notClonedRepositoriesFile}`;
 
   reader.readFile(notClonedRepoPath, (err, notClonedRepositoresMatrix) => {
-    if (err) return cb();
+    if (err || notClonedRepositoresMatrix.length === 0) return cb();
+
+    if (backupOperationInfo) log.info('Backup operation has been performed. Some repositories will be restored with their previous version. To find out more, please check logs.');
 
     const arrayOfNotClonedRepositories = notClonedRepositoresMatrix.toString().split(',');
     const arrOfTasks = [];
@@ -108,5 +120,25 @@ function backup(from, to, tempLocation, cb){
     });
 
     async.series(arrOfTasks, cb);
+  });
+}
+
+/**
+ * Function resposible for erasing files in order to enable independent docu generation
+ * @param {String} [tempLocation] - indicates folder with cloned repositories
+ * @param {String} [indepenedentDocuRepositoriesFile] - name of the file with the information about repositories used during the independent docu generation
+ * @param {Function} [cb] - callback for asynchronous operation
+*/
+function eraseRepositoriesFromDest(tempLocation, indepenedentDocuRepositoriesFile, cb){
+  const repoPath = `./${tempLocation}/${indepenedentDocuRepositoriesFile}`;
+
+  reader.readFile(repoPath, (err, repoMatrix) => {
+    if (err || repoMatrix.length === 0) return cb();
+
+    const arrayOfRepositories = repoMatrix.toString().split(',');
+
+    arrayOfRepositories.forEach((item) => del(item));
+
+    return cb();
   });
 }

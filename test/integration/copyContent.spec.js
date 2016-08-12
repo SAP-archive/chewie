@@ -22,7 +22,7 @@ describe('Copy all docu files for topics listed in the registry', () => {
       registry = testHelper.getRegistry(config.registry.registryPath);
 
       async.series([
-        misc.asyncTaskCreator(cloneDocuSources, [registry, config]),
+        misc.asyncTaskCreator(cloneDocuSources, [registry, config, null]),
         misc.asyncTaskCreator(copyContent, [registry, config])
       ], done);
 

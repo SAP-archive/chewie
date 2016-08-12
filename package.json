@@ -18,7 +18,7 @@
     "gulp-clean-css": "^2.0.10",
     "gulp-concat": "^2.4.2",
     "gulp-concat-util": "^0.5.1",
-    "gulp-git": "^0.5.6",
+    "gulp-git": "1.11.0",
     "gulp-htmlmin": "^2.0.0",
     "gulp-imagemin": "^2.0.0",
     "gulp-jsonminify": "^1.0.0",
@@ -43,7 +43,8 @@
     "raml2obj": "^2.2.0",
     "rimraf": "2.4.3",
     "underscore": "^1.8.3",
-    "vinyl-paths": "^2.1.0"
+    "vinyl-paths": "^2.1.0",
+    "vinyl-fs": "^2.4.3"
   },
   "main": "index.js",
   "scripts": {

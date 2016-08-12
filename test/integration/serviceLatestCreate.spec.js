@@ -22,7 +22,7 @@ describe('Copy all services docu files and its release notes from location with 
       registry = testHelper.getRegistry(config.registry.registryPath);
 
       async.series([
-        misc.asyncTaskCreator(cloneDocuSources, [registry, config]),
+        misc.asyncTaskCreator(cloneDocuSources, [registry, config, null]),
         misc.asyncTaskCreator(copyContent, [registry, config]),
         misc.asyncTaskCreator(serviceLatestCreate, [registry, config])
       ], done);

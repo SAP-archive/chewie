@@ -201,6 +201,9 @@ function topicPropsBuilder(regEntry, sourceEntry, config) {
   const clonedGenDestLocation = `${config.generationResult.clonedResultFolderPath}/${type}/${shortName}${versionPath}`;
   const clonedGenDestLocationInternal = `${config.generationResult.clonedResultFolderPath}/internal/${type}/${shortNameInternal}${versionPath}`;
 
+  const clonedGenDestLocationLatest = `${config.generationResult.clonedResultFolderPath}/${type}/${shortName}/latest`;
+  const clonedGenDestLocationInternalLatest = `${config.generationResult.clonedResultFolderPath}/internal/${type}/${shortNameInternal}/latest`;
+
   //same as above but for release notes
   const clonedGenRNDestLocation = hasReleaseNotes ? `${config.generationResult.clonedResultFolderPath}/rn/${type}/${shortName}${versionPath}` : '';
   const clonedGenRNDestLocationInternal = hasReleaseNotes ? `${config.generationResult.clonedResultFolderPath}/internal/rn/${type}/${shortNameInternal}${versionPath}` : '';
@@ -228,7 +231,7 @@ function topicPropsBuilder(regEntry, sourceEntry, config) {
   const tutorialsDest = config.constantLocations.apinotebooksLocation;
 
   //location of docu files after generation
-  const versionLatest = latest ? `/latest` : '';
+  const versionLatest = latest ? '/latest' : '';
   const generatedDir = config.skeletonOutDestination;
   const genBasicDocuLocation = `${generatedDir}/${type}/${shortName}`;
   const genDocuLocationLatest = `${genBasicDocuLocation}${versionLatest}`;
@@ -295,6 +298,8 @@ function topicPropsBuilder(regEntry, sourceEntry, config) {
     destLocationInternalWithoutVersion,
     clonedGenDestLocation,
     clonedGenDestLocationInternal,
+    clonedGenDestLocationLatest,
+    clonedGenDestLocationInternalLatest,
     clonedGenRNDestLocation,
     clonedGenRNDestLocationInternal,
     clonedGenRNDestLocationLatest,
