@@ -17,8 +17,11 @@ const async = require('async'),
  * src - where to collect new things,
  * dest - where you keep clone of the repo where you want to push,
  * branch - from which branch it should clone (default is master),
- * repo - optional, if provided you will first clone this repo
- * and perform operations on it, but if not provided then it is expected that 'dest' dir is a repo dir with .git folder
+ * repo - optional, if provided you will first clone this repo and perform operations on it, but if not provided then it is expected that 'dest' dir is a repo dir with .git folder,
+ * independent - boolean value, which informs if the independent docu generation was used,
+ * tempLocation - location of the tempLocation folder,
+ * notClonedRepositoriesFile - name of the file, which stores the information about not cloned repositories,
+ * indepenedentDocuRepositoriesFile - ame of the file, which stores the information about repositories used during the independent docu generation,
  * @param {Function} [next] - callback for asynch operations
  */
 function preparePushResult(opt, next) {
@@ -93,6 +96,8 @@ module.exports = preparePushResult;
  * @param {Boolean} [from] - responsible for choosing the src folder: `${item}/*` or `./tmp/backup/${path.normalize(item)}/*`
  * @param {Boolean} [to] - responsible for choosing the destination folder: `${item}/` or `./tmp/backup/${path.normalize(item)}/`
  * @param {String} [tempLocation] - indicates folder with cloned repositories
+ * @param {String} [notClonedRepositoriesFile] -  name of the file with the information about not cloned repositories
+ * @param {Boolean} [backupOperationInfo] - indicates that the backup operation is being performed
  * @param {Function} [cb] - callback for asynchronous operation
 */
 
@@ -121,6 +126,7 @@ function backup(from, to, tempLocation, notClonedRepositoriesFile, backupOperati
 /**
  * Function resposible for erasing files in order to enable independent docu generation
  * @param {String} [tempLocation] - indicates folder with cloned repositories
+ * @param {String} [indepenedentDocuRepositoriesFile] - name of the file with the information about repositories used during the independent docu generation
  * @param {Function} [cb] - callback for asynchronous operation
 */
 function eraseRepositoriesFromDest(tempLocation, indepenedentDocuRepositoriesFile, cb){

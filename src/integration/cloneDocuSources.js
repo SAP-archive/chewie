@@ -89,14 +89,3 @@ function _createMatrixWithRepositories(topicDetails, failingOrIndependentArray, 
 
   return cb();
 }
-
-
-function _writeToFile(tempLocation, fileName, arrayName, next) {
-  console.log(arrayName, arrayName.length);
-  if (arrayName.length === '0') next();
-
-  creator.createFile(`${tempLocation}/${fileName}`, arrayName, (err) => {
-    if (err) log.error('Something went wrong. File could not be created. No repositories will be backup.');
-    next();
-  });
-}
