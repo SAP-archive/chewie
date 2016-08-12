@@ -5,6 +5,8 @@ const config = {
   skeletonOutDestination: './out',
   placeholdersLocation: './placeholders',
   docuUrl: process.env.docuURL || 'https://devportal.yaas.io',
+  notClonedRepositoriesFile: 'notClonedRepositories.json',
+  indepenedentDocuRepositoriesFile: 'indepenedentDocuRepositories.json',
 
   registry: {
     location: process.env.REGISTRY_LOCATION || 'remote',
@@ -36,16 +38,6 @@ const config = {
     apinotebooksLocation: './src/raw/apinotebooks',
     apinotebooksTestMatrixFile: './src/raw/matrix/apinotebook.txt'
   }
-};
-
-config.independentGeneration = {
-  notUsedFiles: [`${out}/atom.xml`,
-                `${out}/rn/index.html`,
-                `${out}/internal/rn/index.html`,
-                `${out}/matrix/apinotebook.txt`,
-                `${out}/lunr`,
-                `${out}/internal/rn/internal_atom.xml`,
-                `!${out}/.git`]
 };
 
 const out = config.skeletonOutDestination;

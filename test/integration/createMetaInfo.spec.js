@@ -23,7 +23,7 @@ describe('Create meta inf files for whole registry', () => {
       registry = testHelper.getRegistry(config.registry.registryPath);
 
       async.series([
-        misc.asyncTaskCreator(cloneDocuSources, [registry, config]),
+        misc.asyncTaskCreator(cloneDocuSources, [registry, config, null]),
         misc.asyncTaskCreator(createMetaInfo, [registry, null, config])
       ], done);
     });
@@ -50,7 +50,7 @@ describe('Create meta inf files for topics and registry', () => {
       registry = testHelper.getRegistry(config.registry.registryPath);
 
       async.series([
-        misc.asyncTaskCreator(cloneDocuSources, [registry, config]),
+        misc.asyncTaskCreator(cloneDocuSources, [registry, config, null]),
         misc.asyncTaskCreator(createMetaInfo, [registry, [{'type':'overview', 'name':'Tupac Ipsum'}, {'type':'services', 'name':'Samuel L Ipsum'}], config])
       ], done);
 
