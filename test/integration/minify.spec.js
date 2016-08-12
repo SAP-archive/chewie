@@ -1,7 +1,6 @@
 'use strict';
 const config = require('../chewieConfigTest'),
   minify = require('../../src/minification/minify'),
-  cloneDocuSources = require('../../src/integration/cloneDocuSources'),
   prepareRegistry = require('../../src/integration/prepareRegistry'),
   fs = require('fs'),
   util = require('util'),

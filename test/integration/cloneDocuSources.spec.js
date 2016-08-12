@@ -22,7 +22,7 @@ describe('Clone all docu topics listed in the registry', () => {
     prepareRegistry(null, config, () => {
       registry = testHelper.getRegistry(config.registry.registryPath);
 
-      cloneDocuSources(registry, config, done);
+      cloneDocuSources(registry, config, null, done);
     });
   });
 
@@ -66,7 +66,7 @@ describe('Clone all docu topics listed specified in the topic array', () => {
 
       registry = testHelper.getRegistry(config.registry.shortRegistryPath);
 
-      cloneDocuSources(registry, config, () => {
+      cloneDocuSources(registry, config, null, () => {
         done();
       });
     });
@@ -110,7 +110,7 @@ describe('Clone all docu topics listed specified in the topic array', () => {
       }
     ];
 
-    cloneDocuSources(topic, config, () => {
+    cloneDocuSources(topic, config, null, () => {
       eachRegTopic.async(topic, config, done, (topicDetails, cb) => {
 
         const stats = fs.statSync(path.resolve(process.cwd(), topicDetails.sourcesCloneLoc));

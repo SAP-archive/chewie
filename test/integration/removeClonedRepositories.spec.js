@@ -21,7 +21,7 @@ describe('Check if tempLocation directory will be deleted', () => {
       registry = testHelper.getRegistry(config.registry.registryPath);
 
       async.series([
-        misc.asyncTaskCreator(cloneDocuSources, [registry, config])
+        misc.asyncTaskCreator(cloneDocuSources, [registry, config, null])
       ], done);
 
     });
