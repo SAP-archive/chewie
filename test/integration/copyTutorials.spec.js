@@ -25,7 +25,7 @@ describe('Coping and versioning interactive tutorials', () => {
     prepareRegistry(null, config, () => {
       registry = testHelper.getRegistry(config.registry.registryPath);
 
-      cloneDocuSources(registry, config, () => {
+      cloneDocuSources(registry, config, null, () => {
 
         copyTutorials(registry, config, () => {
 

@@ -66,7 +66,8 @@ function prepareRegistryForExternal(registrySource, branchTag, config, next) {
 }
 
 function shrinkedRegistry(topics, config, next) {
-  let registry = require(path.resolve(process.cwd(), `${config.tempLocation}/${config.registry.fileName}`));
+
+  let registry = misc.getRegistry(path.resolve(process.cwd(), `${config.tempLocation}/${config.registry.fileName}`));
   registry = misc.registryShrink(registry, topics);
   creator.createFile(config.registry.shortRegistryPath, JSON.stringify(registry), next);
 }

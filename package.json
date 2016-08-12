@@ -43,7 +43,8 @@
     "raml2obj": "^2.2.0",
     "rimraf": "2.4.3",
     "underscore": "^1.8.3",
-    "vinyl-paths": "^2.1.0"
+    "vinyl-paths": "^2.1.0",
+    "vinyl-fs": "^2.4.3"
   },
   "main": "index.js",
   "scripts": {
