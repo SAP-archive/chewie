@@ -46,7 +46,7 @@ function addCommit(src, msg){
 function pull(branch, src){
   return (cb) => {
     git.pull('origin', branch, {cwd: src, maxBuffer: Infinity, args: '--depth=1'}, (err) => {
-      log.warning(err);
+      if (err) log.warning(err);
       cb();
     });
   };
