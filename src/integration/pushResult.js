@@ -45,7 +45,10 @@ function addCommit(src, msg){
 //pulling from remote repo
 function pull(branch, src){
   return (cb) => {
-    git.pull('origin', branch, {cwd: src, maxBuffer: Infinity, args: '--depth=1'}, cb);
+    git.pull('origin', branch, {cwd: src, maxBuffer: Infinity, args: '--depth=1'}, (err) => {
+      log.warning(err);
+      cb();
+    });
   };
 }
 
