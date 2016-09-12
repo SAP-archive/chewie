@@ -2,7 +2,6 @@
 
 const gulp = require('gulp'),
   concat = require('gulp-concat'),
-  log = require('./logger'),
   tap = require('gulp-tap');
 
 
@@ -18,10 +17,7 @@ function minify(minOperation, opts, cb) {
 
   gulp.src(src)
     .pipe(minOperation(options))
-    .on('error', (err) => {
-      log.error(`Error has occured: ${err}`);
-      cb();
-    })
+    .on('error', cb)
     .pipe(concatName)
     .pipe(gulp.dest(dest))
     .on('end', cb);
