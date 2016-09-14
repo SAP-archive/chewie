@@ -2,7 +2,7 @@
 
 const gulp = require('gulp'),
   concat = require('gulp-concat'),
-  log = require('./logger')
+  log = require('./logger'),
   tap = require('gulp-tap');
 
 
