@@ -13,7 +13,7 @@ const config = {
     location: process.env.REGISTRY_LOCATION || 'remote',
     path: process.env.REGISTRY_PATH || 'https://github.com/hybris/chewie-sample-data.git',
     fileName: 'whatever.json',
-    branch: 'master',
+    branch: 'ramlVSdocu_dirBUG',
     shortVersionFileName: 'smallwhatever.json',
     clonedRegistryFolder: 'registeros'
   },

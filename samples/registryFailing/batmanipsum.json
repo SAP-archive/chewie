@@ -12,8 +12,8 @@
       "location": "https://github.com/hybris/chewie-sample-data.git",
       "docu_dir": "/content/services/batmanipsum",
       "branch_or_tag": "master",
-      "raml": "src/main/resources/api/batman-ipsum.raml",
-      "ramlInternal": "src/main/resources/api/batman-ipsum.raml"
+      "raml": "/content/services/batmanipsum/src/main/resources/api/batman-ipsum.raml",
+      "ramlInternal": "/content/services/batmanipsum/src/main/resources/api/batman-ipsum.raml"
     },
     {
       "builder_identifier": "batman-ipsum",
@@ -23,8 +23,8 @@
       "location": "https://github.com/hybris/chewie-sample-data.git",
       "docu_dir": "/content/services/batmanipsum",
       "branch_or_tag": "master",
-      "raml": "src/main/resources/api/batman-ipsum.raml",
-      "ramlInternal": "src/main/resources/api/batman-ipsum.raml"
+      "raml": "/content/services/batmanipsum/src/main/resources/api/batman-ipsum.raml",
+      "ramlInternal": "/content/services/batmanipsum/src/main/resources/api/batman-ipsum.raml"
     }
   ]
 }
