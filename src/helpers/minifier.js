@@ -19,8 +19,8 @@ function minify(minOperation, opts, cb) {
   gulp.src(src)
     .pipe(minOperation(options))
     .on('error', (err) => {
-      log.error(`Error has occured: ${err}`);
-      cb();
+      log.error('Minification failed');
+      cb(err);
     })
     .pipe(concatName)
     .pipe(gulp.dest(dest))
