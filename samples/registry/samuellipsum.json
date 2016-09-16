@@ -12,7 +12,7 @@
       "baseUri": "http://slipsum.com",
       "internalBaseUri": "http://www.pulpfiction.com",
       "branch_or_tag": "master",
-      "raml": "src/main/resources/api/samuel-ipsum.raml"
+      "raml": "/content/services/samuellipsum/src/main/resources/api/samuel-ipsum.raml"
     },
     {
       "version": "v1",
@@ -22,7 +22,7 @@
       "baseUri": "http://slipsum.com",
       "internalBaseUri": "http://www.pulpfiction.com",
       "branch_or_tag": "master",
-      "raml": "src/main/resources/api/samuel-ipsum.raml"
+      "raml": "/content/services/samuellipsum/src/main/resources/api/samuel-ipsum.raml"
     }
   ]
 }
