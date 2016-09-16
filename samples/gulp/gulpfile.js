@@ -43,7 +43,6 @@ const topics = _getTopics(argv.topics);
 
 gulp.task('start', (cb) => {
 
-
   chewie.removeClonedRepositories(argv.force, config, () => {
 
     let registry;
@@ -93,7 +92,8 @@ gulp.task('start', (cb) => {
 
 
 gulp.task('replaceApiReferences', (cb) => {
-  chewie.prepareRegistry(topics, config, (err) => {
+
+  chewie.prepareRegistry(topics, config, () => {
 
     const registry = require(config.registry.registryPath);
     chewie.replaceApiReferences(registry, config, cb);
@@ -102,17 +102,20 @@ gulp.task('replaceApiReferences', (cb) => {
 
 
 gulp.task('fixTables', (cb) => {
+
   chewie.replacer.replaceInFile('./out/**/*.html', '<table>', '<table class="table table-striped techne-table">', './out', cb);
 });
 
 
 gulp.task('serviceLatest', ['fixTables'], (cb) => {
+
   const registry = require(config.registry.registryPath);
   chewie.serviceLatestCreate(registry, config, cb);
 });
 
 
 gulp.task('minify', ['serviceLatest'], (cb) => {
+
   chewie.minify(config, cb);
 });
 
@@ -125,7 +128,7 @@ gulp.task('minify', ['serviceLatest'], (cb) => {
 // mind that rn and partials are not sections anymore, they are deleted per service
 gulp.task('clean', (cb) => {
 
-  chewie.prepareRegistry(topics, config, (err) => {
+  chewie.prepareRegistry(topics, config, () => {
 
     const registry = require(config.registry.registryPath);
     chewie.cleanSkeleton.clean(registry, config, argv.s && argv.s.toLowerCase(), cb);
@@ -135,6 +138,7 @@ gulp.task('clean', (cb) => {
 
 // task pushes latest results to remote repo that keeps results.
 gulp.task('pushResult', (cb) => {
+
   const topics = _getTopics(argv.topics);
   const opt = {
     'src': `${config.skeletonOutDestination}/**`,
@@ -163,6 +167,7 @@ gulp.task('getDependencyInteractiveDocu', (cb) => {
 });
 
 gulp.task('preparePushResult', (cb) => {
+
   const topics = _getTopics(argv.topics);
   const opt = {
     'src': `${config.skeletonOutDestination}/**`,
@@ -187,6 +192,7 @@ gulp.task('preparePushResult', (cb) => {
 
 
 function _getTopics(topics) {
+
   if(topics === true){
     throw new Error(`You must provide list of topics split with comma while using --topics flags. For example "'services:Cart','tools':'Builder SDK','services':'Events'"`);
   }
@@ -198,47 +204,3 @@ function _getTopics(topics) {
     };
   });
 }
-
-
-
-/////////////////////////////////////////
-///            TESTS                  ///
-/////////////////////////////////////////
-
-gulp.task('test', (cb) => {
-
-  const nightwatch = require('gulp-nightwatch');
-  const helper = require('./tests/devportal/helpers/helper');
-  const innerConfig = require('./tests/devportal/helpers/variables');
-  const jsonTransform = require('gulp-json-transform');
-  const os = require('os');
-
-  const enviroment = helper.determineEnviroment(argv.b, argv.p);
-
-  log.info(`Running tests against nightwatch envroment(s): ${enviroment} `, argv.a ? 'Test will be run on Sauce Labs (parameter s is present)' : 'Test will be run on localhost');
-
-  gulp.src('./nightwatch.json')
-    .pipe(jsonTransform((data) => {
-      data.test_settings.default.launch_url = innerConfig.launchUrl;
-
-      data.src_folders = argv.y ? [`tests/devportal/test-cases/${argv.y}`] : ['tests/devportal/test-cases'];
-
-      data.test_settings.default.selenium_port = argv.a ? 80 : 4450;
-      data.test_settings.default.selenium_host = argv.a ? 'ondemand.saucelabs.com' : 'localhost';
-      data.selenium.start_process = argv.a ? false : true;
-
-      data.test_settings.default.username = innerConfig.username;
-      data.test_settings.default.access_key = innerConfig.accessKey;
-
-      return data;
-    }), 4)
-    .pipe(gulp.dest('./'))
-    .pipe(nightwatch({
-      configFile: 'nightwatch.json',
-      cliArgs: {
-        env: enviroment,
-        retries: 3
-      }
-    }))
-    .on('error', cb);
-});
