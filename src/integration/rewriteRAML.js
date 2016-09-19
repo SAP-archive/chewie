@@ -31,8 +31,9 @@ function rewriteRAML(registry, config, traits, next) {
     baseUri = topicDetails.baseUri;
     baseUriInternal = topicDetails.baseUriInternal;
 
-    sourcesCloneLoc = topicDetails.basicLocation;
-
+    //using sourcesCloneLoc insted of the value that identifies if docu_dir is added
+    //as docu_dir registry entry should have nothing to do with raml location
+    sourcesCloneLoc = topicDetails.sourcesCloneLoc;
     raml = topicDetails.raml;
     ramlInternal = topicDetails.ramlInternal;
     dest = topicDetails.topicSrcLocation;
@@ -66,7 +67,7 @@ function _traitReplacer (traits, source) {
       return cb();
     }
 
-    gulp.src([`${source}**/*.raml`, `${source}/**/*.yaml`, `${source}/**/*.yml`])
+    gulp.src([`${source}/**/*.raml`, `${source}/**/*.yaml`, `${source}/**/*.yml`])
       .pipe(tap((file) => {
         for (let i=0; i<listOfTraits.length; i+=2){
           _replaceInFile(file.path, listOfTraits[i], listOfTraits[i+1]);

@@ -16,6 +16,7 @@ const config = require('../chewieConfigTest'),
 describe('Run prepareApiReferences task', () => {
 
   let registry;
+  const traits = '/v1/trait-session-aware.yaml /v2/trait-oauth2.yaml sessionAware oauth2 /v1/trait-yaas-aware.yaml /v2/trait-oauth2.yaml /v2/trait-yaas-aware.yaml /v2/trait-oauth2.yaml yaasAware oauth2 billingAware oauth2 /v1/trait-billing-aware.yaml /v2/trait-oauth2.yaml';
 
   before((done) => {
     prepareRegistry(null, config, () => {
@@ -23,7 +24,7 @@ describe('Run prepareApiReferences task', () => {
 
       async.series([
         misc.asyncTaskCreator(cloneDocuSources, [registry, config, null]),
-        misc.asyncTaskCreator(rewriteRAML, [registry, config, false]),
+        misc.asyncTaskCreator(rewriteRAML, [registry, config, traits]),
         misc.asyncTaskCreator(prepareApiReferences, [registry, config])
       ], done);
 
