@@ -5,7 +5,7 @@ const cloner = require('../helpers/cloner'),
   concater = require('../helpers/concater'),
   creator = require('../helpers/creator'),
   misc = require('../helpers/misc'),
-  reader = require('../helpers/reader'),
+  validator = require('../helpers/validator'),
   path = require('path');
 
 /**
@@ -28,7 +28,7 @@ function prepareRegistry(topics, config, next) {
 
   //First step of preparing the registry is to actually check if it isn't already prepared
   //If registry exists, we pass to callback
-  reader.readFile(registryPath, (err) => {
+  validator.fileCheck(registryPath, (err) => {
 
     if (!err) {
 
