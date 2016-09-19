@@ -11,7 +11,7 @@
       "location": "https://github.com/hybris/chewie-sample-data.git",
       "docu_dir": "/content/services/hodoripsum",
       "branch_or_tag": "master",
-      "raml": "src/main/resources/api/hodor-ipsum.raml"
+      "raml": "/content/services/hodoripsum/src/main/resources/api/hodor-ipsum.raml"
     }
   ]
 }
