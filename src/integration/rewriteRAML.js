@@ -66,7 +66,7 @@ function _traitReplacer (traits, source) {
       return cb();
     }
 
-    gulp.src([`${source}**/*.raml`, `${source}/**/*.yaml`, `${source}/**/*.yml`])
+    gulp.src([`${source}/**/*.raml`, `${source}/**/*.yaml`, `${source}/**/*.yml`])
       .pipe(tap((file) => {
         for (let i=0; i<listOfTraits.length; i+=2){
           _replaceInFile(file.path, listOfTraits[i], listOfTraits[i+1]);
