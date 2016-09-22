@@ -59,7 +59,7 @@ function readFile(file, next) {
   fs.readFile(file, 'utf8', (err, data) => {
 
     if (err) {
-      log.error(err);
+
       return next(err);
     }
 
