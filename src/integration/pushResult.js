@@ -23,7 +23,6 @@ function pushResult(opt, next) {
   async.series([
     addCommit(dest, message),
     pull(branch, dest),
-    // merge(branch, dest),
     push(branch, dest)
   ], next);
 }
@@ -53,15 +52,6 @@ function pull(branch, src){
   };
 }
 
-// //mergeing updates made online with your local work
-// function merge(branch, src){
-//   return (cb) => {
-//     git.merge('origin', {cwd: src, maxBuffer: Infinity, args: '--depth=1'}, (err) => {
-//       if (err) log.warning(`Merge operation for branch ${branch} has failed with the error: ${err}`);
-//       cb(err);
-//     });
-//   };
-// }
 
 //pushing to remote repo
 function push(branch, src){
