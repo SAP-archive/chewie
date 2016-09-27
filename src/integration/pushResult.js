@@ -56,7 +56,7 @@ function pull(branch, src){
 //pushing to remote repo
 function push(branch, src){
   return (cb) => {
-    git.push('origin', branch, {cwd: src, maxBuffer: Infinity, args: '-f'}, (err) => {
+    git.push('origin', branch, {cwd: src, maxBuffer: Infinity}, (err) => {
       if (err) log.warning(`Push operation for branch ${branch} has failed with the error: ${err}`);
       cb(err);
     });
