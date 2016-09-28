@@ -42,6 +42,9 @@ function topicPropsBuilder(regEntry, sourceEntry, config) {
   //service version
   const version = sourceEntry.version;
 
+  //service version
+  const markets = sourceEntry.markets;
+
   //is it a service where version is required or other topic
   const versionPath = version ? `/${version}` : '';
 
@@ -275,6 +278,7 @@ function topicPropsBuilder(regEntry, sourceEntry, config) {
     version,
     latest,
     latestVersion,
+    markets,
     docuDir,
     baseUri,
     baseUriInternal,
