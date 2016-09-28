@@ -45,17 +45,21 @@ function addCommit(src, msg){
 //pulling from remote repo
 function pull(branch, src){
   return (cb) => {
-    git.pull('origin', branch, {cwd: src, maxBuffer: Infinity, args: '--depth=1'}, (err) => {
-      if (err) log.warning(err);
-      cb();
+    git.pull('origin', branch, {cwd: src, maxBuffer: Infinity, args: '--rebase'}, (err) => {
+      if (err) log.warning(`Pull operation for branch ${branch} has failed with the error: ${err}`);
+      cb(err);
     });
   };
 }
 
+
 //pushing to remote repo
 function push(branch, src){
   return (cb) => {
-    git.push('origin', branch, {cwd: src, maxBuffer: Infinity}, cb);
+    git.push('origin', branch, {cwd: src, maxBuffer: Infinity}, (err) => {
+      if (err) log.warning(`Push operation for branch ${branch} has failed with the error: ${err}`);
+      cb(err);
+    });
   };
 }
 
