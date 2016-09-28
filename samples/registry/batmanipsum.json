@@ -9,6 +9,7 @@
       "internal_builder_identifier": "robin-ipsum",
       "version": "v2",
       "latest": true,
+      "markets": ["beta","de","us"],
       "location": "git@github.com:hybris/chewie-sample-data.git",
       "docu_dir": "/content/services/batmanipsum",
       "branch_or_tag": "master",
@@ -20,6 +21,7 @@
       "internal_builder_identifier": "robin-ipsum",
       "version": "v1",
       "latest": false,
+      "markets": ["beta","de","us"],
       "location": "git@github.com:hybris/chewie-sample-data.git",
       "docu_dir": "/content/services/batmanipsum",
       "branch_or_tag": "master",
@@ -29,6 +31,7 @@
     {
       "builder_identifier": "batman-ipsum",
       "internal_builder_identifier": "robin-ipsum",
+      "markets": ["beta","de","us"],
       "version": "v4",
       "latest": false,
       "location": "../projects/feedbackservice",
