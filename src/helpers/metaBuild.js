@@ -12,7 +12,7 @@ function build(topicDetails) {
   let meta = '---\n';
 
   _.mapObject(topicDetails, (val, key) => {
-    meta += `${key}: ${val}\n`;
+    meta += `${key}: ${JSON.stringify(val)}\n`;
   });
 
   meta += '---';
