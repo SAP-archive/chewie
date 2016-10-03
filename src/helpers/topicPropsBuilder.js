@@ -43,7 +43,7 @@ function topicPropsBuilder(regEntry, sourceEntry, config) {
   const version = sourceEntry.version;
 
   //markets where service is available
-  const markets = sourceEntry.markets;
+  const markets = sourceEntry.markets || false;
 
   //is it a service where version is required or other topic
   const versionPath = version ? `/${version}` : '';
@@ -378,7 +378,7 @@ function checkLatest(type, latest){
     break;
 
   default:
-    isLatest = 'true';
+    isLatest = true;
   }
 
   return isLatest;
