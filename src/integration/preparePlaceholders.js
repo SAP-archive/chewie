@@ -35,21 +35,21 @@ function preparePlaceholders(registry, config, next) {
     apiConsoleLocationInternal = (topicDetails.isService) ? topicDetails.topicSrcLocationInternal : false;
 
     async.parallel([
-      moveContentAsyncDir(docuSrcLocation, placeholderLocation, topicDetails, 'external docu'),
-      moveContentAsyncFile(apiConsoleLocation, `${apiConsoleLocation}/api.raml`, placeholderAPIConsoleLocation, topicDetails, 'external apiconsole'),
+      moveContentAsyncDir(docuSrcLocation, placeholderLocation, 'external docu'),
+      moveContentAsyncFile(apiConsoleLocation, `${apiConsoleLocation}/api.raml`, placeholderAPIConsoleLocation, 'external apiconsole'),
 
-      moveContentAsyncDir(docuSrcLocationInternal, placeholderLocation, topicDetails, 'internal docu'),
-      moveContentAsyncFile(apiConsoleLocationInternal, `${apiConsoleLocationInternal}/api.raml`, placeholderAPIConsoleLocation, topicDetails, 'internal apiconsole'),
+      moveContentAsyncDir(docuSrcLocationInternal, placeholderLocation, 'internal docu'),
+      moveContentAsyncFile(apiConsoleLocationInternal, `${apiConsoleLocationInternal}/api.raml`, placeholderAPIConsoleLocation, 'internal apiconsole'),
 
-      moveContentAsyncDir(rnSrcLocation, placeholderRNLocation, topicDetails, 'external release notes'),
-      moveContentAsyncDir(rnSrcLocationInternal, placeholderRNLocation, topicDetails, 'internal release notes')
+      moveContentAsyncDir(rnSrcLocation, placeholderRNLocation, 'external release notes'),
+      moveContentAsyncDir(rnSrcLocationInternal, placeholderRNLocation, 'internal release notes')
     ], cb);
 
   });
 }
 
 //helper to run in async paralell for both internal and external content
-function moveContentAsyncDir(docuLocation, phLocation, topicDetails, name) {
+function moveContentAsyncDir(docuLocation, phLocation, name) {
 
   return (cb) => {
 
@@ -57,7 +57,7 @@ function moveContentAsyncDir(docuLocation, phLocation, topicDetails, name) {
 
       if (err) return cb(err, name);
 
-      replaceAndMove(phLocation, docuLocation, topicDetails, (err) => {
+      replaceAndMove(phLocation, docuLocation, (err) => {
 
         cb(err, name);
       });
@@ -66,7 +66,7 @@ function moveContentAsyncDir(docuLocation, phLocation, topicDetails, name) {
 }
 
 //helper to run in async paralell for both internal and external content
-function moveContentAsyncFile(docuLocation, fileLocation, phLocation, topicDetails, name) {
+function moveContentAsyncFile(docuLocation, fileLocation, phLocation, name) {
 
   return (cb) => {
 
@@ -74,7 +74,7 @@ function moveContentAsyncFile(docuLocation, fileLocation, phLocation, topicDetai
 
       if (err) return cb(err, name);
 
-      replaceAndMove(phLocation, docuLocation, topicDetails, (err) => {
+      replaceAndMove(phLocation, docuLocation, (err) => {
 
         cb(err, name);
       });
@@ -83,43 +83,11 @@ function moveContentAsyncFile(docuLocation, fileLocation, phLocation, topicDetai
 }
 
 //replace during move of placeholders
-function replaceAndMove(src, dest, topic, next) {
+function replaceAndMove(src, dest, next) {
 
   if(!src || !dest) return next(`Unable to perform operation on topic ${topic.name} because of wrong src: ${src} or dest: ${dest} value`);
 
-  const internal = (dest.indexOf('internal') !== -1),
-    collectionName = internal ? topic.collectionNameInternal : topic.collectionName,
-    releaseNotesPH = internal ? 'internalReleaseNotes' : 'releaseNotes',
-    collectionRN = internal ? 'internalPosts' : 'posts',
-    releaseNotesLayoutPH = internal ? 'internal_release_notes' : 'release_notes',
-    name = topic.name,
-    shortName = topic.shortName,
-    version = topic.version,
-    isLatest = topic.latestVersion ? 'latest' : topic.version,
-    baseUri = topic.baseUri,
-    isInternalUrlOtherPH = internal ? 'internal/' : '',
-    isInternalUrlPH = internal ? '/internal' : '',
-    isInternalPH = internal ? 'Internal' : '',
-    collectionAPIConsoles = internal ? 'internalApiConsoles' : 'apiconsoles',
-    lengthPH = internal ? '4' : '3',
-    internalPH = internal ? 'internal_' : '';
-
   gulp.src(src)
-    .pipe(replace('collectionNamePH', collectionName))
-    .pipe(replace('releaseNotesPH', releaseNotesPH))
-    .pipe(replace('collectionRN', collectionRN))
-    .pipe(replace('releaseNotesLayoutPH', releaseNotesLayoutPH))
-    .pipe(replace('serviceNamePH', name))
-    .pipe(replace('serviceShortNamePH', shortName))
-    .pipe(replace('serviceVersionRAML', version))
-    .pipe(replace('serviceVersionPH', isLatest))
-    .pipe(replace('serviceUri', baseUri))
-    .pipe(replace('isInternalUrlOtherPH', isInternalUrlOtherPH))
-    .pipe(replace('isInternalUrlPH', isInternalUrlPH))
-    .pipe(replace('isInternalPH', isInternalPH))
-    .pipe(replace('collectionAPIConsolesPH', collectionAPIConsoles))
-    .pipe(replace('lengthPH', lengthPH))
-    .pipe(replace('internalPH', internalPH))
     .pipe(gulp.dest(dest))
     .on('end', next);
 
