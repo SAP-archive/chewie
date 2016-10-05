@@ -3,9 +3,10 @@ const eachRegTopic = require('../helpers/registryIterator'),
   async = require('async'),
   gulp = require('gulp'),
   validator = require('../helpers/validator'),
-  copier = require('../helpers/copier.js]'),
+  copier = require('../helpers/copier.js'),
   fs = require('fs'),
   log = require('../helpers/logger');
+  
 /**
  * This function copies proper placeholders to proper topic locaiton, and performs injection of a number of variables
  * @param {Array} [registry] - array of full registry
