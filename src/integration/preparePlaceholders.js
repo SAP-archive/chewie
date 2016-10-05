@@ -3,10 +3,9 @@ const eachRegTopic = require('../helpers/registryIterator'),
   async = require('async'),
   gulp = require('gulp'),
   validator = require('../helpers/validator'),
+  copier = require('../helpers/copier.js]'),
   fs = require('fs'),
-  log = require('../helpers/logger'),
-  replace = require('gulp-replace');
-
+  log = require('../helpers/logger');
 /**
  * This function copies proper placeholders to proper topic locaiton, and performs injection of a number of variables
  * @param {Array} [registry] - array of full registry
@@ -57,7 +56,7 @@ function moveContentAsyncDir(docuLocation, phLocation, name) {
 
       if (err) return cb(err, name);
 
-      replaceAndMove(phLocation, docuLocation, (err) => {
+      copier.copyFiles(phLocation, docuLocation, (err) => {
 
         cb(err, name);
       });
@@ -74,23 +73,12 @@ function moveContentAsyncFile(docuLocation, fileLocation, phLocation, name) {
 
       if (err) return cb(err, name);
 
-      replaceAndMove(phLocation, docuLocation, (err) => {
+      copier.copyFiles(phLocation, docuLocation, (err) => {
 
         cb(err, name);
       });
     });
   };
-}
-
-//replace during move of placeholders
-function replaceAndMove(src, dest, next) {
-
-  if(!src || !dest) return next(`Unable to perform operation on topic ${topic.name} because of wrong src: ${src} or dest: ${dest} value`);
-
-  gulp.src(src)
-    .pipe(gulp.dest(dest))
-    .on('end', next);
-
 }
 
 module.exports = preparePlaceholders;

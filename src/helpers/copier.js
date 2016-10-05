@@ -33,10 +33,7 @@ function copyFilesAsync(src, dest, name) {
   return (cb) => {
 
     copyFiles(src, dest, (err) => {
-
-      if (err) return cb(err, name);
-
-      cb(null, name);
+      return cb(err, name);
     });
   };
 }
@@ -83,7 +80,7 @@ function copyFilesTapAsync(src, dest, tapFunction, name) {
 function copyDocuRepo(topicDetails, cb) {
 
   const version = topicDetails.version || '';
-  
+
   const origPath = path.resolve(process.cwd(), topicDetails.location);
   const destPath = path.resolve(process.cwd(), topicDetails.sourcesCloneLoc);
 
