@@ -15,7 +15,8 @@ const prepareRegistry = require('./src/integration/prepareRegistry'),
   pushResult = require('./src/integration/pushResult'),
   copyTutorials = require('./src/integration/copyTutorials'),
   replaceApiReferences = require('./src/integration/replaceApiReferences'),
-  removeClonedRepositories = require('./src/integration/removeClonedRepositories');
+  removeClonedRepositories = require('./src/integration/removeClonedRepositories'),
+  globalization = require('./src/integration/globalization');
 
 
 // helpers
@@ -37,8 +38,7 @@ const cloner = require('./src/helpers/cloner'),
   validator = require('./src/helpers/validator'),
   ziper = require('./src/helpers/ziper'),
   testHelper = require('./test/helpers/testHelper'),
-  ramlParser = require('./src/helpers/ramlParser'),
-  globalization = require('./src/helpers/globalization');
+  ramlParser = require('./src/helpers/ramlParser');
 
 // clean
 const cleanSkeleton = require('./src/clean/cleanSkeleton');
