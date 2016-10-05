@@ -49,8 +49,8 @@
   "main": "index.js",
   "scripts": {
     "test": "npm run test-unit && npm run test-integration",
-    "test-unit": "NODE_ENV=master ./node_modules/mocha/bin/mocha test/unit/*.spec.js",
-    "test-integration": "NODE_ENV=master ./node_modules/mocha/bin/mocha --timeout 40000 test/integration/*.spec.js"
+    "test-unit": "NODE_ENV=master mocha test/unit/*.spec.js",
+    "test-integration": "NODE_ENV=master mocha--timeout 40000 test/integration/*.spec.js"
   },
   "repository": {
     "type": "git",

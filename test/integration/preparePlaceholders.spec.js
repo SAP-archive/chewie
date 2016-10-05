@@ -15,63 +15,6 @@ const config = require('../chewieConfigTest'),
   testHelper = require('../helpers/testHelper'),
   async = require('async');
 
-describe('Move placeholders to a proper locations and on the move perform search&replace operation', () => {
-
-  let registry;
-
-  before((done) => {
-
-    prepareRegistry(null, config, () => {
-      registry = testHelper.getRegistry(config.registry.registryPath);
-
-      async.series([
-        misc.asyncTaskCreator(cloneDocuSources, [registry, config, null]),
-        misc.asyncTaskCreator(createMetaInfo, [registry, null, config]),
-        misc.asyncTaskCreator(preparePlaceholders, [registry, config]),
-        misc.asyncTaskCreator(copyContent, [registry, config])
-      ], done);
-    });
-  });
-
-  it('should have move placeholers and contain one replaced text', (done) => {
-
-    let phFileName,
-      placeholder,
-      placeholderInternal,
-      topicDetails,
-      isPHNeeded,
-      isPHNeededInternal,
-      docuSrcLocation,
-      docuSrcLocationInternal,
-      layoutPH;
-
-    eachRegTopic.async(registry, config, done, (topicDetails, cb) => {
-
-      docuSrcLocation = topicDetails.topicSrcLocation;
-      docuSrcLocationInternal = topicDetails.topicSrcLocationInternal;
-      phFileName = 'index.html.eco';
-      isPHNeeded = testHelper.dirCheckSync(docuSrcLocation);
-      isPHNeededInternal = testHelper.dirCheckSync(docuSrcLocationInternal);
-
-      if (isPHNeeded){
-        placeholder = fs.readFileSync(`${docuSrcLocation}/${phFileName}`, 'utf-8');
-        expect(placeholder.indexOf(topicDetails.name)).to.not.equal(-1);
-      }
-
-      if (isPHNeededInternal){
-        placeholderInternal = fs.readFileSync(`${docuSrcLocationInternal}/${phFileName}`, 'utf-8');
-        expect(placeholderInternal.indexOf(topicDetails.name)).to.not.equal(-1);
-      }
-      cb();
-    });
-  });
-
-  after((done) => {
-    rimraf(`${config.tempLocation}`, done);
-  });
-
-});
-
 describe('Do not move placeholders to not existing locations', () => {
 
   let registry;
