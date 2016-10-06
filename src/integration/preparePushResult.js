@@ -81,7 +81,7 @@ function copyFilesToLatestResultRepo(src, dest, independent) {
         .on('end', cb);
     }
     else {
-      copier.copyFilesAsync(src, dest);
+      copier.copyFiles(src, dest, cb);
     }
   };
 }
