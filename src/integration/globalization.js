@@ -24,15 +24,15 @@ function _globalizeTopic(topic, regions, config){
     copyRegion(sourcePathPattern, destinationPath);
     if(topic.latest){
       const destinationPathLatest = createDestinationPath('latest', false);
-      _copyRegion(sourcePathPattern, destinationPathLatest);
+      copyRegion(sourcePathPattern, destinationPathLatest);
     }
     if(sourcePathInternalPattern){
       const destinationPathInternal = createDestinationPath(topic.version, true);
-      _copyRegion(sourcePathInternalPattern, destinationPathInternal);
+      copyRegion(sourcePathInternalPattern, destinationPathInternal);
     }
     if(topic.latest && sourcePathInternalPattern){
       const destinationPathInternalLatest = createDestinationPath('latest', true);
-      _copyRegion(sourcePathInternalPattern, destinationPathInternalLatest);
+      copyRegion(sourcePathInternalPattern, destinationPathInternalLatest);
     }
   });
 }
