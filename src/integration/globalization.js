@@ -15,8 +15,12 @@ function globalization(registry, config, mapMarketsToRegions, next) {
 function _globalizeTopic(topic, regions, config){
   const sourcePathPattern = `${topic.genDocuLocation}/**/*`;
   const sourcePathInternalPattern = topic.genDocuLocationInternal ? `${topic.genDocuLocationInternal}/**/*` : null;
+  
+  if(!regions || !regions.length) 
+    return;
+    
   regions.forEach((region) => {
-
+    
     const createDestinationPath = _destinationPathCreator(config.skeletonOutDestination, topic, region.code);
     const copyRegion = _regionCopier(config.defaultBaseUriDomain, region, topic.type);
 
