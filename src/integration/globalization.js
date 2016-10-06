@@ -20,18 +20,18 @@ function _globalizeTopic(topic, regions, config){
     const createDestinationPath = _destinationPathCreator(config.skeletonOutDestination, topic, region.code);
     const copyRegion = _regionCopier(config.defaultBaseUriDomain, region, topic.type);
 
-    const destinationPath = createPath(topic.version, false);
+    const destinationPath = createDestinationPath(topic.version, false);
     copyRegion(sourcePathPattern, destinationPath);
     if(topic.latest){
-      const destinationPathLatest = createPath('latest', false);
+      const destinationPathLatest = createDestinationPath('latest', false);
       _copyRegion(sourcePathPattern, destinationPathLatest);
     }
     if(sourcePathInternalPattern){
-      const destinationPathInternal = createPath(topic.version, true);
+      const destinationPathInternal = createDestinationPath(topic.version, true);
       _copyRegion(sourcePathInternalPattern, destinationPathInternal);
     }
     if(topic.latest && sourcePathInternalPattern){
-      const destinationPathInternalLatest = createPath('latest', true);
+      const destinationPathInternalLatest = createDestinationPath('latest', true);
       _copyRegion(sourcePathInternalPattern, destinationPathInternalLatest);
     }
   });
