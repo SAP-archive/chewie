@@ -30,7 +30,8 @@ describe('Check if backup works for full generation', () => {
         'independent': false,
         'tempLocation': config.tempLocation,
         'notClonedRepositoriesFile': config.notClonedRepositoriesFile,
-        'indepenedentDocuRepositoriesFile': config.indepenedentDocuRepositoriesFile
+        'indepenedentDocuRepositoriesFile': config.indepenedentDocuRepositoriesFile,
+        'apinotebooksOutLocation': config.constantLocations.apinotebooksOutLocation
       };
 
       cloneDocuSources(registry, config, null, () => {
@@ -141,7 +142,8 @@ describe('Check if backup works for independent document generation', () => {
         'independent': true,
         'tempLocation': config.tempLocation,
         'notClonedRepositoriesFile': config.notClonedRepositoriesFile,
-        'indepenedentDocuRepositoriesFile': config.indepenedentDocuRepositoriesFile
+        'indepenedentDocuRepositoriesFile': config.indepenedentDocuRepositoriesFile,
+        'apinotebooksOutLocation': config.constantLocations.apinotebooksOutLocation
       };
 
       cloneDocuSources(registry, config, true, () => {
@@ -209,6 +211,23 @@ describe('Check if backup works for independent document generation', () => {
 
   it('FailingIpsum service folder should have some content', (done) => {
     _checkFileOrDir(true, `${config.tempLocation}/${config.generationResult.cloneLocation}/services/failingipsum/v1/index.html.eco`, true);
+    done();
+  });
+
+  /**
+   * Check if copyApiNotebooksToLatestResultRepos operation has been performed (preparePushResult -> copyApiNotebooksToLatestResultRepos)
+   */
+  it('APINotebooks folder contains a new test', (done) => {
+    _checkFileOrDir(true, `${config.tempLocation}/${config.generationResult.cloneLocation}/apinotebooks/SampleApiNotebook2.md`, true);
+    done();
+  });
+
+  it('APINotebooks file: SampleApiNotebook.md should be overwritten', (done) => {
+    const contentThatShouldBeReplaced = 'Test did not work!';
+
+    const sampleApiNotebookFile = testHelper.checkFileContentSync(`${config.tempLocation}/${config.generationResult.cloneLocation}/apinotebooks/SampleApiNotebook.md`, contentThatShouldBeReplaced);
+
+    expect(sampleApiNotebookFile).to.equal(false);
     done();
   });
 

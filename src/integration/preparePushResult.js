@@ -91,7 +91,7 @@ function copyApiNotebooksToLatestResultRepos(apinotebooksOutLocation, dest, inde
   return (cb) => {
     if (!independent) return cb();
 
-    vfs.src([apinotebooksOutLocation])
+    vfs.src([`${apinotebooksOutLocation}/**`])
       .pipe(vfs.dest(`${dest}/apinotebooks`, {overwrite: true}))
       .on('end', cb);
   };
