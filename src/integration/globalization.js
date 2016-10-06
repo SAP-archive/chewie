@@ -16,29 +16,42 @@ function _globalizeTopic(topic, regions, config){
   const sourcePathPattern = `${topic.genDocuLocation}/**/*`;
   const sourcePathInternalPattern = topic.genDocuLocationInternal ? `${topic.genDocuLocationInternal}/**/*` : null;
   regions.forEach((region) => {
-    const destinationPath = `${config.skeletonOutDestination}/${topic.type}/${region.code}/${topic.shortName}/${topic.version}`;
-    _copyRegion(sourcePathPattern, destinationPath, config.defaultBaseUriDomain, region, topic.type);
+
+    const createDestinationPath = _destinationPathCreator(config.skeletonOutDestination, topic, region.code);
+    const copyRegion = _regionCopier(config.defaultBaseUriDomain, region, topic.type);
+
+    const destinationPath = createPath(topic.version, false);
+    copyRegion(sourcePathPattern, destinationPath);
     if(topic.latest){
-      const destinationPathLatest = `${config.skeletonOutDestination}/${topic.type}/${region.code}/${topic.shortName}/latest`;
-      _copyRegion(sourcePathPattern, destinationPathLatest, config.defaultBaseUriDomain, region, topic.type);
+      const destinationPathLatest = createPath('latest', false);
+      _copyRegion(sourcePathPattern, destinationPathLatest);
     }
     if(sourcePathInternalPattern){
-      const destinationPathInternal = `${config.skeletonOutDestination}/internal/${topic.type}/${region.code}/${topic.shortName}/${topic.version}`;
-      _copyRegion(sourcePathInternalPattern, destinationPathInternal, config.defaultBaseUriDomain, region, topic.type);
-      if(topic.latest){
-        const destinationPathInternalLatest = `${config.skeletonOutDestination}/internal/${topic.type}/${region.code}/${topic.shortName}/latest`;
-        _copyRegion(sourcePathInternalPattern, destinationPathInternalLatest, config.defaultBaseUriDomain, region, topic.type);
-      }
+      const destinationPathInternal = createPath(topic.version, true);
+      _copyRegion(sourcePathInternalPattern, destinationPathInternal);
+    }
+    if(topic.latest && sourcePathInternalPattern){
+      const destinationPathInternalLatest = createPath('latest', true);
+      _copyRegion(sourcePathInternalPattern, destinationPathInternalLatest);
     }
   });
 }
 
-function _copyRegion(sourcePathPattern, destinationPath, baseUriDomain, region, type){
-  replacer.replaceInFile(sourcePathPattern, baseUriDomain, region.domain, destinationPath, _replaceUrl(destinationPath, region.code, type));
+function _destinationPathCreator(outDestination, topic, regionCode){
+  return function(version, isInternal){
+    const internalPath = isInternal ? '/internal' : '';
+    return `${outDestination}${internalPath}/${topic.type}/${regionCode}/${topic.shortName}/${version}`;
+  };
+}
+
+function _regionCopier(baseUriDomain, region, topicType){
+  return function(sourcePathPattern, destinationPath){
+    replacer.replaceInFile(sourcePathPattern, baseUriDomain, region.domain, destinationPath, _replaceUrl(destinationPath, region.code, topicType));
+  };
 }
 
 function _replaceUrl(destinationPath, regionCode, topicType){
-  return () => {
+  return function(){
     const destinationPathPattern = `${destinationPath}/**/*`;
     replacer.replaceInFile(destinationPathPattern, `/${topicType}/`, `/${topicType}/${regionCode}/`, destinationPath, () => {});
   };
