@@ -38,6 +38,7 @@ const config = {
 
   constantLocations: {
     apinotebooksLocation: './src/raw/apinotebooks',
+    apinotebooksOutLocation: './out/apinotebooks',
     apinotebooksTestMatrixFile: './src/raw/matrix/apinotebook.txt'
   },
 
