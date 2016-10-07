@@ -23,7 +23,8 @@ function _globalizeTopic(topic, regions, config, cb){
   regions.forEach((region) => {
     
     const createDestinationPath = pathCreator.globalizationDestination(config.skeletonOutDestination, topic, region.code);
-    const copyRegion = _regionCopier(config.defaultBaseUriDomain, region, topic.type);
+    const defaultDomain = config.defaultBaseUriDomain.replace(/^https?:\/\//, '');
+    const copyRegion = _regionCopier(defaultDomain, region, topic.type);
 
     const destinationPath = createDestinationPath(topic.version, false);
     copiers.push(misc.asyncTaskCreator(copyRegion, [sourcePathPattern, destinationPath]));
@@ -45,9 +46,9 @@ function _globalizeTopic(topic, regions, config, cb){
   async.series(copiers, cb);
 }
 
-function _regionCopier(baseUriDomain, region, topicType){
+function _regionCopier(domain, region, topicType){
   return function(sourcePathPattern, destinationPath, cb){
-    replacer.replaceInFile(sourcePathPattern, baseUriDomain, region.domain, destinationPath, _replaceUrl(destinationPath, region.code, topicType, cb));
+    replacer.replaceInFile(sourcePathPattern, domain, region.domain, destinationPath, _replaceUrl(destinationPath, region.code, topicType, cb));
   };
 }
 
