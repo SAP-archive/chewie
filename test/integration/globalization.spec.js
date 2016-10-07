@@ -58,8 +58,29 @@ describe('Copy all generated docu from passed registry to proper locations', () 
         const createDestinationPath = pathCreator.globalizationDestination(config.skeletonOutDestination, topicDetails, region.code);
 
         const destinationPath = createDestinationPath(topicDetails.version, false);
-        if (fs.existsSync(topicDetails.genDocuLocation)){
-          stats = fs.statSync(destinationPath);
+        stats = fs.statSync(destinationPath);
+        expect(stats.isDirectory()).to.equal(true);
+
+        // check copied latest dir
+        const destinationPathLatest = createDestinationPath('latest', false);
+        if (topicDetails.latest){
+          stats = fs.statSync(destinationPathLatest);
+          expect(stats.isDirectory()).to.equal(true);
+        }
+
+        const isInternal = fs.existsSync(topicDetails.genDocuLocationInternal);
+
+        // check copier to internal
+        const destinationPathInternal = createDestinationPath(topicDetails.version, true);
+        if (isInternal){
+          stats = fs.statSync(destinationPathInternal);
+          expect(stats.isDirectory()).to.equal(true);
+        }
+
+        // check copier latest dir to internal
+        const destinationPathLatestInternal = createDestinationPath('latest', true);
+        if (topicDetails.latest && isInternal){
+          stats = fs.statSync(destinationPathLatestInternal);
           expect(stats.isDirectory()).to.equal(true);
         }
       });
