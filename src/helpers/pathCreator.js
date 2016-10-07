@@ -3,7 +3,8 @@
 function globalizationDestination(outDestination, topic, regionCode){
   return function(version, isInternal){
     const internalPath = isInternal ? '/internal' : '';
-    return `${outDestination}${internalPath}/${topic.type}/${regionCode}/${topic.shortName}/${version}`;
+    const shortName = (isInternal && topic.shortNameInternal) ? topic.shortNameInternal : topic.shortName;
+    return `${outDestination}${internalPath}/${topic.type}/${regionCode}/${shortName}/${version}`;
   };
 }
 
