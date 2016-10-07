@@ -5,7 +5,6 @@ const eachRegTopic = require('../helpers/registryIterator'),
 
 function globalization(registry, config, mapMarketsToRegions, next) {
   eachRegTopic.async(registry, config, next, (topicDetails, cb) => {
-    if(topicDetails.type !== 'services') return cb();
     const regions = mapMarketsToRegions(topicDetails.markets);
     _globalizeTopic(topicDetails, regions, config);
     cb();
@@ -18,7 +17,7 @@ function _globalizeTopic(topic, regions, config){
   
   if(!regions || !regions.length) 
     return;
-    
+
   regions.forEach((region) => {
     
     const createDestinationPath = _destinationPathCreator(config.skeletonOutDestination, topic, region.code);
