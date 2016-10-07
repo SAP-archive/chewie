@@ -1,6 +1,7 @@
 'use strict';
 const eachRegTopic = require('../helpers/registryIterator'),
   replacer = require('../helpers/replacer'),
+  pathCreator = require('../helpers/pathCreator'),
   async = require('async');
 
 function globalization(registry, config, mapMarketsToRegions, next) {
@@ -20,7 +21,7 @@ function _globalizeTopic(topic, regions, config){
 
   regions.forEach((region) => {
     
-    const createDestinationPath = _destinationPathCreator(config.skeletonOutDestination, topic, region.code);
+    const createDestinationPath = pathCreator.globalizationDestination(config.skeletonOutDestination, topic, region.code);
     const copyRegion = _regionCopier(config.defaultBaseUriDomain, region, topic.type);
 
     const destinationPath = createDestinationPath(topic.version, false);
@@ -38,13 +39,6 @@ function _globalizeTopic(topic, regions, config){
       copyRegion(sourcePathInternalPattern, destinationPathInternalLatest);
     }
   });
-}
-
-function _destinationPathCreator(outDestination, topic, regionCode){
-  return function(version, isInternal){
-    const internalPath = isInternal ? '/internal' : '';
-    return `${outDestination}${internalPath}/${topic.type}/${regionCode}/${topic.shortName}/${version}`;
-  };
 }
 
 function _regionCopier(baseUriDomain, region, topicType){
