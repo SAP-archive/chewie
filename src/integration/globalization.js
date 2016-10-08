@@ -1,6 +1,7 @@
 'use strict';
 const eachRegTopic = require('../helpers/registryIterator'),
   replacer = require('../helpers/replacer'),
+  copier = require('../helpers/copier'),
   misc = require('../helpers/misc'),
   pathCreator = require('../helpers/pathCreator'),
   async = require('async');
@@ -23,6 +24,7 @@ function _globalizeTopic(topic, regions, config, cb){
   regions.forEach((region) => {
     
     const createDestinationPath = pathCreator.globalizationDestination(config.skeletonOutDestination, topic, region.code);
+
     const defaultDomain = config.defaultBaseUriDomain.replace(/^https?:\/\//, '');
     const copyRegion = _regionCopier(defaultDomain, region, topic.type);
 
@@ -46,9 +48,16 @@ function _globalizeTopic(topic, regions, config, cb){
   async.series(copiers, cb);
 }
 
-function _regionCopier(domain, region, topicType){
+function _regionCopier(srcDomain, region, topicType){
+
   return function(sourcePathPattern, destinationPath, cb){
-    replacer.replaceInFile(sourcePathPattern, domain, region.domain, destinationPath, _replaceUrl(destinationPath, region.code, topicType, cb));
+
+    const afterCopyFiles = region.code ? _replaceUrl(destinationPath, region.code, topicType, cb) : cb;
+    
+    if(!region.domain)
+      return  copier.copyFiles(sourcePathPattern, destinationPath, afterCopyFiles);
+
+    return replacer.replaceInFile(sourcePathPattern, srcDomain, region.domain, destinationPath, afterCopyFiles);
   };
 }
 
