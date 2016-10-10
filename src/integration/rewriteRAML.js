@@ -34,7 +34,6 @@ function rewriteRAML(registry, config, traits, next) {
     //using sourcesCloneLoc insted of the value that identifies if docu_dir is added
     //as docu_dir registry entry should have nothing to do with raml location
     sourcesCloneLoc = topicDetails.sourcesCloneLoc;
-
     raml = topicDetails.raml;
     ramlInternal = topicDetails.ramlInternal;
     dest = topicDetails.topicSrcLocation;

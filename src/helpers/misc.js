@@ -2,7 +2,8 @@
 const log = require('./logger'),
   fs = require('fs'),
   rimraf = require('rimraf'),
-  _ = require('underscore');
+  _ = require('underscore'),
+  systemPath = require('path');
 
 /**
  * This function removes all the white spaces and other special signs and changes provided string into one word, all lowercase.
@@ -52,11 +53,11 @@ function checkExtension(path, str) {
 
 function changeFileName(path, newFileName) {
 
-  const splitted = path.split('/');
+  const splitted = path.split(systemPath.sep);
   splitted.pop();
   const length = splitted.length;
   splitted[length] = newFileName;
-  const newPath = splitted.join('/');
+  const newPath = splitted.join(systemPath.sep);
 
   return newPath;
 }
