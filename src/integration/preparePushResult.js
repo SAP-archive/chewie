@@ -93,6 +93,7 @@ function copyApiNotebooksToLatestResultRepos(apinotebooksOutLocation, dest, inde
 
     vfs.src([`${apinotebooksOutLocation}/**`])
       .pipe(vfs.dest(`${dest}/apinotebooks`, {overwrite: true}))
+      .on('error', cb)
       .on('end', cb);
   };
 }

@@ -217,7 +217,7 @@ describe('Check if backup works for independent document generation', () => {
   /**
    * Check if copyApiNotebooksToLatestResultRepos operation has been performed (preparePushResult -> copyApiNotebooksToLatestResultRepos)
    */
-  it('APINotebooks folder contains a new test', (done) => {
+  it('APINotebooks folder contains a new apinotebook: SampleApiNotebook2.md', (done) => {
     _checkFileOrDir(true, `${config.tempLocation}/${config.generationResult.cloneLocation}/apinotebooks/SampleApiNotebook2.md`, true);
     done();
   });
