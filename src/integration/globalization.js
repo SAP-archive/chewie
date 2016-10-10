@@ -4,7 +4,9 @@ const eachRegTopic = require('../helpers/registryIterator'),
   copier = require('../helpers/copier'),
   misc = require('../helpers/misc'),
   pathCreator = require('../helpers/pathCreator'),
-  async = require('async');
+  async = require('async'),
+  log = require('../helpers/logger');
+  
 
 function globalization(registry, config, mapMarketsToRegions, next) {
   eachRegTopic.async(registry, config, next, (topicDetails, cb) => {
@@ -55,11 +57,11 @@ function _regionCopier(srcDomain, region, topicType){
     const afterCopyFiles = region.code ? _replaceUrl(destinationPath, region.code, topicType, cb) : cb;
     
     if(!region.domain){
-      console.log(`Copy '${sourcePathPattern}' to '${destinationPath}'.`);
+      log.info(`Copy '${sourcePathPattern}' to '${destinationPath}'.`);
       return  copier.copyFiles(sourcePathPattern, destinationPath, afterCopyFiles);
     }
 
-    console.log(`Copy '${sourcePathPattern}' to '${destinationPath}' and replace '${srcDomain}' to '${region.domain}'.`);
+    log.info(`Copy '${sourcePathPattern}' to '${destinationPath}' and replace '${srcDomain}' to '${region.domain}'.`);
     return replacer.replaceInFile(sourcePathPattern, srcDomain, region.domain, destinationPath, afterCopyFiles);
   };
 }

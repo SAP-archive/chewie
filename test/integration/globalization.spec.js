@@ -19,9 +19,11 @@ const config = require('../chewieConfigTest'),
   misc = require('../../src/helpers/misc'),
   eachRegTopic = require('../../src/helpers/registryIterator'),
   testHelper = require('../helpers/testHelper'),
-  async = require('async');
+  async = require('async'),
+  gulp = require('gulp'),
+  tap = require('gulp-tap');
 
-describe('Copy all generated docu from passed registry to proper locations', () => {
+describe('Run globalization task', () => {
 
   let registry;
 
@@ -57,6 +59,7 @@ describe('Copy all generated docu from passed registry to proper locations', () 
       regions.forEach((region) => {
         const createDestinationPath = pathCreator.globalizationDestination(config.skeletonOutDestination, topicDetails, region.code);
 
+        // check copied version dir
         const destinationPath = createDestinationPath(topicDetails.version, false);
         stats = fs.statSync(destinationPath);
         expect(stats.isDirectory()).to.equal(true);
@@ -70,14 +73,14 @@ describe('Copy all generated docu from passed registry to proper locations', () 
 
         const isInternal = fs.existsSync(topicDetails.genDocuLocationInternal);
 
-        // check copier to internal
+        // check copied to internal
         const destinationPathInternal = createDestinationPath(topicDetails.version, true);
         if (isInternal){
           stats = fs.statSync(destinationPathInternal);
           expect(stats.isDirectory()).to.equal(true);
         }
 
-        // check copier latest dir to internal
+        // check copied latest dir to internal
         const destinationPathLatestInternal = createDestinationPath('latest', true);
         if (topicDetails.latest && isInternal){
           stats = fs.statSync(destinationPathLatestInternal);
@@ -89,18 +92,54 @@ describe('Copy all generated docu from passed registry to proper locations', () 
     });
   });
 
+  it('should replace domain in copied files', (done) => {
+
+    eachRegTopic.async(registry, config, done, (topicDetails, cb) => {
+
+      const regions = _mapMarketsToRegions(topicDetails.markets);
+
+      if (!regions.length) return cb();
+
+      const checkReplaceDomain = [];      
+      regions.forEach((region) => {
+        if(!region.domain)
+          return;
+
+        const createDestinationPath = pathCreator.globalizationDestination(config.skeletonOutDestination, topicDetails, region.code);
+        const destinationPath = createDestinationPath(topicDetails.version, false);
+        checkReplaceDomain.push(_checkReplaceDomain(destinationPath));
+      });
+
+      async.series(checkReplaceDomain, cb);
+    });
+  });
+
   after((done) => {
     rimraf(`${config.tempLocation}`, done);
   });
 
 });
 
+function _checkReplaceDomain(destinationPath){
+  return function(cb){
+    gulp.src(`${destinationPath}/**/*`)
+      .pipe(tap((file) => {
+        if(!file.contents)
+          return;
+        const contentFile = String(file.contents);
+        const isReplacedDomain = contentFile.indexOf(config.defaultBaseUriDomain) === -1;
+        expect(isReplacedDomain).to.equal(true);
+      }))
+      .on('end', cb);
+  };
+}
+
 function _mapMarketsToRegions(markets){
   if(!markets.length) return false;
   return markets.map((market) => {
     return {
       code: market,
-      domain: `${market}.domain`
+      domain: market === 'us' ? `${market}.domain` : null
     };
   });
 }
