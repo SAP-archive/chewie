@@ -63,56 +63,48 @@ describe('Check if backup works for full generation', () => {
   /**
    * Check if backup operation has been performed (preparePushResult -> backupOfNotClonedRepositories)
    */
-  it('It should create backup folder', (done) => {
+  it('It should create backup folder', () => {
     _checkFileOrDir(false, `${config.tempLocation}/backup`, true);
-    done();
   });
 
-  it('FailingIpsum service folder should be in the backup folder', (done) => {
+  it('FailingIpsum service folder should be in the backup folder', () => {
     _checkFileOrDir(false, `${config.tempLocation}/backup/${config.tempLocation}/${config.generationResult.cloneLocation}/services/failingipsum`, true);
-    done();
   });
 
-  it('FailingIpsum service folder should have some content', (done) => {
+  it('FailingIpsum service folder should have some content', () => {
     _checkFileOrDir(true, `${config.tempLocation}/backup/${config.tempLocation}/${config.generationResult.cloneLocation}/services/failingipsum/v1/index.html.eco`, true);
-    done();
   });
 
 
   /**
    * Check if deletePreviouslyClonedResultsRepo operation has been performed (preparePushResult -> deletePreviouslyClonedResultsRepo)
    */
-  it('DeleteIpsum service folder should be deleted', (done) => {
+  it('DeleteIpsum service folder should be deleted', () => {
     _checkFileOrDir(true, `${config.tempLocation}/${config.generationResult.cloneLocation}/services/deleteipsum`, false);
-    done();
   });
 
 
   /**
    * Check if copyFilesAsync operation has been performed (preparePushResult -> copier.copyFilesAsync)
    */
-  it(`AdditionalIpsum service folder should be copied to ${config.generationResult.cloneLocation} folder`, (done) => {
+  it(`AdditionalIpsum service folder should be copied to ${config.generationResult.cloneLocation} folder`, () => {
     _checkFileOrDir(false, `${config.tempLocation}/${config.generationResult.cloneLocation}/services/additionalipsum`, true);
-    done();
   });
 
-  it('AdditionalIpsum service folder should have some content', (done) => {
+  it('AdditionalIpsum service folder should have some content', () => {
     _checkFileOrDir(true, `${config.tempLocation}/${config.generationResult.cloneLocation}/services/additionalipsum/v1/index.html.eco`, true);
-    done();
   });
 
 
   /**
    * Check if restoreBackupOfNotClonedRepositories operation has been performed (preparePushResult -> deletePreviouslyClonedResultsRepo)
    */
-  it('FailingIpsum service folder should be restored', (done) => {
+  it('FailingIpsum service folder should be restored', () => {
     _checkFileOrDir(false, `${config.tempLocation}/${config.generationResult.cloneLocation}/services/failingipsum`, true);
-    done();
   });
 
-  it('FailingIpsum service folder should have some content', (done) => {
+  it('FailingIpsum service folder should have some content', () => {
     _checkFileOrDir(true, `${config.tempLocation}/${config.generationResult.cloneLocation}/services/failingipsum/v1/index.html.eco`, true);
-    done();
   });
 
 
@@ -162,9 +154,8 @@ describe('Check if backup works for independent document generation', () => {
   /**
    * Check if notClonedRepositories file was created and contains content (cloneDocuSources -> _createMatrixWithRepositories)
    */
-  it('It should create notClonedRepositories.json file', (done) => {
+  it('It should create notClonedRepositories.json file', () => {
     _checkFileOrDir(true, `${config.tempLocation}/notClonedRepositories.json`, true);
-    done();
   });
 
 
@@ -172,63 +163,55 @@ describe('Check if backup works for independent document generation', () => {
    * Check if indepenedentDocuRepositories file was created and contains content (cloneDocuSources -> _createMatrixWithRepositories)
    */
 
-  it('It should create indepenedentDocuRepositories.json file', (done) => {
+  it('It should create indepenedentDocuRepositories.json file', () => {
     _checkFileOrDir(true, `${config.tempLocation}/indepenedentDocuRepositories.json`, true);
-    done();
   });
 
 
   /**
    * Check if deletePreviouslyClonedResultsRepo operation has been performed (preparePushResult -> deletePreviouslyClonedResultsRepo)
    */
-  it('DeleteIpsum service folder should not be deleted', (done) => {
+  it('DeleteIpsum service folder should not be deleted', () => {
     _checkFileOrDir(false, `${config.tempLocation}/${config.generationResult.cloneLocation}/services/deleteipsum`, true);
-    done();
   });
 
 
   /**
    * Check if copyFilesAsync operation has been performed (preparePushResult -> copier.copyFilesAsync)
    */
-  it(`AdditionalIpsum service folder should be copied to ${config.generationResult.cloneLocation} folder`, (done) => {
+  it(`AdditionalIpsum service folder should be copied to ${config.generationResult.cloneLocation} folder`, () => {
     _checkFileOrDir(false, `${config.tempLocation}/${config.generationResult.cloneLocation}/services/additionalipsum`, true);
-    done();
   });
 
-  it('AdditionalIpsum service folder should have some content', (done) => {
+  it('AdditionalIpsum service folder should have some content', () => {
     _checkFileOrDir(true, `${config.tempLocation}/${config.generationResult.cloneLocation}/services/additionalipsum/v1/index.html.eco`, true);
-    done();
   });
 
 
   /**
    * Check if restoreBackupOfNotClonedRepositories operation has been performed (preparePushResult -> deletePreviouslyClonedResultsRepo)
    */
-  it('FailingIpsum service folder should be restored', (done) => {
+  it('FailingIpsum service folder should be restored', () => {
     _checkFileOrDir(false, `${config.tempLocation}/${config.generationResult.cloneLocation}/services/failingipsum`, true);
-    done();
   });
 
-  it('FailingIpsum service folder should have some content', (done) => {
+  it('FailingIpsum service folder should have some content', () => {
     _checkFileOrDir(true, `${config.tempLocation}/${config.generationResult.cloneLocation}/services/failingipsum/v1/index.html.eco`, true);
-    done();
   });
 
   /**
    * Check if copyApiNotebooksToLatestResultRepos operation has been performed (preparePushResult -> copyApiNotebooksToLatestResultRepos)
    */
-  it('APINotebooks folder contains a new apinotebook: SampleApiNotebook2.md', (done) => {
+  it('APINotebooks folder contains a new apinotebook: SampleApiNotebook2.md', () => {
     _checkFileOrDir(true, `${config.tempLocation}/${config.generationResult.cloneLocation}/apinotebooks/SampleApiNotebook2.md`, true);
-    done();
   });
 
-  it('APINotebooks file: SampleApiNotebook.md should be overwritten', (done) => {
+  it('APINotebooks file: SampleApiNotebook.md should be overwritten', () => {
     const contentThatShouldBeReplaced = 'Test did not work!';
 
     const sampleApiNotebookFile = testHelper.checkFileContentSync(`${config.tempLocation}/${config.generationResult.cloneLocation}/apinotebooks/SampleApiNotebook.md`, contentThatShouldBeReplaced);
 
     expect(sampleApiNotebookFile).to.equal(false);
-    done();
   });
 
 
