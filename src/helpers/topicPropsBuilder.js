@@ -39,6 +39,9 @@ function topicPropsBuilder(regEntry, sourceEntry, config) {
   //type of the content
   const type = misc.trimAdvanced(regEntry.type);
 
+  //kaltura videoId to display in landing packages
+  const videoId = regEntry.videoId;
+
   //service version
   const version = sourceEntry.version;
 
@@ -274,6 +277,7 @@ function topicPropsBuilder(regEntry, sourceEntry, config) {
     description,
     date,
     type,
+    videoId,
     docuUrl,
     version,
     latest,
