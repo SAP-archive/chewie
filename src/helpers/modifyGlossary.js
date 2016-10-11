@@ -11,7 +11,7 @@ function modifyGlossary(name) {
   return (file) => {
 
     let md = new mkmeta(file.path),
-      serviceOrTool,
+      topic,
       lockCase;
 
     try {
@@ -20,10 +20,7 @@ function modifyGlossary(name) {
 
       if(md.term && md.description){
 
-        if(md.service)
-          serviceOrTool = `service: ${name}`;
-        else
-          serviceOrTool = `tool: ${name}`;
+        topic = `topic: ${name}`;
 
         //new line is added here as this metadata is not common and we don't want to have an extra white space in metadatas
         lockCase = (md.lock_case) ? `\nlock_case: ${md.lock_case}` : '';
@@ -32,7 +29,7 @@ function modifyGlossary(name) {
         const description = md.description.replace(/"/g, '&quot;');
 
         file.contents = Buffer.concat([
-          new Buffer(`---\nterm: ${md.term}\ndescription: ${description}\n${serviceOrTool}${lockCase}\ninternal: false\n---\n`),
+          new Buffer(`---\nterm: ${md.term}\ndescription: ${description}\n${topic}${lockCase}\ninternal: false\n---\n`),
           new Buffer(`<span class="u-help-label" data-toggle="tooltip" data-placement="top" title="${description}">${md.term}</span>`)
         ]);
       }
