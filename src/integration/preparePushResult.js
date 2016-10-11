@@ -21,7 +21,8 @@ const async = require('async'),
  * independent - boolean value, which informs if the independent docu generation was used,
  * tempLocation - location of the tempLocation folder,
  * notClonedRepositoriesFile - name of the file, which stores the information about not cloned repositories,
- * indepenedentDocuRepositoriesFile - ame of the file, which stores the information about repositories used during the independent docu generation,
+ * indepenedentDocuRepositoriesFile - name of the file, which stores the information about repositories used during the independent docu generation,
+ * apinotebooksOutLocation - directory where API Notebooks are stored in after generation - out folder,
  * @param {Function} [next] - callback for asynch operations
  */
 function preparePushResult(opt, next) {
@@ -32,13 +33,15 @@ function preparePushResult(opt, next) {
     independent = opt.independent,
     tempLocation = opt.tempLocation,
     notClonedRepositoriesFile = opt.notClonedRepositoriesFile,
-    indepenedentDocuRepositoriesFile = opt.indepenedentDocuRepositoriesFile;
+    indepenedentDocuRepositoriesFile = opt.indepenedentDocuRepositoriesFile,
+    apinotebooksOutLocation = opt.apinotebooksOutLocation;
 
   async.series([
     clone(repo, branch, dest),
     backupOfNotClonedRepositories(independent, tempLocation, notClonedRepositoriesFile),
     deletePreviouslyClonedResultsRepo(dest, independent, tempLocation, indepenedentDocuRepositoriesFile),
-    copyFilesToLatestResultRepo(src, dest, tempLocation, independent),
+    copyFilesToLatestResultRepo(src, dest, independent),
+    copyApiNotebooksToLatestResultRepos(apinotebooksOutLocation, dest, independent),
     restoreBackupOfNotClonedRepositories(independent, tempLocation, notClonedRepositoriesFile)
   ], next);
 }
@@ -69,6 +72,7 @@ function deletePreviouslyClonedResultsRepo(dest, independent, tempLocation, inde
   };
 }
 
+//copy documentation files to Latest Result Repo
 function copyFilesToLatestResultRepo(src, dest, independent) {
   return (cb) => {
     if (independent) {
@@ -77,8 +81,20 @@ function copyFilesToLatestResultRepo(src, dest, independent) {
         .on('end', cb);
     }
     else {
-      copier.copyFilesAsync(src, dest);
+      copier.copyFiles(src, dest, cb);
     }
+  };
+}
+
+//copy API Notebooks files to Latest Result Repo
+function copyApiNotebooksToLatestResultRepos(apinotebooksOutLocation, dest, independent) {
+  return (cb) => {
+    if (!independent) return cb();
+
+    vfs.src([`${apinotebooksOutLocation}/**`])
+      .pipe(vfs.dest(`${dest}/apinotebooks`, {overwrite: true}))
+      .on('error', cb)
+      .on('end', cb);
   };
 }
 
