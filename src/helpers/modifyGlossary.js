@@ -6,7 +6,7 @@ const log = require('../helpers/logger'),
  * This function modifies all glossary partials during copy
  * @return {Function} - anonymous function that can be used in tap operations on streap during gulp copy
  */
-function modifyGlossary() {
+function modifyGlossary(name) {
 
   return (file) => {
 
@@ -18,12 +18,12 @@ function modifyGlossary() {
 
       md = md.metadata();
 
-      if(md.term && md.description && (md.service || md.tool)){
+      if(md.term && md.description){
 
         if(md.service)
-          serviceOrTool = `service: ${md.service}`;
+          serviceOrTool = `service: ${name}`;
         else
-          serviceOrTool = `tool: ${md.tool}`;
+          serviceOrTool = `tool: ${name}`;
 
         //new line is added here as this metadata is not common and we don't want to have an extra white space in metadatas
         lockCase = (md.lock_case) ? `\nlock_case: ${md.lock_case}` : '';

@@ -14,7 +14,7 @@ const eachRegTopic = require('../helpers/registryIterator'),
 
 function copyContent(registry, config, next) {
 
-  let src, dest, type, srcInt, destInt, srcPartial, destPartial, srcIntPartial, destIntPartial, srcRN, destRN, srcIntRN, destIntRN;
+  let src, dest, type, srcInt, destInt, srcPartial, destPartial, srcIntPartial, destIntPartial, name, nameInt, srcRN, destRN, srcIntRN, destIntRN;
 
   eachRegTopic.async(registry, config, next, (topicDetails, cb) => {
 
@@ -28,6 +28,8 @@ function copyContent(registry, config, next) {
     srcPartial = topicDetails.partialsSrcLocation;
     destPartial = topicDetails.partialsDestLocation;
     srcIntPartial = topicDetails.partialsSrcLocationInternal;
+    name = topicDetails.name;
+    nameInt = topicDetails.nameInternal;
 
     //RELEASE NOTES only for latest
     if (topicDetails.latest) {
@@ -41,11 +43,12 @@ function copyContent(registry, config, next) {
 
       copier.copyFilesAsync(src, dest, 'external docu'),
       copier.copyFilesAsync(srcInt, destInt, 'internal docu'),
-      copier.copyFilesTapAsync(srcPartial, destPartial, modifyGlossary, 'external partials'),
-      copier.copyFilesTapAsync(srcIntPartial, destPartial, modifyGlossary, 'internal partials'), //even though it is internal section every partial is copied to same location
+      copier.copyFilesTapAsync(srcPartial, destPartial, modifyGlossary.bind(null, name), 'external partials'),
+      copier.copyFilesTapAsync(srcIntPartial, destPartial, modifyGlossary.bind(null, nameInt), 'internal partials'), //even though it is internal section every partial is copied to same location
       copier.copyFilesAsync(srcRN, destRN, 'external rn'),
       copier.copyFilesAsync(srcIntRN, destIntRN, 'internal rn')
     ], cb);
+
   });
 }
 
