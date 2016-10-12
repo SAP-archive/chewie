@@ -50,7 +50,7 @@
   "scripts": {
     "test": "npm run test-unit && npm run test-integration",
     "test-unit": "NODE_ENV=master mocha test/unit/*.spec.js",
-    "test-integration": "NODE_ENV=master mocha--timeout 40000 test/integration/*.spec.js"
+    "test-integration": "NODE_ENV=master mocha --timeout 40000 test/integration/*.spec.js"
   },
   "repository": {
     "type": "git",
