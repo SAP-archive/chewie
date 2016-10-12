@@ -72,7 +72,9 @@ function _prepareRegistryForExternal(registrySource, branchTag, config, next) {
   const registryCloneLocation = config.registry.pathFolderWithClonedRegistry;
 
   //clone repo and then create the registry
-  cloner.cloneRepo(registrySource, branchTag, clonePath, () => {
+  cloner.cloneRepo(registrySource, branchTag, clonePath, (e) => {
+    
+    if(e) log.warning(e);
 
     //calling concat function to prepare a final registry file
     concater.concatRegistry(registryCloneLocation, config, next);
