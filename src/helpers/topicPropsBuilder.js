@@ -39,7 +39,7 @@ function topicPropsBuilder(regEntry, sourceEntry, config) {
   //type of the content
   const type = misc.trimAdvanced(regEntry.type);
 
-  //kaltura videoId to display in landing packages
+  //kaltura videoId for knowledgehub landing page (optional)
   const videoId = regEntry.videoId;
 
   //service version
