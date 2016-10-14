@@ -8,8 +8,19 @@ const eachRegTopic = require('../helpers/registryIterator'),
   log = require('../helpers/logger');
   
 
+/**
+ * Function copies generated entries to proper locations
+ * @param {Array} [registry] - array of full registry
+ * @param {Object} [config] - basic integration configuration
+ * @param {Function} [mapMarketsToRegions] - function accepts array of string with markets, 
+ *                                           should return array with region object { 
+ *                                                                                    code: location dir name, 
+ *                                                                                    domain: string to replace with defaultBaseURI from config 
+ *                                                                                   }
+ * @param {Function} [next] - callback for asynch operations
+ */
 function globalization(registry, config, mapMarketsToRegions, next) {
-  eachRegTopic.async(registry, config, next, (topicDetails, cb) => {
+  eachRegTopic.sync(registry, config, next, (topicDetails, cb) => {
     const regions = mapMarketsToRegions(topicDetails.markets);
     _globalizeTopic(topicDetails, regions, config, cb);
   });
@@ -19,8 +30,7 @@ function _globalizeTopic(topic, regions, config, cb){
   const sourcePathPattern = `${topic.genDocuLocation}/**/*`;
   const sourcePathInternalPattern = topic.genDocuLocationInternal ? `${topic.genDocuLocationInternal}/**/*` : null;
   
-  if(!regions || !regions.length) 
-    return cb();
+  if(!Array.isArray(regions)) return cb();
 
   const copiers = [];
   regions.forEach((region) => {

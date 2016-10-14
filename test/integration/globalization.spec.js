@@ -53,7 +53,7 @@ describe('Run globalization task', () => {
 
       const regions = _mapMarketsToRegions(topicDetails.markets);
 
-      if (!regions.length) return cb();
+      if(!Array.isArray(regions)) return cb();
 
       // should copied docus to proper dirs
       regions.forEach((region) => {
@@ -121,15 +121,17 @@ describe('Run globalization task', () => {
 });
 
 function _checkReplaceDomain(destinationPath){
-  return function(cb){
+  return (cb) => {
     gulp.src(`${destinationPath}/**/*`)
-      .pipe(tap((file) => {
+      .pipe(tap((file, stream) => {
         if(!file.contents)
-          return;
+          return stream;
         const contentFile = String(file.contents);
         const isReplacedDomain = contentFile.indexOf(config.defaultBaseUriDomain) === -1;
         expect(isReplacedDomain).to.equal(true);
+        return stream;
       }))
+      .on('error', cb)
       .on('end', cb);
   };
 }
