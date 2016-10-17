@@ -15,7 +15,8 @@ const prepareRegistry = require('./src/integration/prepareRegistry'),
   pushResult = require('./src/integration/pushResult'),
   copyTutorials = require('./src/integration/copyTutorials'),
   replaceApiReferences = require('./src/integration/replaceApiReferences'),
-  removeClonedRepositories = require('./src/integration/removeClonedRepositories');
+  removeClonedRepositories = require('./src/integration/removeClonedRepositories'),
+  globalization = require('./src/integration/globalization');
 
 
 // helpers
@@ -83,7 +84,8 @@ const chewie = {
   ziper,
   testHelper,
   cleanSkeleton,
-  minify
+  minify,
+  globalization
 };
 
 module.exports = chewie;
