@@ -1,7 +1,7 @@
 ### Install
 
 ```
-npm install https://github.com/hybris/chewie.git
+npm install chewie
 ```
 
 

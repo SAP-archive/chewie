@@ -1,8 +1,8 @@
 {
   "name": "chewie",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Helper module for documentation independent generation concept.",
-  "homepage": "https://github.com/hybris/chewie#readme",
+  "homepage": "https://github.com/YaaS/chewie",
   "license": "Apache 2.0",
   "engines": {
     "node": "4.2.1",
@@ -54,12 +54,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/hybris/chewie.git"
+    "url": "https://github.com/YaaS/chewie.git"
   },
   "author": {
     "name": "SAP Hybris"
   },
   "bugs": {
-    "url": "https://github.com/hybris/chewie/issues"
+    "url": "https://github.com/YaaS/chewie/issues"
   }
 }
