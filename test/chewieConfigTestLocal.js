@@ -30,7 +30,7 @@ const config = {
   },
 
   generationResult: {
-    srcLocation: 'https://github.com/hybris/chewie-sample-result.git',
+    srcLocation: 'https://github.com/YaaS/chewie-sample-result.git',
     branch: 'master',
     cloneLocation: 'latestStarWarsRepo'
   },

@@ -4,7 +4,7 @@
   "area": "Tools",
   "source": [
     {
-      "location": "https://github.com/hybris/chewie-sample-data.git",
+      "location": "https://github.com/YaaS/chewie-sample-data.git",
       "docu_dir": "/content/tools/baconipsum",
       "branch_or_tag": "master"
     }

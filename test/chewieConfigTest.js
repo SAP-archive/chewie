@@ -11,7 +11,7 @@ const config = {
 
   registry: {
     location: process.env.REGISTRY_LOCATION || 'remote',
-    path: process.env.REGISTRY_PATH || 'https://github.com/hybris/chewie-sample-data.git',
+    path: process.env.REGISTRY_PATH || 'https://github.com/YaaS/chewie-sample-data.git',
     fileName: 'whatever.json',
     branch: 'master',
     shortVersionFileName: 'smallwhatever.json',
@@ -31,7 +31,7 @@ const config = {
   },
 
   generationResult: {
-    srcLocation: 'https://github.com/hybris/chewie-sample-result.git',
+    srcLocation: 'https://github.com/YaaS/chewie-sample-result.git',
     branch: 'master',
     cloneLocation: 'latestStarWarsRepo'
   },

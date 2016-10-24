@@ -8,7 +8,7 @@
       "builder_identifier": "failing-ipsum",
       "version": "v1",
       "latest": true,
-      "location": "https://fakeUser:fakeId@github.com/hybris/failing-sample-data.git",
+      "location": "https://fakeUser:fakeId@github.com/YaaS/failing-sample-data.git",
       "docu_dir": "/content/services/failingipsum",
       "branch_or_tag": "master",
       "raml": "src/main/resources/api/failing-ipsum.raml"
