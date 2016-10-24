@@ -14,7 +14,7 @@ const gulp = require('gulp'),
  * @param {Function} [next] - callback for asynch operations
  */
 function replaceInFile(src, oldContent, newContent, dest, next) {
-  gulp.src(src)
+  gulp.src([src, '!./**/*.{png,jpg,jpeg,bmp,gif}'])
     .pipe(makeBuffer())
     .pipe(replace(oldContent, newContent))
     .on('error', (err) => {
