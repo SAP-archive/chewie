@@ -3,7 +3,8 @@ const gulp = require('gulp'),
   replace = require('gulp-replace'),
   validator = require('../helpers/validator'),
   makeBuffer = require('gulp-buffer'),
-  log = require('./logger');
+  log = require('./logger'),
+  async = require('async');
 
 /**
  * This function replaces given value in the file
@@ -14,15 +15,25 @@ const gulp = require('gulp'),
  * @param {Function} [next] - callback for asynch operations
  */
 function replaceInFile(src, oldContent, newContent, dest, next) {
-  gulp.src(src)
-    .pipe(makeBuffer())
-    .pipe(replace(oldContent, newContent))
-    .on('error', (err) => {
-      log.error(`Replacement for the following file has failed: ${src}`);
-      next(err);
-    })
-    .pipe(gulp.dest(dest))
-    .on('end', next);
+
+  async.series({
+    img: (cb) => {
+      gulp.src(`${src}.+(jpg|jpeg|gif|png|bmp|gif)`)
+        .pipe(gulp.dest(dest))
+        .on('end', cb);
+    },
+    files: (cb) => {
+      gulp.src([src, '!./**/*.{png,jpg,jpeg,bmp,gif}'])
+        .pipe(makeBuffer())
+        .pipe(replace(oldContent, newContent))
+        .on('error', (err) => {
+          log.error(`Replacement for the following file has failed: ${src}`);
+          cb(err);
+        })
+        .pipe(gulp.dest(dest))
+        .on('end', cb)
+    }
+  }, next);
 }
 
 /**
