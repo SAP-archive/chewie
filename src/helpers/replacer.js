@@ -31,7 +31,7 @@ function replaceInFile(src, oldContent, newContent, dest, next) {
           cb(err);
         })
         .pipe(gulp.dest(dest))
-        .on('end', cb)
+        .on('end', cb);
     }
   }, next);
 }
