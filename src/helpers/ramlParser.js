@@ -10,7 +10,8 @@ const gulp = require('gulp'),
   creator = require('./creator'),
   validator = require('./validator'),
   _ = require('underscore'),
-  vinylPaths = require('vinyl-paths');
+  vinylPaths = require('vinyl-paths'),
+  ramlExtender = require('./ramlExtender');
 
 /**
  * This function parses RAML files
@@ -86,6 +87,9 @@ function _parseRAML(filePath, dest, baseUri, listTraits, cb) {
     data.resources && data.resources.length && data.resources.forEach((trait) => {
       trait.is = _avoidRepetitiousTraits(trait.is);
     });
+
+    // extend RAML, dereferencing $refs from JSON schemas
+    ramlExtender.extend(data);
 
     // object to RAML
     const result = toRAML(data);
