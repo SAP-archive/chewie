@@ -44,3 +44,7 @@ Open index.html under apidocs/documentation
   ```
   NODE_ENV=master ./node_modules/mocha/bin/mocha --timeout 40000 --harmony_shipping test/integration/NAME_OF_THE_INTEGRATION_TEST.spec.js
   ```
+  
+### License
+
+This library is licensed under Apache 2.0. Full license text is available in [LICENSE](LICENSE).
