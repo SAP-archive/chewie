@@ -12,18 +12,22 @@ function extend(objectRaml){
 function _refsResolver(schemas){
 
   return function _resolveRefs(object){
-    console.log('_resolveRefs');
-    if(Array.isArray(object))
-      object.forEach((item) => _resolveRefs(item));
-    else if(typeof object === 'object'){
-      Object.keys(object).forEach((key) => {
+    try {
+      if(Array.isArray(object))
+        object.forEach((item) => _resolveRefs(item));
+      else if(typeof object === 'object'){
+        Object.keys(object).forEach((key) => {
 
-        const value = object[key];
-        if(typeof value !== 'string')
-          return _resolveRefs(object[key]);
-        
-        object[key] = _getResolvedString(value, schemas); 
-      });
+          const value = object[key];
+          if(typeof value !== 'string')
+            return _resolveRefs(object[key]);
+          
+          object[key] = _getResolvedString(value, schemas); 
+        });
+      }
+    }
+    catch(err){
+      console.log('_resolveRefs', err);
     }
   };
 
@@ -37,7 +41,6 @@ function _getResolvedString(string, schemas){
     return JSON.stringify(object, null, 4);
   }
   catch(err){
-    console.log('_getResolvedString', err);
     return string;
   }
 }
