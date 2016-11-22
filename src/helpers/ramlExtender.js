@@ -1,16 +1,18 @@
 function extend(objectRaml){
-
+  console.log(0);
   const schemas = _getSchemas(objectRaml);
   if(!schemas)
     return objectRaml;
-
+  console.log(1);
   const resolve = _refsResolver(schemas);
   resolve(objectRaml);
+  console.log(100);
 }
 
 function _refsResolver(schemas){
 
   return function _resolveRefs(object){
+    console.log('_resolveRefs');
     if(Array.isArray(object))
       object.forEach((item) => _resolveRefs(item));
     else if(typeof object === 'object'){
@@ -35,6 +37,7 @@ function _getResolvedString(string, schemas){
     return JSON.stringify(object, null, 4);
   }
   catch(err){
+    console.log('_getResolvedString', err);
     return string;
   }
 }
