@@ -1,12 +1,13 @@
+/**
+ * This function extends RAML object, dereferences $ref keys
+ * @param {object} [objectRaml] - RAML object to extend
+ */
 function extend(objectRaml){
-  console.log(0);
   const schemas = _getSchemas(objectRaml);
   if(!schemas)
     return objectRaml;
-  console.log(1);
   const resolve = _refsResolver(schemas);
   resolve(objectRaml);
-  console.log(100);
 }
 
 function _refsResolver(schemas){
@@ -15,23 +16,21 @@ function _refsResolver(schemas){
     
     if(!object) return;
 
-    try {
-      if(Array.isArray(object))
-        object.forEach((item) => _resolveRefs(item));
-      else if(typeof object === 'object'){
-        Object.keys(object).forEach((key) => {
+    if(Array.isArray(object)){
+      object.forEach((item) => _resolveRefs(item));
+    }
 
-          const value = object[key];
-          if(typeof value !== 'string')
-            return _resolveRefs(object[key]);
-          
-          object[key] = _getResolvedString(value, schemas); 
-        });
-      }
+    if(typeof object === 'object'){
+      Object.keys(object).forEach((key) => {
+
+        const value = object[key];
+        if(typeof value !== 'string')
+          return _resolveRefs(object[key]);
+        
+        object[key] = _getResolvedString(value, schemas); 
+      });
     }
-    catch(err){
-      console.log('_resolveRefs', err);
-    }
+
   };
 
 }
