@@ -15,36 +15,40 @@ function extend(objectRaml){
 function _refsResolver(schemas){
 
   return function _resolveRefs(object){
-    
-    if(!object) return;
+    try {
+      if(!object) return;
 
-    if(Array.isArray(object)){
-      object.forEach((item) => _resolveRefs(item));
+      if(Array.isArray(object)){
+        object.forEach((item) => _resolveRefs(item));
+      }
+
+      if(typeof object === 'object'){
+        Object.keys(object).forEach((key) => {
+
+          const value = object[key];
+          if(typeof value !== 'string')
+            return _resolveRefs(object[key]);
+          
+          object[key] = _getResolvedString(value, schemas); 
+        });
+      }
     }
-
-    if(typeof object === 'object'){
-      Object.keys(object).forEach((key) => {
-
-        const value = object[key];
-        if(typeof value !== 'string')
-          return _resolveRefs(object[key]);
-        
-        object[key] = _getResolvedString(value, schemas); 
-      });
+    catch(err){
+      log.error('_refsResolver', err);
     }
-
   };
 
 }
 
 function _getResolvedString(string, schemas){
-  try{
+  try {
     const object = JSON.parse(string);
     const extendObject = _objectExtender(schemas);
     extendObject(object);
     return JSON.stringify(object, null, 4);
   }
   catch(err){
+    log.error('_getResolvedString', err);
     return string;
   }
 }
@@ -71,7 +75,7 @@ function _objectExtender(schemas){
       });
     }
     catch(err){
-      log.error(err);
+      log.error('_objectExtender', err);
     }
   };
 
