@@ -1,3 +1,5 @@
+const log = require('./logger');
+
 /**
  * This function extends RAML object, dereferences $ref keys
  * @param {object} [objectRaml] - RAML object to extend
@@ -50,22 +52,27 @@ function _getResolvedString(string, schemas){
 function _objectExtender(schemas){
 
   return function _extendObject(object){
-    Object.keys(object).forEach((key) => {
-      const value = object[key];
+    try {
+      Object.keys(object).forEach((key) => {
+        const value = object[key];
 
-      if(typeof value === 'object')
-        return _extendObject(value);
+        if(typeof value === 'object')
+          return _extendObject(value);
 
-      if(key === '$ref'){
-        const refName = value;
-        const schema = schemas[refName];
-        if(!schema)
-          return;
+        if(key === '$ref'){
+          const refName = value;
+          const schema = schemas[refName];
+          if(!schema)
+            return;
 
-        delete object[key];
-        Object.assign(object, schema);
-      }
-    });
+          delete object[key];
+          Object.assign(object, schema);
+        }
+      });
+    }
+    catch(err){
+      log.error(err);
+    }
   };
 
 }
