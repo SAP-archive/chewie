@@ -93,7 +93,7 @@ function _parseRAML(filePath, dest, baseUri, listTraits, cb) {
       ramlExtender.extend(data);
     }
     catch(err){
-      logger.error('RAML extender', err);
+      console.log('RAML extender', err);
     }
 
     // object to RAML

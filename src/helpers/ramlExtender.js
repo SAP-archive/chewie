@@ -34,7 +34,7 @@ function _refsResolver(schemas){
       }
     }
     catch(err){
-      log.error('_refsResolver', err);
+      console.log('_refsResolver', err);
     }
   };
 
@@ -48,7 +48,7 @@ function _getResolvedString(string, schemas){
     return JSON.stringify(object, null, 4);
   }
   catch(err){
-    log.error('_getResolvedString', err);
+    console.log('_getResolvedString', err);
     return string;
   }
 }
@@ -75,7 +75,7 @@ function _objectExtender(schemas){
       });
     }
     catch(err){
-      log.error('_objectExtender', err);
+      console.log('_objectExtender', err);
     }
   };
 
