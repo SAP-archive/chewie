@@ -12,6 +12,9 @@ function extend(objectRaml){
 function _refsResolver(schemas){
 
   return function _resolveRefs(object){
+    
+    if(!object) return;
+
     try {
       if(Array.isArray(object))
         object.forEach((item) => _resolveRefs(item));
