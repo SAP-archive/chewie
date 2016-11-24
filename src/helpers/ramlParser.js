@@ -89,12 +89,7 @@ function _parseRAML(filePath, dest, baseUri, listTraits, cb) {
     });
 
     // extend RAML, dereferencing $refs from JSON schemas
-    try {
-      ramlExtender.extend(data);
-    }
-    catch(err){
-      console.log('RAML extender', err);
-    }
+    ramlExtender.extend(data);
 
     // object to RAML
     const result = toRAML(data);
