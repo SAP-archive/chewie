@@ -53,7 +53,6 @@ function _getResolvedString(string, schemas){
     return JSON.stringify(object, null, 4);
   }
   catch(err){
-    log.error(err);
     return string;
   }
 }
