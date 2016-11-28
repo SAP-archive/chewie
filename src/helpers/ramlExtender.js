@@ -8,21 +8,21 @@ function extend(objectRaml){
   const schemas = _getSchemas(objectRaml);
   if(!schemas)
     return objectRaml;
-  const resolve = _refsResolver(schemas);
-  resolve(objectRaml);
+  const extendRaml = _ramlExtender(schemas);
+  extendRaml(objectRaml);
 }
 
 /**
  * This function search strings in RAML object and resolvs them
  * @param {object} [object] - object contains schemas from raml
  */
-function _refsResolver(schemas){
+function _ramlExtender(schemas){
 
-  return function _resolveRefs(object){
+  return function _extendRaml(object){
     if(!object) return;
 
     if(Array.isArray(object)){
-      object.forEach((item) => _resolveRefs(item));
+      object.forEach((item) => _extendRaml(item));
     }
 
     if(typeof object === 'object'){
@@ -30,7 +30,7 @@ function _refsResolver(schemas){
 
         const value = object[key];
         if(typeof value !== 'string')
-          return _resolveRefs(object[key]);
+          return _extendRaml(object[key]);
         
         object[key] = _getResolvedString(value, schemas); 
       });
