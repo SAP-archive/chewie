@@ -1,6 +1,6 @@
 {
   "name": "chewie",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Helper module for documentation independent generation concept.",
   "homepage": "https://github.com/YaaS/chewie",
   "license": "Apache 2.0",
