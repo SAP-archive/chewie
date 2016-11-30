@@ -45,13 +45,13 @@ Open index.html under apidocs/documentation
 
 ### How to release
 
-If you have proper permissions to push this package to npm run this command:
+You need to have proper NPM permissions to release this project. Run this command to release:
 
 ```
 npm run release
 ```
 
-DISCLAIMER: This will increment your package version by 0.0.1 (patch). In case you want to push minor or major release, change `bump-version` script in `package.json` and replace `patch` with your release version.
+NOTE: This will increment your package version by 0.0.1 (patch). In case you want to push minor or major release, change `bump-version` script in `package.json` and replace `patch` with your release version.
 
 
 
