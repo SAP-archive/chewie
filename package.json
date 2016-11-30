@@ -50,7 +50,11 @@
   "scripts": {
     "test": "npm run test-unit && npm run test-integration",
     "test-unit": "NODE_ENV=master mocha test/unit/*.spec.js",
-    "test-integration": "NODE_ENV=master mocha --timeout 40000 test/integration/*.spec.js"
+    "test-integration": "NODE_ENV=master mocha --timeout 40000 test/integration/*.spec.js",
+    "release": "npm run test && npm run release:bump-version && npm run release:publish && npm run release:push",
+    "release:bump-version": "npm version patch -m 'Upgraded to %s version'",
+    "release:publish": "npm publish",
+    "release:push": "git push origin master && git push origin --tags"
   },
   "repository": {
     "type": "git",

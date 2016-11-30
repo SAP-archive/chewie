@@ -27,6 +27,16 @@ jsdoc -r src -d documentation
 
 Open index.html under apidocs/documentation
 
+### How to release
+
+If you have proper permissions to push this package to npm run this command:
+
+```
+npm run release
+```
+
+DISCLAIMER: This will increment your package version by 0.0.1 (patch). In case you want to push minor or major release, change `bump-version` script in `package.json` and replace `patch` with your release version.
+
 
 ### Dev Hints - Testing
 
@@ -44,7 +54,7 @@ Open index.html under apidocs/documentation
   ```
   NODE_ENV=master ./node_modules/mocha/bin/mocha --timeout 40000 --harmony_shipping test/integration/NAME_OF_THE_INTEGRATION_TEST.spec.js
   ```
-  
+
 ### License
 
 This library is licensed under Apache 2.0. Full license text is available in [LICENSE](LICENSE).
