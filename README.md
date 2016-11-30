@@ -51,7 +51,7 @@ You need to have proper NPM permissions to release this project. Run this comman
 npm run release
 ```
 
-NOTE: This will increment your package version by 0.0.1 (patch). In case you want to push minor or major release, change `bump-version` script in `package.json` and replace `patch` with your release version.
+NOTE: This command increments the package version by 0.0.1 (patch). To release new minor or major version, modify `bump-version` script in the `package.json` file. Replace `patch` with `minor` or `major`.
 
 
 
