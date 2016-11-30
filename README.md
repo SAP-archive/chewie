@@ -18,7 +18,7 @@ What does it mean in practice. You can imagine your product consists of 40 diffe
 * [License](#license)
 * [Defects and Feedback](#defects-and-feedback)
 * [Contribution](#contribution)
-* [Credits[(#credits)
+* [Credits](#credits)
 
 ## Installation
 
@@ -99,6 +99,6 @@ Currently the only contribution you can make is to report suggestions using [the
 ## Credits
 
 <p align="center">
-[![YaaS](YaaS.png)](https://yaas.io)
+[![YaaS](https://github.com/YaaS/sample-yaas-repository/blob/master/YaaS.png)](https://yaas.io)
 <p align="center">
 :heart: from the GitHub team @ YaaS
