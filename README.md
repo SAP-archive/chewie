@@ -13,10 +13,12 @@ What does it mean in practice. You can imagine your product consists of 40 diffe
 * [Usage](#usage)
  * [Quick Start](#quick-start)
  * [Create Documentation](#create-documentation)
+ * [How to Release](#how-to-release)
 * [Development](#development)
 * [License](#license)
 * [Defects and Feedback](#defects-and-feedback)
 * [Contribution](#contribution)
+* [Credits[(#credits)
 
 ## Installation
 
@@ -43,7 +45,7 @@ jsdoc -r src -d documentation
 
 Open index.html under apidocs/documentation
 
-### How to release
+### How to Release
 
 You need to have proper NPM permissions to release this project. Run this command to release:
 
@@ -93,3 +95,10 @@ Use [the Github issue tracker](../../issues) for now.
 ## Contribution
 
 Currently the only contribution you can make is to report suggestions using [the Github issue tracker](../../issues) for now. We are clarifying how to make it possible that you make a code contributions too.
+
+## Credits
+
+<p align="center">
+[![YaaS](YaaS.png)](https://yaas.io)
+<p align="center">
+:heart: from the GitHub team @ YaaS
