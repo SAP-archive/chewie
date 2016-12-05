@@ -32,10 +32,10 @@ function addCommit(src, msg){
   return (cb) => {
     gulp.src([`${src}/`])
       .pipe(git.add({cwd: src, args:'-f', maxBuffer: Infinity}))
-      .pipe(git.commit(msg, {cwd: src, maxBuffer: Infinity}))
+      .pipe(git.commit(msg, {cwd: src, args: '--allow-empty', maxBuffer: Infinity}))
       .on('error', (err) => {
         log.warning(err);
-        cb('There are no changes that can be commit or you are performing operations not on a local repo but normal folder.');
+        cb(`You are performing operations not on a local repo but normal folder. Error message: ${err}`);
       })
       .pipe(gulp.dest(src))
       .on('end', cb);
