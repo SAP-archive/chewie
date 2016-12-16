@@ -110,7 +110,7 @@ function _parseRAML(filePath, dest, baseUri, listTraits, cb) {
 
     logger.error(`Failed rewriting for service with base uri: ${baseUri}`);
     logger.error(err);
-    return cb('Other error, move on');
+    return cb();
   });
 }
 
