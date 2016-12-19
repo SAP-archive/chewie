@@ -152,10 +152,11 @@ function eraseRepositoriesFromDest(tempLocation, indepenedentDocuRepositoriesFil
     if (err || repoMatrix.length === 0) return cb();
 
     const globalizedArray = _prepareGlobalizedPaths(repoMatrix);
-
-    //create array of promises
-    del(globalizedArray).then(cb);
     
+    del(globalizedArray)
+    .then(() => cb()) //no error passed because guy changed standard and returns deleted paths as first argument
+    .catch(cb);
+
   });
 }
 
