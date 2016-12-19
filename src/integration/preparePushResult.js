@@ -154,10 +154,8 @@ function eraseRepositoriesFromDest(tempLocation, indepenedentDocuRepositoriesFil
     const globalizedArray = _prepareGlobalizedPaths(repoMatrix);
 
     //create array of promises
-    const promiseArray = globalizedArray.map((item) => del(item));
-
-    Promise.all(promiseArray)
-      .then(cb);
+    del(globalizedArray).then(cb);
+    
   });
 }
 
