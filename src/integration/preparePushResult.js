@@ -152,8 +152,8 @@ function eraseRepositoriesFromDest(tempLocation, indepenedentDocuRepositoriesFil
     if (err || repoMatrix.length === 0) return cb();
 
     const arrayOfRepositories = repoMatrix.toString().split(',');
-
-    arrayOfRepositories.forEach((item) => del(item));
+    const globalizedArray = arrayOfRepositories.map((el) => el.replace('/services/', '/services/**/'));
+    globalizedArray.forEach((item) => del(item));
 
     return cb();
   });
