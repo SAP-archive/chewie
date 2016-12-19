@@ -151,10 +151,18 @@ function eraseRepositoriesFromDest(tempLocation, indepenedentDocuRepositoriesFil
   reader.readFile(repoPath, (err, repoMatrix) => {
     if (err || repoMatrix.length === 0) return cb();
 
-    const arrayOfRepositories = repoMatrix.toString().split(',');
-    const globalizedArray = arrayOfRepositories.map((el) => el.replace('/services/', '/services/**/'));
-    globalizedArray.forEach((item) => del(item));
+    const globalizedArray = _prepareGlobalizedPaths(repoMatrix);
 
-    return cb();
+    //create array of promises
+    const promiseArray = globalizedArray.map((item) => del(item));
+
+    Promise.all(promiseArray)
+      .then(cb);
   });
+}
+
+
+function _prepareGlobalizedPaths(arrayOfRepositories) {
+  arrayOfRepositories = arrayOfRepositories.toString().split(',');
+  return arrayOfRepositories.map((el) => el.replace('/services/', '/services/**/'));
 }
