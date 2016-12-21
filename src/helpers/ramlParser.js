@@ -103,7 +103,7 @@ function _parseRAML(filePath, dest, baseUri, listTraits, cb) {
     creator.createFilesSync(dest, result, 'utf-8');
     return cb('Generation went fine');
   }, (err) => {
-    if(err && err.message && err.message.indexOf('ECONNREFUSED') !== -1 || err && err.message && err.message.indexOf('ETIMEDOUT') !== -1) {
+    if(err && err.message && ( err.message.indexOf('ECONNREFUSED') !== -1 || err.message.indexOf('ETIMEDOUT') !== -1 )){
       logger.error(`Could not download traits for: ${dest}. Error: ${err}`);
       return process.exit(1);
     }
