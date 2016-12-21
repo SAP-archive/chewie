@@ -104,7 +104,7 @@ function _parseRAML(filePath, dest, baseUri, listTraits, cb) {
     return cb('Generation went fine');
   }, (err) => {
     if(err && err.message && ( err.message.indexOf('ECONNREFUSED') !== -1 || err.message.indexOf('ETIMEDOUT') !== -1 )){
-      logger.error(`Could not download traits for: ${dest}. Error: ${err}`);
+      logger.error(`Could not download traits for: ${dest}.\n \n Error: ${err}`);
       return process.exit(1);
     }
 
