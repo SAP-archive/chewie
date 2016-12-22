@@ -103,14 +103,14 @@ function _parseRAML(filePath, dest, baseUri, listTraits, cb) {
     creator.createFilesSync(dest, result, 'utf-8');
     return cb('Generation went fine');
   }, (err) => {
-    if(err && err.message && err.message.indexOf('ECONNREFUSED') !== -1) {
-      logger.warning('Could not download traits.');
-      return cb();
+    if(err && err.message && ( err.message.indexOf('ECONNREFUSED') !== -1 || err.message.indexOf('ETIMEDOUT') !== -1 )){
+      logger.error(`Could not download traits for: ${dest}.\n \n Error: ${err}`);
+      return process.exit(1);
     }
 
-    logger.error(`Failed rewriting for service with base uri: ${baseUri}`);
+    logger.error(`Failed rewriting for service with base uri: ${baseUri}.`);
     logger.error(err);
-    return cb('Other error, move on');
+    return cb('Other error. Proceed!');
   });
 }
 
