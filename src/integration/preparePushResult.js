@@ -152,7 +152,7 @@ function eraseRepositoriesFromDest(tempLocation, indepenedentDocuRepositoriesFil
     if (err || repoMatrix.length === 0) return cb();
 
     const globalizedArray = _prepareGlobalizedPaths(repoMatrix);
-    
+
     del(globalizedArray)
     .then(() => cb()) //no error passed because guy changed standard and returns deleted paths as first argument
     .catch(cb);
@@ -160,7 +160,11 @@ function eraseRepositoriesFromDest(tempLocation, indepenedentDocuRepositoriesFil
   });
 }
 
-
+/**
+ * Function responsible for changing paths to enable globalization, for example /services/order/ to /services/**\/order/ so it catches subdirectories
+ * @param  {String} [arrayOfRepositories] - string with paths that should be globalized, split by ,
+ * @return {Array} [arrayOfGlobalizedPaths] - Array with globalized paths
+ */
 function _prepareGlobalizedPaths(arrayOfRepositories) {
   arrayOfRepositories = arrayOfRepositories.toString().split(',');
   return arrayOfRepositories.map((el) => el.replace('/services/', '/services/**/'));
