@@ -11,4 +11,5 @@ install:
 script:
 - node_modules/eslint/bin/eslint.js -c .eslintrc src/**/*.js
 - node_modules/eslint/bin/eslint.js -c .eslintrc test/**/*.js
+- ncu
 - npm test
