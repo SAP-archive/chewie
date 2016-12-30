@@ -50,10 +50,11 @@
   },
   "main": "index.js",
   "scripts": {
-    "test": "npm run ESLint && ncu && npm run test-unit && npm run test-integration",
+    "test": "npm run eslint && npm run dep-check && npm run test-unit && npm run test-integration",
     "test-unit": "NODE_ENV=master mocha test/unit/*.spec.js",
     "test-integration": "NODE_ENV=master mocha --timeout 40000 test/integration/*.spec.js",
-    "ESLint": "eslint src/**/*.js && eslint test/**/*.js",
+    "dep-check": "node_modules/npm-check-updates/bin/ncu",
+    "eslint": "node_modules/eslint/bin/eslint.js -c .eslintrc src/**/*.js && node_modules/eslint/bin/eslint.js -c .eslintrc test/**/*.js",
     "release": "npm run test && npm run release:bump-version && npm run release:publish && npm run release:push",
     "release:bump-version": "npm version patch -m 'Upgraded to %s version'",
     "release:publish": "npm publish",
