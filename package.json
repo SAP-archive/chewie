@@ -46,6 +46,9 @@
     "vinyl-paths": "^2.1.0",
     "vinyl-fs": "^2.4.3"
   },
+  "devDependencies": {
+    "npm-check-updates": "2.8.9"
+  },
   "main": "index.js",
   "scripts": {
     "test": "npm run test-unit && npm run test-integration",
