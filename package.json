@@ -44,13 +44,16 @@
     "vinyl-fs": "^2.4.3"
   },
   "devDependencies": {
-    "npm-check-updates": "2.8.9"
+    "npm-check-updates": "2.8.9",
+    "babel-eslint": "7.1.1",
+    "eslint": "1.10.3"
   },
   "main": "index.js",
   "scripts": {
-    "test": "npm run test-unit && npm run test-integration",
+    "test": "npm run ESLint && ncu && npm run test-unit && npm run test-integration",
     "test-unit": "NODE_ENV=master mocha test/unit/*.spec.js",
     "test-integration": "NODE_ENV=master mocha --timeout 40000 test/integration/*.spec.js",
+    "ESLint": "eslint src/**/*.js && eslint test/**/*.js",
     "release": "npm run test && npm run release:bump-version && npm run release:publish && npm run release:push",
     "release:bump-version": "npm version patch -m 'Upgraded to %s version'",
     "release:publish": "npm publish",
