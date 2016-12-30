@@ -9,5 +9,6 @@ install:
 - npm install babel-eslint
 - npm install
 script:
-- ls
+- node_modules/eslint/bin/eslint.js -c .eslintrc src/**/*.js
+- node_modules/eslint/bin/eslint.js -c .eslintrc test/**/*.js
 - npm test
