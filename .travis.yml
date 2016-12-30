@@ -5,8 +5,7 @@ node_js:
 before_install:
 - if [[ `npm -v` != 3* ]]; then npm i -g npm@3.3.1; fi
 install:
-- npm install eslint@1.10.3
-- npm install babel-eslint
+- npm install babel-eslint eslint@1.10.3
 - npm install
 script:
 - node_modules/eslint/bin/eslint.js -c .eslintrc src/**/*.js
