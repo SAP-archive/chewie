@@ -51,13 +51,15 @@ function prepareApiReferences(registry, config, next) {
         createApiReferenceMainFile(apiReferenceSource, apiReferenceNewFile, apiReferenceContent, name),
         createApiReferenceMainFile(apiReferenceSourceInternal, apiReferenceNewFileInternal, apiReferenceContentInternal, nameInternal),
 
+        // *** temporarily disabled ***
         // create JS Client out of the RAML files
-        ramlToClient(externalFiles, name),
-        ramlToClient(internalFiles, nameInternal),
+        // ramlToClient(externalFiles, name),
+        // ramlToClient(internalFiles, nameInternal),
 
+        // *** temporarily disabled ***
         // zip JS Client to client.zip archive
-        ziper.zipFolderAsync(clientFolder, externalFiles, 'client', name),
-        ziper.zipFolderAsync(clientFolderInternal, internalFiles, 'client', nameInternal)
+        // ziper.zipFolderAsync(clientFolder, externalFiles, 'client', name),
+        // ziper.zipFolderAsync(clientFolderInternal, internalFiles, 'client', nameInternal)
 
       ], cb);
     }
