@@ -24,6 +24,7 @@ function prepareRegistry(topics, config, next) {
   const registrySource = config.registry.path,
     registryOrigin = config.registry.location,
     registryPath = config.registry.registryPath,
+    shortRegistryPath = config.registry.shortRegistryPath,
     branchTag = config.registry.branch;
 
   //First step of preparing the registry is to actually check if it isn't already prepared
@@ -31,7 +32,6 @@ function prepareRegistry(topics, config, next) {
   validator.fileCheck(registryPath, (err) => {
 
     if (!err) {
-
       return next();
     }
 
@@ -40,7 +40,15 @@ function prepareRegistry(topics, config, next) {
     case 'local':
 
       _prepareRegistryForLocal(registrySource, config, () => {
-        topics ? _shrinkedRegistry(topics, config, next) : next();
+
+        if(topics) {
+          return _shrinkedRegistry(topics, config, next);
+        }
+
+
+        log.info('Creating shrinked registry for local developement');
+        const localRegistry = require(path.resolve(registryPath));
+        creator.createFile(shortRegistryPath, JSON.stringify(localRegistry), next);
       });
 
       break;
@@ -73,7 +81,7 @@ function _prepareRegistryForExternal(registrySource, branchTag, config, next) {
 
   //clone repo and then create the registry
   cloner.cloneRepo(registrySource, branchTag, clonePath, (e) => {
-    
+
     if(e) log.warning(e);
 
     //calling concat function to prepare a final registry file
