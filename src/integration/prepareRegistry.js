@@ -35,30 +35,18 @@ function prepareRegistry(topics, config, next) {
       return next();
     }
 
+    const _registryHandler = _prepareRegistryHandler(topics, config, registryPath, shortRegistryPath, next);
     switch(registryOrigin){
 
     case 'local':
 
-      _prepareRegistryForLocal(registrySource, config, () => {
-
-        if(topics) {
-          return _shrinkedRegistry(topics, config, next);
-        }
-
-
-        log.info('Creating shrinked registry for local developement');
-        const localRegistry = require(path.resolve(registryPath));
-        creator.createFilesSync(shortRegistryPath, JSON.stringify(localRegistry));
-        next();
-      });
+      _prepareRegistryForLocal(registrySource, config, _registryHandler);
 
       break;
 
     case 'remote':
 
-      _prepareRegistryForExternal(registrySource, branchTag, config, () => {
-        topics ? _shrinkedRegistry(topics, config, next) : next();
-      });
+      _prepareRegistryForExternal(registrySource, branchTag, config, _registryHandler);
 
       break;
 
@@ -68,6 +56,22 @@ function prepareRegistry(topics, config, next) {
              It should be local or remote and not something that you have currently: ${config.registry.location}`);
     }
   });
+}
+
+function _prepareRegistryHandler(topics, config, registryPath, shortRegistryPath, next) {
+  return () => {
+
+    if(topics) {
+      return _shrinkedRegistry(topics, config, next);
+    }
+
+
+    log.info('Creating shrinked registry for globalization feature');
+    const localRegistry = require(path.resolve(registryPath));
+    creator.createFilesSync(shortRegistryPath, JSON.stringify(localRegistry));
+    next();
+  };
+
 }
 
 function _prepareRegistryForLocal(registrySource, config, next) {
