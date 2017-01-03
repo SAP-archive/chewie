@@ -48,7 +48,8 @@ function prepareRegistry(topics, config, next) {
 
         log.info('Creating shrinked registry for local developement');
         const localRegistry = require(path.resolve(registryPath));
-        creator.createFile(shortRegistryPath, JSON.stringify(localRegistry), next);
+        creator.createFileSync(shortRegistryPath, JSON.stringify(localRegistry));
+        next();
       });
 
       break;
