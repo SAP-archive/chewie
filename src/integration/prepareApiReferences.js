@@ -49,7 +49,7 @@ function prepareApiReferences(registry, config, next) {
 
         // create API reference file
         createApiReferenceMainFile(apiReferenceSource, apiReferenceNewFile, apiReferenceContent, name),
-        createApiReferenceMainFile(apiReferenceSourceInternal, apiReferenceNewFileInternal, apiReferenceContentInternal, nameInternal),
+        createApiReferenceMainFile(apiReferenceSourceInternal, apiReferenceNewFileInternal, apiReferenceContentInternal, nameInternal)
 
         // *** temporarily disabled ***
         // create JS Client out of the RAML files
