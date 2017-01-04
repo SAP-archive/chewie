@@ -34,13 +34,15 @@ function prepareRegistry(topics, config, next) {
 
       return next();
     }
-
     switch(registryOrigin){
 
     case 'local':
 
       _prepareRegistryForLocal(registrySource, config, () => {
-        topics ? _shrinkedRegistry(topics, config, next) : next();
+        let registry = misc.getRegistry(path.resolve(process.cwd(), `${config.tempLocation}/${config.registry.fileName}`));
+        const wildcardedTopics = misc.getTopicsByWildcard(registry, topics);
+
+        topics ? _shrinkedRegistry(wildcardedTopics, registry, config, next) : next();
       });
 
       break;
@@ -48,7 +50,10 @@ function prepareRegistry(topics, config, next) {
     case 'remote':
 
       _prepareRegistryForExternal(registrySource, branchTag, config, () => {
-        topics ? _shrinkedRegistry(topics, config, next) : next();
+        let registry = misc.getRegistry(path.resolve(process.cwd(), `${config.tempLocation}/${config.registry.fileName}`));
+        const wildcardedTopics = misc.getTopicsByWildcard(registry, topics)
+
+        topics ? _shrinkedRegistry(wildcardedTopics, registry, config, next) : next();
       });
 
       break;
@@ -73,7 +78,7 @@ function _prepareRegistryForExternal(registrySource, branchTag, config, next) {
 
   //clone repo and then create the registry
   cloner.cloneRepo(registrySource, branchTag, clonePath, (e) => {
-    
+
     if(e) log.warning(e);
 
     //calling concat function to prepare a final registry file
@@ -81,11 +86,10 @@ function _prepareRegistryForExternal(registrySource, branchTag, config, next) {
   });
 }
 
-function _shrinkedRegistry(topics, config, next) {
+function _shrinkedRegistry(topics, registry, config, next) {
 
-  let registry = misc.getRegistry(path.resolve(process.cwd(), `${config.tempLocation}/${config.registry.fileName}`));
-  registry = misc.registryShrink(registry, topics);
-  creator.createFile(config.registry.shortRegistryPath, JSON.stringify(registry), next);
+  const shrinkedRegistry = misc.registryShrink(registry, topics);
+  creator.createFile(config.registry.shortRegistryPath, JSON.stringify(shrinkedRegistry), next);
 }
 
 module.exports = prepareRegistry;
