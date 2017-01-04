@@ -79,7 +79,9 @@ function _regionCopier(srcDomain, region, topicType){
 function _replaceUrl(destinationPath, regionCode, topicType, cb){
   return function(){
     const destinationPathPattern = `${destinationPath}/**/*`;
-    replacer.replaceInFile(destinationPathPattern, `/${topicType}/`, `/${topicType}/${regionCode}/`, destinationPath, cb);
+    const regExp = new RegExp(`\/${topicType}\/(?!(.*\/release_notes.html))`, 'g');
+
+    replacer.replaceInFile(destinationPathPattern, regExp, `/${topicType}/${regionCode}/`, destinationPath, cb);
   };
 }
 
