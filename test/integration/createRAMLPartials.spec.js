@@ -62,14 +62,14 @@ describe('Run createRAMLPartials task', () => {
       if (!topicDetails.latest) {
         testHelper.validateObjVersion(topicDetails.topicSrcLocation, `@partial("${topicDetails.shortName}_raml`, `@partial("${topicDetails.shortName}_raml")`, false);
 
-        if (testHelper.dirCheckSync(topicDetails.topicSrcLocationInternal)){
+        if (misc.dirCheckSync(topicDetails.topicSrcLocationInternal)){
           testHelper.validateObjVersion(topicDetails.topicSrcLocationInternal, `@partial("${topicDetails.shortName}_raml`, `@partial("${topicDetails.shortName}_raml")`, false);
         }
       }
       else {
         testHelper.validateObjVersion(topicDetails.topicSrcLocation, `@partial("${topicDetails.shortName}_raml`, `@partial("${topicDetails.shortName}_raml")`, true);
 
-        if (testHelper.dirCheckSync(topicDetails.topicSrcLocationInternal)){
+        if (misc.dirCheckSync(topicDetails.topicSrcLocationInternal)){
           testHelper.validateObjVersion(topicDetails.topicSrcLocationInternal, `@partial("${topicDetails.shortName}_raml`, `@partial("${topicDetails.shortName}_raml")`, true);
         }
       }

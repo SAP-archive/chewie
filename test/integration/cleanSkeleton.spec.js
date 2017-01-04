@@ -7,6 +7,7 @@ const config = require('../chewieConfigTest'),
   eachRegTopic = require('../../src/helpers/registryIterator'),
   reader = require('../../src/helpers/reader'),
   testHelper = require('../helpers/testHelper'),
+  misc = require('../../src/helpers/misc'),
   async = require('async'),
   chai = require('chai'),
   rimraf = require('rimraf'),
@@ -42,11 +43,11 @@ describe('Cleaner function with specific sections', () => {
 
     cleanInfo.forEach((info) => {
       info.files.forEach((file) => expect(testHelper.fileCheckSync(`${info.topicDetails.partialsDestLocation}/${file}`)).to.equal(false));
-      expect(testHelper.dirCheckSync(info.topicDetails.rnDestLocation)).to.equal(false);
-      expect(testHelper.dirCheckSync(info.topicDetails.rnDestLocationInternal)).to.equal(false);
-      expect(testHelper.dirCheckSync(info.topicDetails.genDocuLocation)).to.equal(false);
-      expect(testHelper.dirCheckSync(info.topicDetails.genDocuLocationInternal)).to.equal(false);
-      expect(testHelper.dirCheckSync(info.topicDetails.clonedDocuFolderTypes)).to.equal(false);
+      expect(misc.dirCheckSync(info.topicDetails.rnDestLocation)).to.equal(false);
+      expect(misc.dirCheckSync(info.topicDetails.rnDestLocationInternal)).to.equal(false);
+      expect(misc.dirCheckSync(info.topicDetails.genDocuLocation)).to.equal(false);
+      expect(misc.dirCheckSync(info.topicDetails.genDocuLocationInternal)).to.equal(false);
+      expect(misc.dirCheckSync(info.topicDetails.clonedDocuFolderTypes)).to.equal(false);
     });
   });
 
@@ -84,11 +85,11 @@ describe('Cleaner function that is cleaning every section', () => {
   it('should remove all documents, rn and partials from every part of portal', () => {
     cleanInfo.forEach((info) => {
       info.files.forEach((file) => expect(testHelper.fileCheckSync(`${info.topicDetails.partialsDestLocation}/${file}`)).to.equal(false));
-      expect(testHelper.dirCheckSync(info.topicDetails.rnDestLocation)).to.equal(false);
-      expect(testHelper.dirCheckSync(info.topicDetails.rnDestLocationInternal)).to.equal(false);
-      expect(testHelper.dirCheckSync(info.topicDetails.genDocuLocation)).to.equal(false);
-      expect(testHelper.dirCheckSync(info.topicDetails.genDocuLocationInternal)).to.equal(false);
-      expect(testHelper.dirCheckSync(info.topicDetails.clonedDocuFolderTypes)).to.equal(false);
+      expect(misc.dirCheckSync(info.topicDetails.rnDestLocation)).to.equal(false);
+      expect(misc.dirCheckSync(info.topicDetails.rnDestLocationInternal)).to.equal(false);
+      expect(misc.dirCheckSync(info.topicDetails.genDocuLocation)).to.equal(false);
+      expect(misc.dirCheckSync(info.topicDetails.genDocuLocationInternal)).to.equal(false);
+      expect(misc.dirCheckSync(info.topicDetails.clonedDocuFolderTypes)).to.equal(false);
     });
   });
 

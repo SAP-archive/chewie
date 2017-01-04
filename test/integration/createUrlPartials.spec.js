@@ -64,14 +64,14 @@ describe('Create Url Partials', () => {
         if (!topicDetails.latest) {
           testHelper.validateObjVersion(topicDetails.topicSrcLocation, `@partial("${topicDetails.shortName}_url`, `@partial("${topicDetails.shortName}_url")`, false);
 
-          if (testHelper.dirCheckSync(topicDetails.topicSrcLocationInternal)){
+          if (misc.dirCheckSync(topicDetails.topicSrcLocationInternal)){
             testHelper.validateObjVersion(topicDetails.topicSrcLocationInternal, `@partial("${topicDetails.shortName}_url`, `@partial("${topicDetails.shortName}_url")`, false);
           }
         }
         else {
           testHelper.validateObjVersion(topicDetails.topicSrcLocation, `@partial("${topicDetails.shortName}_url`, `@partial("${topicDetails.shortName}_url")`, true);
 
-          if (testHelper.dirCheckSync(topicDetails.topicSrcLocationInternal)){
+          if (misc.dirCheckSync(topicDetails.topicSrcLocationInternal)){
             testHelper.validateObjVersion(topicDetails.topicSrcLocationInternal, `@partial("${topicDetails.shortName}_url`, `@partial("${topicDetails.shortName}_url")`, true);
           }
         }

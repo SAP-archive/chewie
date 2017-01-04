@@ -52,7 +52,7 @@ describe('Run replaceApiReferences task', () => {
 
           expect(check).to.equal(true);
 
-          if (testHelper.dirCheckSync(topicDetails.topicSrcLocationInternal)){
+          if (misc.dirCheckSync(topicDetails.topicSrcLocationInternal)){
             const indexFileInternal = fs.readFileSync(`${topicDetails.genBasicDocuLocationInternal}/latest/index.html.eco`, 'utf-8');
             const checkInternal = (indexFileInternal.indexOf(task) >= 0);
 
@@ -65,7 +65,7 @@ describe('Run replaceApiReferences task', () => {
 
           expect(check).to.equal(true);
 
-          if (testHelper.dirCheckSync(topicDetails.topicSrcLocationInternal)){
+          if (misc.dirCheckSync(topicDetails.topicSrcLocationInternal)){
             const indexFileInternal = fs.readFileSync(`${topicDetails.genBasicDocuLocationInternal}/${topicDetails.version}/index.html.eco`, 'utf-8');
             const checkInternal = (indexFileInternal.indexOf(task) >= 0);
 
@@ -84,7 +84,7 @@ describe('Run replaceApiReferences task', () => {
 
       if (topicDetails.isService){
         if(topicDetails.latest){
-          if (testHelper.dirCheckSync(topicDetails.topicSrcLocation)){
+          if (misc.dirCheckSync(topicDetails.topicSrcLocation)){
 
             let contentOfApiRef = fs.readFileSync(topicDetails.apiReferenceSource, 'utf-8');
             contentOfApiRef = _createContent(contentOfApiRef);
@@ -95,7 +95,7 @@ describe('Run replaceApiReferences task', () => {
             expect(check).to.equal(true);
           }
 
-          if (testHelper.dirCheckSync(topicDetails.topicSrcLocationInternal)){
+          if (misc.dirCheckSync(topicDetails.topicSrcLocationInternal)){
             let contentOfApiRefInternal = fs.readFileSync(topicDetails.apiReferenceSource, 'utf-8');
             contentOfApiRefInternal = _createContent(contentOfApiRefInternal);
 
@@ -107,7 +107,7 @@ describe('Run replaceApiReferences task', () => {
           }
         }
         else{
-          if (testHelper.dirCheckSync(topicDetails.topicSrcLocation)){
+          if (misc.dirCheckSync(topicDetails.topicSrcLocation)){
             let contentOfApiRef = fs.readFileSync(topicDetails.apiReferenceSource, 'utf-8');
             contentOfApiRef = _createContent(contentOfApiRef);
 
@@ -116,7 +116,7 @@ describe('Run replaceApiReferences task', () => {
             expect(check).to.equal(true);
           }
 
-          if (testHelper.dirCheckSync(topicDetails.topicSrcLocationInternal)){
+          if (misc.dirCheckSync(topicDetails.topicSrcLocationInternal)){
             let contentOfApiRefInternal = fs.readFileSync(topicDetails.apiReferenceSource, 'utf-8');
             contentOfApiRefInternal = _createContent(contentOfApiRefInternal);
 

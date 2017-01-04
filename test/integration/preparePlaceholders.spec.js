@@ -60,8 +60,8 @@ describe('Do not move placeholders to not existing locations', () => {
       indexPlaceholderName = 'index.html.eco';
       apiConsolePlaceholderName = 'apiconsole.html.eco';
       releaseNotesPlaceholderName = 'release_notes.html.eco';
-      isPHNeeded = testHelper.dirCheckSync(docuSrcLocation);
-      isPHNeededInternal = testHelper.dirCheckSync(docuSrcLocationInternal);
+      isPHNeeded = misc.dirCheckSync(docuSrcLocation);
+      isPHNeededInternal = misc.dirCheckSync(docuSrcLocationInternal);
 
       const topicExists = topicDetails.name === topicsIndependent.name;
 
