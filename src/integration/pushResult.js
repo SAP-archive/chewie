@@ -45,7 +45,7 @@ function addCommit(src, msg){
 //pulling from remote repo
 function pull(branch, src){
   return (cb) => {
-    git.pull('origin', branch, {cwd: src, maxBuffer: Infinity, args: '--rebase'}, (err) => {
+    git.pull('origin', branch, {cwd: src, maxBuffer: Infinity}, (err) => {
       if (err) log.warning(`Pull operation for branch ${branch} has failed with the error: ${err}`);
       cb(err);
     });
