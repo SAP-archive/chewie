@@ -95,15 +95,15 @@ describe('Run prepareApiReferences task', () => {
     });
   });
 
-  // *** temporarily disabled ***
+  // <CLIENT.JS GENERATION>
   // it ('should create JS Client out of the RAML files for /files and /internal/files directories', (done) => {
   //   checkApiRamlFile('client/index.js', done);
   // });
 
-  // *** temporarily disabled ***
   // it ('should zip JS Client to client.zip archive for /files and /internal/files directories', (done) => {
   //   checkApiRamlFile('client.zip', done);
   // });
+  // </CLIENT.JS GENERATION>
 
   after((done) => {
     rimraf(`${config.tempLocation}`, done);
