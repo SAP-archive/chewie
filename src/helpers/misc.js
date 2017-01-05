@@ -24,8 +24,8 @@ function getTopicsByWildcard(registry, topics) {
 
   const finalTopics = [];
 
-  topics.map((topic) =>  {
-    
+  topics.forEach((topic) =>  {
+
     registry.forEach((el) => {
       if(_matchRuleShort(el.name, topic.name) && _matchRuleShort(el.type, topic.type) ) finalTopics.push({ name: el.name, type: el.type});
     });
