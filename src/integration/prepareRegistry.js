@@ -40,9 +40,9 @@ function prepareRegistry(topics, config, next) {
 
       _prepareRegistryForLocal(registrySource, config, () => {
         let registry = misc.getRegistry(path.resolve(process.cwd(), `${config.tempLocation}/${config.registry.fileName}`));
-        const wildcardedTopics = misc.getTopicsByWildcard(registry, topics);
+        const wildcardedTopics = topics ? misc.getTopicsByWildcard(registry, topics): topics;
 
-        topics ? _shrinkedRegistry(wildcardedTopics, registry, config, next) : next();
+        wildcardedTopics ? _shrinkedRegistry(wildcardedTopics, registry, config, next) : next();
       });
 
       break;
@@ -51,9 +51,9 @@ function prepareRegistry(topics, config, next) {
 
       _prepareRegistryForExternal(registrySource, branchTag, config, () => {
         let registry = misc.getRegistry(path.resolve(process.cwd(), `${config.tempLocation}/${config.registry.fileName}`));
-        const wildcardedTopics = misc.getTopicsByWildcard(registry, topics)
+        const wildcardedTopics = topics ? misc.getTopicsByWildcard(registry, topics): topics;
 
-        topics ? _shrinkedRegistry(wildcardedTopics, registry, config, next) : next();
+        wildcardedTopics ? _shrinkedRegistry(wildcardedTopics, registry, config, next) : next();
       });
 
       break;
