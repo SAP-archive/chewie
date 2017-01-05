@@ -18,17 +18,17 @@ function trimAdvanced(name) {
 /**
  * This function takes a registry array and removes from it all entries that are not listed in a list of selected topics.
  * @param {Array} [registry] - array with all registry elements
- * @param {Array} [topics] - array of strings, names of topics with wildcard masks that should stay in the registry
+ * @param {Array} [topics] - array of topic objects that should stay in the registry
  */
 function getTopicsByWildcard(registry, topics) {
 
   const finalTopics = [];
 
   topics.forEach((topic) =>  {
-    const names = registry.filter((regEntry) => regEntry.type === topic.type).map((el) => el.name);
+    // const names = ).map((el) => el.name);
 
-    names.forEach((el) => {
-      if(_matchRuleShort(el, topic.name)) finalTopics.push({ name: el, type: topic.type});
+    registry.forEach((el) => {
+      if(_matchRuleShort(el.name, topic.name) && _matchRuleShort(el.type, topic.type) ) finalTopics.push({ name: el.name, type: el.type});
     });
 
   });
@@ -39,7 +39,7 @@ function getTopicsByWildcard(registry, topics) {
 //http://stackoverflow.com/questions/26246601/wildcard-string-comparison-in-javascript
 function _matchRuleShort(str, rule) {
   const helperRule = rule.split('*').join('.*');
-  
+
   return new RegExp(`^${rule.split('*').join('.*')}$`).test(str);
 }
 

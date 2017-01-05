@@ -20,58 +20,101 @@ describe('Misc', () => {
       type: 'tools',
       name: 'toolsLorem'
     }];
-    const wildTopicsServices = [{
-      type: 'services',
-      name: 'servicesI*'
-    }]
 
-    const wildTopicsServicesTwo = [{
-      type: 'services',
-      name: '*'
-    }]
-
-    const wildTopicsUniversal = [{
+    const wildTopicsBasic = [{
       type: 'tools',
-      name: '*'
+      name: 'toolIpsum'
     },
     {
       type: 'services',
-      name: '*'
-    }];
+      name: 'servicesLorem'
+    }]
 
-    const wildTopicsComplicated = [{
+    const wildTopicsBasicWrongType = [{
+      type: 'notExisitng',
+      name: 'toolIpsum'
+    },
+    {
+      type: 'notExisitng',
+      name: 'servicesLorem'
+    }]
+
+    const wildTopicsBasicWrongName = [{
+      type: 'tools',
+      name: 'notExisitng'
+    },
+    {
       type: 'services',
-      name: '*Ip*'
+      name: 'notExisitng'
+    }]
+
+    const wildTopicsMasks = [{
+      type: '*',
+      name: 'servicesLorem'
     },
     {
       type: 'tools',
-      name: '*Ip*'
+      name: '*'
     }]
 
-    it('should return one entry when pattern is provided',  () => {
-      const wildcardedRegistry = misc.getTopicsByWildcard(mockedRegistry, wildTopicsServices);
+    const wildTopicsMasksSecond = [{
+      type: 's*',
+      name: 'servicesLorem'
+    },
+    {
+      type: 'tools',
+      name: 't*'
+    }]
 
-      assert.equal(wildcardedRegistry.length, 1);
-    });
+    const wildTopicsComplicatedMasks = [{
+      type: '*',
+      name: '*Ip*'
+    },
+    {
+      type: '*',
+      name: '*Lo*'
+    }]
 
-    it('should return two(all) service entries when pattern * is provided',  () => {
-      const wildcardedRegistry = misc.getTopicsByWildcard(mockedRegistry, wildTopicsServicesTwo);
+
+
+    it('should return two entry when pattern is provided',  () => {
+      const wildcardedRegistry = misc.getTopicsByWildcard(mockedRegistry, wildTopicsBasic);
 
       assert.equal(wildcardedRegistry.length, 2);
     });
 
-    it('should return four entries when pattern * is provided',  () => {
-      const wildcardedRegistry = misc.getTopicsByWildcard(mockedRegistry, wildTopicsUniversal);
+    it('should return no entry when bad type patterns are provided',  () => {
+      const wildcardedRegistry = misc.getTopicsByWildcard(mockedRegistry, wildTopicsBasicWrongType);
+
+      assert.equal(wildcardedRegistry.length, 0);
+    });
+
+    it('should return no entry when bad name patterns are provided',  () => {
+      const wildcardedRegistry = misc.getTopicsByWildcard(mockedRegistry, wildTopicsBasicWrongName);
+
+      assert.equal(wildcardedRegistry.length, 0);
+    });
+
+    it('should return three entry when patterns are provided',  () => {
+      const wildcardedRegistry = misc.getTopicsByWildcard(mockedRegistry, wildTopicsMasks);
+
+      assert.equal(wildcardedRegistry.length, 3);
+    });
+
+    it('should return four entry when pattern is provided',  () => {
+      const wildcardedRegistry = misc.getTopicsByWildcard(mockedRegistry, wildTopicsComplicatedMasks);
 
       assert.equal(wildcardedRegistry.length, 4);
     });
 
-    it('should return 2 entries when *Ip* pattern is provided',  () => {
-      const wildcardedRegistry = misc.getTopicsByWildcard(mockedRegistry, wildTopicsComplicated);
+    it('should return three entry when pattern is provided',  () => {
+      const wildcardedRegistry = misc.getTopicsByWildcard(mockedRegistry, wildTopicsMasksSecond);
 
-      assert.equal(wildcardedRegistry.length, 2);
+      assert.equal(wildcardedRegistry.length, 3);
     });
 
 
+
   });
+
 });
