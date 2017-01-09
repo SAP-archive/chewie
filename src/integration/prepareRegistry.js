@@ -39,7 +39,7 @@ function prepareRegistry(topics, config, next) {
     case 'local':
 
       _prepareRegistryForLocal(registrySource, config, () => {
-        let registry = misc.getRegistry(path.resolve(process.cwd(), `${config.tempLocation}/${config.registry.fileName}`));
+        const registry = misc.getRegistry(path.resolve(process.cwd(), `${config.tempLocation}/${config.registry.fileName}`));
         const wildcardedTopics = topics ? misc.getTopicsByWildcard(registry, topics): topics;
 
         wildcardedTopics ? _shrinkedRegistry(wildcardedTopics, registry, config, next) : next();
@@ -50,7 +50,7 @@ function prepareRegistry(topics, config, next) {
     case 'remote':
 
       _prepareRegistryForExternal(registrySource, branchTag, config, () => {
-        let registry = misc.getRegistry(path.resolve(process.cwd(), `${config.tempLocation}/${config.registry.fileName}`));
+        const registry = misc.getRegistry(path.resolve(process.cwd(), `${config.tempLocation}/${config.registry.fileName}`));
         const wildcardedTopics = topics ? misc.getTopicsByWildcard(registry, topics): topics;
 
         wildcardedTopics ? _shrinkedRegistry(wildcardedTopics, registry, config, next) : next();
