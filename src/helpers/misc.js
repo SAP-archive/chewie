@@ -16,7 +16,7 @@ function trimAdvanced(name) {
 }
 
 /**
- * This function takes a registry array and removes from it all entries that are not listed in a list of selected topics.
+ * This function takes a registry array and filter topics by wildcard mask.
  * @param {Array} [registry] - array with all registry elements
  * @param {Array} [topics] - array of topic objects that should stay in the registry
  */
