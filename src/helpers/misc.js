@@ -98,6 +98,24 @@ const getRegistry = (path) => {
 
 };
 
+/**
+ * This function validates if directory exists
+ * @param {String} [dir] - dir path
+ * @return {Boolean} - confirmation if exists or not
+ */
+const dirCheckSync = (dir) => {
+
+  let stats;
+
+  try {
+    return fs.statSync(dir).isDirectory();
+  }
+  catch(err) {
+    return false;
+  }
+
+};
+
 const misc = {
   trimAdvanced,
   registryShrink,
@@ -105,7 +123,8 @@ const misc = {
   changeFileName,
   asyncTaskCreator,
   deleteFolderAsync,
-  getRegistry
+  getRegistry,
+  dirCheckSync
 };
 
 module.exports = misc;

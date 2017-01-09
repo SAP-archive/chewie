@@ -37,7 +37,6 @@ const cloner = require('./src/helpers/cloner'),
   tutorialHelper = require('./src/helpers/tutorialHelper'),
   validator = require('./src/helpers/validator'),
   ziper = require('./src/helpers/ziper'),
-  testHelper = require('./test/helpers/testHelper'),
   ramlParser = require('./src/helpers/ramlParser');
 
 // clean
@@ -82,7 +81,6 @@ const chewie = {
   tutorialHelper,
   validator,
   ziper,
-  testHelper,
   cleanSkeleton,
   minify,
   globalization

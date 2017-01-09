@@ -44,14 +44,14 @@ describe('Run prepareApiReferences task', () => {
 
       if (topicDetails.isService) {
 
-        if (testHelper.dirCheckSync(topicDetails.topicSrcLocation)){
+        if (misc.dirCheckSync(topicDetails.topicSrcLocation)){
           const ramlFile = fs.readFileSync(`${topicDetails.topicSrcLocation}/api.raml`, 'utf-8');
           const baseUriIsCorrect = (ramlFile.indexOf(`baseUri: ${topicDetails.baseUri}`) >= 0);
 
           expect(baseUriIsCorrect).to.equal(true);
         }
 
-        if (testHelper.dirCheckSync(topicDetails.topicSrcLocationInternal)){
+        if (misc.dirCheckSync(topicDetails.topicSrcLocationInternal)){
           const ramlFileInternal = fs.readFileSync(`${topicDetails.topicSrcLocationInternal}/api.raml`, 'utf-8');
           const baseUriInternalIsCorrect = (ramlFileInternal.indexOf(`baseUri: ${topicDetails.baseUriInternal}`) >= 0);
 
@@ -79,13 +79,13 @@ describe('Run prepareApiReferences task', () => {
 
       if (topicDetails.isService){
 
-        if (testHelper.dirCheckSync(topicDetails.topicSrcLocation)){
+        if (misc.dirCheckSync(topicDetails.topicSrcLocation)){
           const apiRefFile = fs.readFileSync(`${topicDetails.topicSrcLocation}/apireference.html`, 'utf-8');
           const metadataIsCorrect = (apiRefFile.indexOf(`service: ${topicDetails.name}`) >= 0);
           expect(metadataIsCorrect).to.equal(true);
         }
 
-        if (testHelper.dirCheckSync(topicDetails.filesInternal)){
+        if (misc.dirCheckSync(topicDetails.filesInternal)){
           const apiRefFileInternal = fs.readFileSync(`${topicDetails.topicSrcLocationInternal}/apireference.html`, 'utf-8');
           const metadataInternamIsCorrect = (apiRefFileInternal.indexOf(`service: ${topicDetails.topicSrcLocationInternal}`) >= 0);
           expect(metadataInternamIsCorrect).to.equal(true);
@@ -117,12 +117,12 @@ describe('Run prepareApiReferences task', () => {
     eachRegTopic.async(registry, config, done, (topicDetails, cb) => {
 
       if (topicDetails.isService){
-        if (testHelper.dirCheckSync(topicDetails.topicSrcLocation)){
+        if (misc.dirCheckSync(topicDetails.topicSrcLocation)){
           const apiRamlFile = fs.statSync(`${topicDetails.topicSrcLocation}/${file}`);
           expect(apiRamlFile.isFile()).to.equal(true);
         }
 
-        if (testHelper.dirCheckSync(topicDetails.topicSrcLocationInternal)){
+        if (misc.dirCheckSync(topicDetails.topicSrcLocationInternal)){
           const apiRamlFileInternal = fs.statSync(`${topicDetails.topicSrcLocationInternal}/${file}`);
           expect(apiRamlFileInternal.isFile()).to.equal(true);
         }

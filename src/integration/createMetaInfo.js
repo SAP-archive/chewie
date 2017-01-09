@@ -5,7 +5,7 @@ const eachRegTopic = require('../helpers/registryIterator'),
   cloner = require('../helpers/cloner'),
   metaBuild = require('../helpers/metaBuild'),
   creator = require('../helpers/creator'),
-  testHelper = require('../../test/helpers/testHelper'),
+  misc = require('../helpers/misc'),
   fs = require('fs'),
   logger = require('./../helpers/logger'),
   log = require('../helpers/logger');
@@ -128,13 +128,13 @@ function shouldHaveMetaFile(topicDetails, topics, dir, metaDest){
   //We do it only if docu files are present
 
 
-  if ((!topics && testHelper.dirCheckSync(metaDest)) || (topics && testHelper.dirCheckSync(metaDest))) return shouldHaveMetaFile = true;
+  if ((!topics && misc.dirCheckSync(metaDest)) || (topics && misc.dirCheckSync(metaDest))) return shouldHaveMetaFile = true;
 
-  if (topics && (topics.indexOf(topicDetails.name) !== -1) && testHelper.dirCheckSync(metaDest)){
+  if (topics && (topics.indexOf(topicDetails.name) !== -1) && misc.dirCheckSync(metaDest)){
     shouldHaveMetaFile = true;
   }
   else {
-    shouldHaveMetaFile = testHelper.dirCheckSync(dir);
+    shouldHaveMetaFile = misc.dirCheckSync(dir);
 
     //if topic is not in topic list but present in previous out, we need to create a dir where meta inf can be created
     if (shouldHaveMetaFile)

@@ -7,6 +7,7 @@ const config = require('../chewieConfigTestLocal'),
   preparePlaceholders = require('../../src/integration/preparePlaceholders'),
   cloner = require('../../src/helpers/cloner'),
   testHelper = require('../helpers/testHelper'),
+  misc = require('../../src/helpers/misc'),
   chai = require('chai'),
   expect = chai.expect,
   rimraf = require('rimraf'),
@@ -225,7 +226,7 @@ describe('Check if backup works for independent document generation', () => {
 
 
 function _checkFileOrDir(isFile, pathToBeChecked, expectedResult){
-  const fileOrDir = isFile ? testHelper.fileCheckSync(path.resolve(pathToBeChecked)) : testHelper.dirCheckSync(path.resolve(pathToBeChecked));
+  const fileOrDir = isFile ? testHelper.fileCheckSync(path.resolve(pathToBeChecked)) : misc.dirCheckSync(path.resolve(pathToBeChecked));
 
   expect(fileOrDir).to.equal(expectedResult);
 }
