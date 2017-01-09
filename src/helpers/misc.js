@@ -24,10 +24,10 @@ function getTopicsByWildcard(registry, topics) {
 
   const finalTopics = [];
 
-  topics.forEach((topic) =>  {
+  topics.forEach((topic) => {
 
     registry.forEach((el) => {
-      if(_matchRuleShort(el.name, topic.name) && _matchRuleShort(el.type, topic.type) ) finalTopics.push({ name: el.name, type: el.type});
+      if (_matchRuleShort(el.name, topic.name) && _matchRuleShort(el.type, topic.type)) finalTopics.push({ name: el.name, type: el.type });
     });
 
   });
@@ -57,7 +57,7 @@ function registryShrink(registry, topics) {
 
   topics.forEach((topic) => {
     registry.forEach((regEntry) => {
-      if ((trimAdvanced(topic.name) === trimAdvanced(regEntry.name)) && (topic.type === regEntry.type)){
+      if ((trimAdvanced(topic.name) === trimAdvanced(regEntry.name)) && (topic.type === regEntry.type)) {
         shrinkedRegistry.push(regEntry);
       }
     });
@@ -118,7 +118,7 @@ const getRegistry = (path) => {
   try {
     return JSON.parse(fs.readFileSync(path, 'utf8'));
   }
-  catch(err) {
+  catch (err) {
     log.error(`Registry was not loaded: ${err}. \nGeneration will be stopped.`);
     process.exit(1);
   }
@@ -137,7 +137,7 @@ const dirCheckSync = (dir) => {
   try {
     return fs.statSync(dir).isDirectory();
   }
-  catch(err) {
+  catch (err) {
     return false;
   }
 
