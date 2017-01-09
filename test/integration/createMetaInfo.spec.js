@@ -88,13 +88,13 @@ function checkMetaFiles(registry, done) {
     lastDest = topicDetails.clonedGenDestLocation;
     lastDestInternal = topicDetails.clonedGenDestLocationInternal;
 
-    if (testHelper.dirCheckSync(lastDest)){
+    if (misc.dirCheckSync(lastDest)){
       const isExternalExpectedContent = testHelper.checkFileContentSync(`${topicDetails.topicSrcLocation}/${metaFileName}`, metaFileContentExpected);
 
       expect(isExternalExpectedContent).to.equal(true);
     }
 
-    if (testHelper.dirCheckSync(lastDestInternal)){
+    if (misc.dirCheckSync(lastDestInternal)){
       const isInternalExpectedContent = testHelper.checkFileContentSync(`${topicDetails.topicSrcLocationInternal}/${metaFileName}`, metaFileContentExpected);
 
       expect(isInternalExpectedContent).to.equal(true);

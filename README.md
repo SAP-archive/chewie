@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/YaaS/chewie.svg?branch=master)](https://travis-ci.org/YaaS/chewie)
 [![npm version](https://badge.fury.io/js/chewie.svg)](https://badge.fury.io/js/chewie)
 [![npm](https://img.shields.io/npm/dm/chewie.svg)](https://www.npmjs.com/package/chewie)
 [![npm](https://img.shields.io/npm/dt/chewie.svg)](https://www.npmjs.com/package/chewie)

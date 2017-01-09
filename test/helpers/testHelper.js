@@ -78,24 +78,6 @@ const checkFileContentSync = (path, content) => {
    }
 };
 
-/**
- * This function validates if directory exists
- * @param {String} [dir] - dir path
- * @return {Boolean} - confirmation if exists or not
- */
-const dirCheckSync = (dir) => {
-
-  let stats;
-
-  try {
-    return fs.statSync(dir).isDirectory();
-  }
-  catch(err) {
-    return false;
-  }
-
-};
-
 const getRegistry = (path) => {
   try {
     return JSON.parse(fs.readFileSync(path, 'utf8'));
@@ -113,7 +95,6 @@ const testHelper = {
   checkAndExpect,
   fileCheckSync,
   checkFileContentSync,
-  dirCheckSync,
   getRegistry
 };
 
