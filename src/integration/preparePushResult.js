@@ -151,10 +151,21 @@ function eraseRepositoriesFromDest(tempLocation, indepenedentDocuRepositoriesFil
   reader.readFile(repoPath, (err, repoMatrix) => {
     if (err || repoMatrix.length === 0) return cb();
 
-    const arrayOfRepositories = repoMatrix.toString().split(',');
+    const globalizedArray = _prepareGlobalizedPaths(repoMatrix);
 
-    arrayOfRepositories.forEach((item) => del(item));
+    del(globalizedArray)
+    .then(() => cb()) //no error passed because guy changed standard and returns deleted paths as first argument
+    .catch(cb);
 
-    return cb();
   });
+}
+
+/**
+ * Function responsible for changing paths to enable globalization, for example /services/order/ to /services/**\/order/ so it catches subdirectories
+ * @param  {String} [arrayOfRepositories] - string with paths that should be globalized, split by ,
+ * @return {Array} [arrayOfGlobalizedPaths] - Array with globalized paths
+ */
+function _prepareGlobalizedPaths(arrayOfRepositories) {
+  arrayOfRepositories = arrayOfRepositories.toString().split(',');
+  return arrayOfRepositories.map((el) => el.replace('/services/', '/services/**/'));
 }

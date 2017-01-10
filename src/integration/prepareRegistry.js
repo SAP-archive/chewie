@@ -24,6 +24,7 @@ function prepareRegistry(topics, config, next) {
   const registrySource = config.registry.path,
     registryOrigin = config.registry.location,
     registryPath = config.registry.registryPath,
+    shortRegistryPath = config.registry.shortRegistryPath,
     branchTag = config.registry.branch;
 
   //First step of preparing the registry is to actually check if it isn't already prepared
@@ -31,25 +32,21 @@ function prepareRegistry(topics, config, next) {
   validator.fileCheck(registryPath, (err) => {
 
     if (!err) {
-
       return next();
     }
 
+    const _registryHandler = _prepareRegistryHandler(topics, config, registryPath, shortRegistryPath, next);
     switch(registryOrigin){
 
     case 'local':
 
-      _prepareRegistryForLocal(registrySource, config, () => {
-        topics ? _shrinkedRegistry(topics, config, next) : next();
-      });
+      _prepareRegistryForLocal(registrySource, config, _registryHandler);
 
       break;
 
     case 'remote':
 
-      _prepareRegistryForExternal(registrySource, branchTag, config, () => {
-        topics ? _shrinkedRegistry(topics, config, next) : next();
-      });
+      _prepareRegistryForExternal(registrySource, branchTag, config, _registryHandler);
 
       break;
 
@@ -59,6 +56,22 @@ function prepareRegistry(topics, config, next) {
              It should be local or remote and not something that you have currently: ${config.registry.location}`);
     }
   });
+}
+
+function _prepareRegistryHandler(topics, config, registryPath, shortRegistryPath, next) {
+  return () => {
+
+    if(topics) {
+      return _shrinkedRegistry(topics, config, next);
+    }
+
+
+    log.info('Creating shrinked registry for globalization feature');
+    const localRegistry = require(path.resolve(registryPath));
+    creator.createFilesSync(shortRegistryPath, JSON.stringify(localRegistry));
+    next();
+  };
+
 }
 
 function _prepareRegistryForLocal(registrySource, config, next) {
@@ -73,7 +86,7 @@ function _prepareRegistryForExternal(registrySource, branchTag, config, next) {
 
   //clone repo and then create the registry
   cloner.cloneRepo(registrySource, branchTag, clonePath, (e) => {
-    
+
     if(e) log.warning(e);
 
     //calling concat function to prepare a final registry file
