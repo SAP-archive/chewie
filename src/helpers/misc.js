@@ -36,7 +36,7 @@ function getTopicsByWildcard(registry, topics) {
 }
 
 function _isMatchElement(element, topic){
-  return _matchWildcardCondition(element.name, topic.name) && _matchWildcardCondition(element.type, topic.type);
+  return (_matchWildcardCondition(element.name, topic.name) && _matchWildcardCondition(element.type, topic.type));
 }
 
 //http://stackoverflow.com/questions/26246601/wildcard-string-comparison-in-javascript

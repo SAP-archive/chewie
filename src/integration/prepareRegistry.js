@@ -20,7 +20,6 @@ const cloner = require('../helpers/cloner'),
  */
 
 function prepareRegistry(topics, config, next) {
-  console.log('next123', next, topics, config);
 
   const registrySource = config.registry.path,
     registryOrigin = config.registry.location,
@@ -40,8 +39,10 @@ function prepareRegistry(topics, config, next) {
     case 'local':
 
       _prepareRegistryForLocal(registrySource, config, () => {
+
         const registry = misc.getRegistry(path.resolve(process.cwd(), `${config.tempLocation}/${config.registry.fileName}`));
-        _shrinkRegistry(registry, topics, next);
+        _shrinkRegistry(registry, topics, config, next);
+
       });
 
       break;
@@ -49,6 +50,7 @@ function prepareRegistry(topics, config, next) {
     case 'remote':
 
       _prepareRegistryForExternal(registrySource, branchTag, config, () => {
+
         const registry = misc.getRegistry(path.resolve(process.cwd(), `${config.tempLocation}/${config.registry.fileName}`));
         _shrinkRegistry(registry, topics, config, next);
       });
@@ -63,8 +65,10 @@ function prepareRegistry(topics, config, next) {
   });
 }
 
+
 function _shrinkRegistry(registry, topics, config, next) {
-  const wildcardedTopics = topics && misc.getTopicsByWildcard(registry, topics);
+  const wildcardedTopics = topics ? misc.getTopicsByWildcard(registry, topics): topics;
+
   wildcardedTopics ? _createShrinkedRegistry(wildcardedTopics, registry, config, next) : next();
 }
 
