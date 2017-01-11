@@ -67,7 +67,7 @@ function prepareRegistry(topics, config, next) {
 
 
 function _shrinkRegistry(registry, topics, config, next) {
-  const wildcardedTopics = topics ? misc.getTopicsByWildcard(registry, topics): topics;
+  const wildcardedTopics = topics && misc.getTopicsByWildcard(registry, topics);
 
   wildcardedTopics ? _createShrinkedRegistry(wildcardedTopics, registry, config, next) : next();
 }
