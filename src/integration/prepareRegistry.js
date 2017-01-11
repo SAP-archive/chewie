@@ -24,6 +24,7 @@ function prepareRegistry(topics, config, next) {
   const registrySource = config.registry.path,
     registryOrigin = config.registry.location,
     registryPath = config.registry.registryPath,
+    shortRegistryPath = config.registry.shortRegistryPath,
     branchTag = config.registry.branch;
 
   //First step of preparing the registry is to actually check if it isn't already prepared
@@ -31,29 +32,21 @@ function prepareRegistry(topics, config, next) {
   validator.fileCheck(registryPath, (err) => {
 
     if (!err) {
-
       return next();
     }
+
+    const _registryHandler = _prepareRegistryHandler(topics, config, registryPath, shortRegistryPath, next);
     switch(registryOrigin){
 
     case 'local':
 
-      _prepareRegistryForLocal(registrySource, config, () => {
-
-        const registry = misc.getRegistry(path.resolve(process.cwd(), `${config.tempLocation}/${config.registry.fileName}`));
-        _shrinkRegistry(registry, topics, config, next);
-
-      });
+      _prepareRegistryForLocal(registrySource, config, _registryHandler);
 
       break;
 
     case 'remote':
 
-      _prepareRegistryForExternal(registrySource, branchTag, config, () => {
-
-        const registry = misc.getRegistry(path.resolve(process.cwd(), `${config.tempLocation}/${config.registry.fileName}`));
-        _shrinkRegistry(registry, topics, config, next);
-      });
+      _prepareRegistryForExternal(registrySource, branchTag, config, _registryHandler);
 
       break;
 
@@ -65,11 +58,22 @@ function prepareRegistry(topics, config, next) {
   });
 }
 
+function _prepareRegistryHandler(topics, config, registryPath, shortRegistryPath, next) {
+  return () => {
 
-function _shrinkRegistry(registry, topics, config, next) {
-  const wildcardedTopics = topics && misc.getTopicsByWildcard(registry, topics);
+    const registry = misc.getRegistry(path.resolve(process.cwd(), `${config.tempLocation}/${config.registry.fileName}`));
+    const wildcardedTopics = topics && misc.getTopicsByWildcard(registry, topics);
 
-  wildcardedTopics ? _createShrinkedRegistry(wildcardedTopics, registry, config, next) : next();
+    if(wildcardedTopics) {
+      return _shrinkedRegistry(topics, config, registry, next);
+    }
+
+    log.info('Creating shrinked registry for globalization feature');
+    const localRegistry = require(path.resolve(registryPath));
+    creator.createFilesSync(shortRegistryPath, JSON.stringify(localRegistry));
+    next();
+  };
+
 }
 
 function _prepareRegistryForLocal(registrySource, config, next) {
@@ -92,7 +96,7 @@ function _prepareRegistryForExternal(registrySource, branchTag, config, next) {
   });
 }
 
-function _createShrinkedRegistry(topics, registry, config, next) {
+function _shrinkedRegistry(topics, config, registry, next) {
 
   const shrinkedRegistry = misc.registryShrink(registry, topics);
   creator.createFile(config.registry.shortRegistryPath, JSON.stringify(shrinkedRegistry), next);

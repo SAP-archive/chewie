@@ -6,7 +6,7 @@ const config = {
   placeholdersLocation: './placeholders',
   docuUrl: process.env.docuURL || 'https://devportal.yaas.io',
   notClonedRepositoriesFile: 'notClonedRepositories.json',
-  indepenedentDocuRepositoriesFile: 'indepenedentDocuRepositories.json',
+  indepenedentDocuRepositoriesFile: 'indepenedentDocuRepositories',
 
   registry: {
     location: process.env.REGISTRY_LOCATION || 'remote',
