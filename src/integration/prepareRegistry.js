@@ -20,6 +20,7 @@ const cloner = require('../helpers/cloner'),
  */
 
 function prepareRegistry(topics, config, next) {
+  console.log('next123', next, topics, config);
 
   const registrySource = config.registry.path,
     registryOrigin = config.registry.location,
@@ -40,9 +41,7 @@ function prepareRegistry(topics, config, next) {
 
       _prepareRegistryForLocal(registrySource, config, () => {
         const registry = misc.getRegistry(path.resolve(process.cwd(), `${config.tempLocation}/${config.registry.fileName}`));
-        const wildcardedTopics = topics ? misc.getTopicsByWildcard(registry, topics): topics;
-
-        wildcardedTopics ? _shrinkedRegistry(wildcardedTopics, registry, config, next) : next();
+        _shrinkRegistry(registry, topics, next);
       });
 
       break;
@@ -51,9 +50,7 @@ function prepareRegistry(topics, config, next) {
 
       _prepareRegistryForExternal(registrySource, branchTag, config, () => {
         const registry = misc.getRegistry(path.resolve(process.cwd(), `${config.tempLocation}/${config.registry.fileName}`));
-        const wildcardedTopics = topics ? misc.getTopicsByWildcard(registry, topics): topics;
-
-        wildcardedTopics ? _shrinkedRegistry(wildcardedTopics, registry, config, next) : next();
+        _shrinkRegistry(registry, topics, config, next);
       });
 
       break;
@@ -64,6 +61,11 @@ function prepareRegistry(topics, config, next) {
              It should be local or remote and not something that you have currently: ${config.registry.location}`);
     }
   });
+}
+
+function _shrinkRegistry(registry, topics, config, next) {
+  const wildcardedTopics = topics && misc.getTopicsByWildcard(registry, topics);
+  wildcardedTopics ? _createShrinkedRegistry(wildcardedTopics, registry, config, next) : next();
 }
 
 function _prepareRegistryForLocal(registrySource, config, next) {
@@ -86,7 +88,7 @@ function _prepareRegistryForExternal(registrySource, branchTag, config, next) {
   });
 }
 
-function _shrinkedRegistry(topics, registry, config, next) {
+function _createShrinkedRegistry(topics, registry, config, next) {
 
   const shrinkedRegistry = misc.registryShrink(registry, topics);
   creator.createFile(config.registry.shortRegistryPath, JSON.stringify(shrinkedRegistry), next);

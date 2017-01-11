@@ -27,7 +27,7 @@ function getTopicsByWildcard(registry, topics) {
   topics.forEach((topic) => {
 
     registry.forEach((el) => {
-      if (_matchRuleShort(el.name, topic.name) && _matchRuleShort(el.type, topic.type)) finalTopics.push({ name: el.name, type: el.type });
+      if (_isMatchElement(el, topic)) finalTopics.push({ name: el.name, type: el.type });
     });
 
   });
@@ -35,11 +35,20 @@ function getTopicsByWildcard(registry, topics) {
   return finalTopics;
 }
 
+function _isMatchElement(element, topic){
+  return _matchWildcardCondition(element.name, topic.name) && _matchWildcardCondition(element.type, topic.type);
+}
+
 //http://stackoverflow.com/questions/26246601/wildcard-string-comparison-in-javascript
-function _matchRuleShort(str, rule) {
+/**
+ * This function takes a wildcard mask and create a RegExp object out of it
+ * @param {String} [str] - string to compare
+ * @param {String} [rule] - rule to match
+ */
+function _matchWildcardCondition(str, rule) {
   const helperRule = rule.split('*').join('.*');
 
-  return new RegExp(`^${rule.split('*').join('.*')}$`).test(str);
+  return new RegExp(`^${helperRule}$`).test(str);
 }
 
 /**
