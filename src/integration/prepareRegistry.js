@@ -65,7 +65,7 @@ function _prepareRegistryHandler(topics, config, registryPath, shortRegistryPath
     const wildcardedTopics = topics && misc.getTopicsByWildcard(registry, topics);
 
     if(wildcardedTopics) {
-      return _shrinkedRegistry(topics, config, registry, next);
+      return _shrinkedRegistry(wildcardedTopics, config, registry, next);
     }
 
     log.info('Creating shrinked registry for globalization feature');
