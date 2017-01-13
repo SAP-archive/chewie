@@ -139,10 +139,15 @@ function _parse (source, docuDir, raml, baseUri, traits) {
  * @param {string} [to] - new string to replace the old one
  */
 function _replaceInFile(file, from, to) {
-  const data = fs.readFileSync(file, 'utf-8');
+  try {
+    const data = fs.readFileSync(file, 'utf-8');
 
-  const regexExp = new RegExp(`${from}(?!:)`, 'g');
-  const replace = data.replace(regexExp, to);
+    const regexExp = new RegExp(`${from}(?!:)`, 'g');
+    const replace = data.replace(regexExp, to);
 
-  creator.createFilesSync(file, replace, 'utf-8');
+    creator.createFilesSync(file, replace, 'utf-8');
+  }
+  catch(err) {
+    logger.error(`The error occured: ${err}`);
+  }
 }
