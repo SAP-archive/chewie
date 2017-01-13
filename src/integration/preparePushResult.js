@@ -8,7 +8,9 @@ const async = require('async'),
   validator = require('../helpers/validator'),
   reader = require('../helpers/reader'),
   log = require('../helpers/logger'),
-  vfs = require('vinyl-fs');
+  vfs = require('vinyl-fs'),
+  _ = require('underscore'),
+  arrajek = [];
 
 /**
  * This function prepares a commit with changes.
@@ -34,15 +36,16 @@ function preparePushResult(opt, next) {
     tempLocation = opt.tempLocation,
     notClonedRepositoriesFile = opt.notClonedRepositoriesFile,
     indepenedentDocuRepositoriesFile = opt.indepenedentDocuRepositoriesFile,
-    apinotebooksOutLocation = opt.apinotebooksOutLocation;
+    apinotebooksOutLocation = opt.apinotebooksOutLocation,
+    message = opt.message;
 
   async.series([
     clone(repo, branch, dest),
     backupOfNotClonedRepositories(independent, tempLocation, notClonedRepositoriesFile),
-    deletePreviouslyClonedResultsRepo(dest, independent, tempLocation, indepenedentDocuRepositoriesFile),
-    copyFilesToLatestResultRepo(src, dest, independent),
-    copyApiNotebooksToLatestResultRepos(apinotebooksOutLocation, dest, independent),
-    restoreBackupOfNotClonedRepositories(independent, tempLocation, notClonedRepositoriesFile)
+    deletePreviouslyClonedResultsRepo(dest, independent, tempLocation, indepenedentDocuRepositoriesFile, message)
+    //copyFilesToLatestResultRepo(src, dest, independent),
+    //copyApiNotebooksToLatestResultRepos(apinotebooksOutLocation, dest, independent),
+    //restoreBackupOfNotClonedRepositories(independent, tempLocation, notClonedRepositoriesFile)
   ], next);
 }
 
@@ -61,11 +64,11 @@ function backupOfNotClonedRepositories(independent, tempLocation, notClonedRepos
 }
 
 //delete previously cloned results
-function deletePreviouslyClonedResultsRepo(dest, independent, tempLocation, indepenedentDocuRepositoriesFile) {
+function deletePreviouslyClonedResultsRepo(dest, independent, tempLocation, indepenedentDocuRepositoriesFile, message) {
   return (cb) => {
     if (independent) {
       eraseRepositoriesFromDest(tempLocation, indepenedentDocuRepositoriesFile, () => {
-        eraseOutdatedLandingPagesFromDest(tempLocation, indepenedentDocuRepositoriesFile, cb);
+        eraseOutdatedLandingPagesFromDest(message, cb);
       });
     }
     else{
@@ -163,24 +166,15 @@ function eraseRepositoriesFromDest(tempLocation, indepenedentDocuRepositoriesFil
 }
 
 /** Function resposible for erasing
-* @param {String} [tempLocation] - indicates folder with cloned repositories
-* @param {String} [indepenedentDocuRepositoriesFile] - name of the file with the information about repositories used during the independent docu generation
+* @param {String} [message] - argv.topics string
 * @param {Function} [cb] - callback for asynchronous operation
 */
-function eraseOutdatedLandingPagesFromDest(tempLocation, indepenedentDocuRepositoriesFile, cb){
-
-  const repoPath = `./${tempLocation}/${indepenedentDocuRepositoriesFile}`;
-
-  reader.readFile(repoPath, (err, repoMatrix) => {
-    if (err || repoMatrix.length === 0) return cb();
-    
-  //
-  //   const globalizedArray = _prepareGlobalizedPaths(repoMatrix);
-  //
-  //   del(globalizedArray)
-  //     .then(() => cb()) //no error passed because guy changed standard and returns deleted paths as first argument
-  //     .catch(cb);
+function eraseOutdatedLandingPagesFromDest(message, cb){
+  _uniqTopicTypes(message).map((el) => {
+    _prepareOutdatedPaths(el);
   });
+
+  console.log(arrajek);
 }
 
 /**
@@ -191,4 +185,19 @@ function eraseOutdatedLandingPagesFromDest(tempLocation, indepenedentDocuReposit
 function _prepareGlobalizedPaths(arrayOfRepositories) {
   arrayOfRepositories = arrayOfRepositories.toString().split(',');
   return arrayOfRepositories.map((el) => el.replace('/services/', '/services/**/'));
+}
+
+/**
+ * Function returns table that consists of unique topics types. Values taken from argv.topics
+ * -t 'services:serviceOne,tools:toolOne,services:serviceTwo' will return: [ 'services', 'tools' ]
+ * @param  {String} [message] - argv.topics string
+ */
+function _uniqTopicTypes(message) {
+  return _.uniq(message.split(',').map((el) => el.split(':')[0]));
+}
+
+function _prepareOutdatedPaths(el){
+  const main = `internal/${el}/index.html`;
+  const mainInternal = `${el}/index.html`;
+  arrajek.push(main, mainInternal);
 }
