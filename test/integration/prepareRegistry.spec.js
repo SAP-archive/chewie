@@ -73,3 +73,22 @@ describe('Dont get the registry if it is already in place', () => {
   });
 
 });
+
+
+describe('Check if registry is prepared if wildcard masks are used with services:*', () => {
+
+  const topicsIndependent = {'type':'services', 'name':'*'};
+
+  before((done) => prepareRegistry([topicsIndependent], config, done));
+
+  it('should have prepare the registy under configured directory and name', () => {
+    const registry = testHelper.getRegistry(config.registry.shortRegistryPath);
+    expect(registry.length).to.equal(4);
+
+  });
+
+  after((done) => {
+    rimraf(`${config.tempLocation}`, done);
+  });
+
+});
