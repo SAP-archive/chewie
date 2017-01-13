@@ -64,7 +64,9 @@ function backupOfNotClonedRepositories(independent, tempLocation, notClonedRepos
 function deletePreviouslyClonedResultsRepo(dest, independent, tempLocation, indepenedentDocuRepositoriesFile) {
   return (cb) => {
     if (independent) {
-      eraseRepositoriesFromDest(tempLocation, indepenedentDocuRepositoriesFile, cb);
+      eraseRepositoriesFromDest(tempLocation, indepenedentDocuRepositoriesFile, () => {
+        eraseOutdatedLandingPagesFromDest(tempLocation, indepenedentDocuRepositoriesFile, cb);
+      });
     }
     else{
       del([`${dest}/**/*`, `!${dest}/.git`]).then(() => cb());
@@ -157,6 +159,27 @@ function eraseRepositoriesFromDest(tempLocation, indepenedentDocuRepositoriesFil
     .then(() => cb()) //no error passed because guy changed standard and returns deleted paths as first argument
     .catch(cb);
 
+  });
+}
+
+/** Function resposible for erasing
+* @param {String} [tempLocation] - indicates folder with cloned repositories
+* @param {String} [indepenedentDocuRepositoriesFile] - name of the file with the information about repositories used during the independent docu generation
+* @param {Function} [cb] - callback for asynchronous operation
+*/
+function eraseOutdatedLandingPagesFromDest(tempLocation, indepenedentDocuRepositoriesFile, cb){
+
+  const repoPath = `./${tempLocation}/${indepenedentDocuRepositoriesFile}`;
+
+  reader.readFile(repoPath, (err, repoMatrix) => {
+    if (err || repoMatrix.length === 0) return cb();
+    
+  //
+  //   const globalizedArray = _prepareGlobalizedPaths(repoMatrix);
+  //
+  //   del(globalizedArray)
+  //     .then(() => cb()) //no error passed because guy changed standard and returns deleted paths as first argument
+  //     .catch(cb);
   });
 }
 
