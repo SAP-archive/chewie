@@ -35,21 +35,6 @@ function getTopicsByWildcard(registry, topics) {
   return finalTopics;
 }
 
-function _isMatchElement(element, topic){
-  return (_matchWildcardCondition(element.name, topic.name) && _matchWildcardCondition(element.type, topic.type));
-}
-
-//http://stackoverflow.com/questions/26246601/wildcard-string-comparison-in-javascript
-/**
- * This function takes a wildcard mask and create a RegExp object out of it
- * @param {String} [str] - string to compare
- * @param {String} [rule] - rule to match
- */
-function _matchWildcardCondition(str, rule) {
-  const helperRule = rule.split('*').join('.*');
-
-  return new RegExp(`^${helperRule}$`).test(str);
-}
 
 /**
  * This function takes a registry array and removes from it all entries that are not listed in a list of selected topics.
@@ -107,6 +92,7 @@ function deleteFolderAsync(path) {
   };
 }
 
+
 /**
  * Its helper method for creating async method for gulp task.
  * @param {Function} [func] - function you want to pack into async
@@ -118,6 +104,7 @@ const asyncTaskCreator = (func, params) => {
     func.apply(this, params);
   };
 };
+
 
 /**
  * This function reads the registry - it a fix for require issues.
@@ -133,6 +120,7 @@ const getRegistry = (path) => {
   }
 
 };
+
 
 /**
  * This function validates if directory exists
@@ -151,6 +139,24 @@ const dirCheckSync = (dir) => {
   }
 
 };
+
+
+function _isMatchElement(element, topic){
+  return (_matchWildcardCondition(element.name, topic.name) && _matchWildcardCondition(element.type, topic.type));
+}
+
+
+//http://stackoverflow.com/questions/26246601/wildcard-string-comparison-in-javascript
+/**
+ * This function takes a wildcard mask and create a RegExp object out of it
+ * @param {String} [str] - string to compare
+ * @param {String} [rule] - rule to match
+ */
+function _matchWildcardCondition(str, rule) {
+  const helperRule = rule.split('*').join('.*');
+
+  return new RegExp(`^${helperRule}$`).test(str);
+}
 
 const misc = {
   trimAdvanced,
