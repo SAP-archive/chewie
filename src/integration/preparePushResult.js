@@ -175,6 +175,10 @@ function eraseOutdatedLandingPagesFromDest(message, cb){
   });
 
   console.log(arrajek);
+
+  // del(arrajek)
+  // .then(() => cb())
+  // .catch(cb);
 }
 
 /**
