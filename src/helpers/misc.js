@@ -154,13 +154,13 @@ const dirCheckSync = (dir) => {
 
 const misc = {
   trimAdvanced,
+  getTopicsByWildcard,
   registryShrink,
   checkExtension,
   changeFileName,
   asyncTaskCreator,
   deleteFolderAsync,
   getRegistry,
-  getTopicsByWildcard,
   dirCheckSync
 };
 
