@@ -63,9 +63,7 @@ function fileCheck(file, next) {
  */
 function fileCheckSync(file){
   try {
-    if (fs.statSync(file).isFile()) return true;
-
-    return false;
+    return fs.statSync(file).isFile();
   }
   catch(err) {
     return false;
