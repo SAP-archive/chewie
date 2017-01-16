@@ -22,8 +22,7 @@ describe('Run replaceApiReferences task', () => {
 
   let registry;
 
-  const task = '<li><a href="index.html#ApiReference" id="parent_api_ref_nav"> <span class="left-nav__icon hyicon hyicon-chevron u-hide-permanently"></span> API Reference</a></li>';
-
+  const task = '<li><a href="index.html#ApiReference" id="parent_api_ref_nav"> <span class="left-nav__icon hyicon hyicon-chevron u-hide-permanently"></span>API Reference</a></li>';
   before((done) => {
     prepareRegistry(null, config, () => {
       registry = JSON.parse(fs.readFileSync(`${config.registry.registryPath}`, 'utf8'));
