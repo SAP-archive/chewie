@@ -9,7 +9,6 @@ const async = require('async'),
   reader = require('../helpers/reader'),
   log = require('../helpers/logger'),
   vfs = require('vinyl-fs'),
-  _ = require('underscore'),
   misc = require('../helpers/misc');
 
 /**
