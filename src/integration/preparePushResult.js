@@ -174,7 +174,7 @@ function eraseOutdatedLandingPagesFromDest(message, dest, cb){
   _uniqTopicTypes(message).map((el) => {
     _prepareOutdatedPaths(dest, el);
   });
-
+  
   del(pathsToBeErased)
   .then(() => cb())
   .catch(cb);
