@@ -10,7 +10,7 @@ const async = require('async'),
   log = require('../helpers/logger'),
   vfs = require('vinyl-fs'),
   _ = require('underscore'),
-  pathsToBeErased = [];
+  misc = require('../helpers/misc');
 
 /**
  * This function prepares a commit with changes.
@@ -111,13 +111,7 @@ function restoreBackupOfNotClonedRepositories(independent, tempLocation, notClon
   };
 }
 
-const preparePush = {
-  preparePushResult,
-  _uniqTopicTypes,
-  _prepareOutdatedPaths
-};
-
-module.exports = preparePush;
+module.exports = preparePushResult;
 
 /**
  * Function resposible for moving files between two directories in order to backup them or restore them
@@ -177,8 +171,11 @@ function eraseRepositoriesFromDest(tempLocation, indepenedentDocuRepositoriesFil
 * @param {Function} [cb] - callback for asynchronous operation
 */
 function eraseOutdatedLandingPagesFromDest(message, dest, cb){
-  _uniqTopicTypes(message).map((el) => {
-    _prepareOutdatedPaths(dest, el);
+  const pathsToBeErased = [];
+
+  misc.uniqTopicTypes(message).map((el) => {
+    const paths = misc.prepareOutdatedPaths(dest, el);
+    pathsToBeErased.push(paths.index, paths.indexInternal);
   });
 
   del(pathsToBeErased)
@@ -194,29 +191,4 @@ function eraseOutdatedLandingPagesFromDest(message, dest, cb){
 function _prepareGlobalizedPaths(arrayOfRepositories) {
   arrayOfRepositories = arrayOfRepositories.toString().split(',');
   return arrayOfRepositories.map((el) => el.replace('/services/', '/services/**/'));
-}
-
-/**
- * Function returns table that consists of unique topics types. Values taken from argv.topics
- * -t 'services:serviceOne,tools:toolOne,services:serviceTwo' will return: [ 'services', 'tools' ]
- * @param  {String} [message] - argv.topics string
- * @return {Array} - Array with unique topic types
- */
-function _uniqTopicTypes(message) {
-  if (!message) return [];
-
-  return _.uniq(message.split(',').map((el) => el.split(':')[0]));
-}
-
-/**
- * Function returns paths to files that will be erased during independent generation
- * -t 'services:serviceOne,tools:toolOne,services:serviceTwo' will return: [ 'services', 'tools' ]
- * @param  {String} [message] - argv.topics string
- * @param {String} [dest] - where you keep clone of the repo where you want to push,
- * @return {Array} - Array with paths to be erased
- */
-function _prepareOutdatedPaths(dest, el){
-  const main = `${dest}/internal/${el}/index.html`;
-  const mainInternal = `${dest}/${el}/index.html`;
-  pathsToBeErased.push(main, mainInternal);
 }

@@ -116,6 +116,36 @@ const dirCheckSync = (dir) => {
 
 };
 
+/**
+ * Function returns table that consists of unique topics types. Values taken from argv.topics
+ * -t 'services:serviceOne,tools:toolOne,services:serviceTwo' will return: [ 'services', 'tools' ]
+ * @param  {String} [message] - argv.topics string
+ * @return {Array} - Array with unique topic types
+ */
+function uniqTopicTypes(message) {
+  if (!message) return [];
+
+  return _.uniq(message.split(',').map((el) => el.split(':')[0]));
+}
+
+
+/**
+ * Function returns an object that contains paths to files that will be erased during independent generation
+ * @param {String} [dest] - where you keep clone of the repo where you want to push,
+ * @param  {String} [service] - name of the service
+ * @return {Object} - Object with paths to be erased
+ */
+function prepareOutdatedPaths(dest, service){
+  if (!dest || !service) return {};
+
+  const index = `${dest}/${service}/index.html`;
+  const indexInternal = `${dest}/internal/${service}/index.html`;
+  return {
+    index: index,
+    indexInternal: indexInternal
+  };
+}
+
 const misc = {
   trimAdvanced,
   registryShrink,
@@ -124,7 +154,9 @@ const misc = {
   asyncTaskCreator,
   deleteFolderAsync,
   getRegistry,
-  dirCheckSync
+  dirCheckSync,
+  uniqTopicTypes,
+  prepareOutdatedPaths
 };
 
 module.exports = misc;
