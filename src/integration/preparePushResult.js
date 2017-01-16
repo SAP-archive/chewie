@@ -10,12 +10,12 @@ const async = require('async'),
   log = require('../helpers/logger'),
   vfs = require('vinyl-fs'),
   _ = require('underscore'),
-  arrajek = [];
+  pathsToBeErased = [];
 
 /**
  * This function prepares a commit with changes.
  * @param {Object} [opt] - info necessary to determine where to make a proper changes and push them.
- * It should contain 5 different attributes:
+ * It should contains different attributes:
  * src - where to collect new things,
  * dest - where you keep clone of the repo where you want to push,
  * branch - from which branch it should clone (default is master),
@@ -25,6 +25,7 @@ const async = require('async'),
  * notClonedRepositoriesFile - name of the file, which stores the information about not cloned repositories,
  * indepenedentDocuRepositoriesFile - name of the file, which stores the information about repositories used during the independent docu generation,
  * apinotebooksOutLocation - directory where API Notebooks are stored in after generation - out folder,
+ * message - commit message
  * @param {Function} [next] - callback for asynch operations
  */
 function preparePushResult(opt, next) {
@@ -42,10 +43,10 @@ function preparePushResult(opt, next) {
   async.series([
     clone(repo, branch, dest),
     backupOfNotClonedRepositories(independent, tempLocation, notClonedRepositoriesFile),
-    deletePreviouslyClonedResultsRepo(dest, independent, tempLocation, indepenedentDocuRepositoriesFile, message)
-    //copyFilesToLatestResultRepo(src, dest, independent),
-    //copyApiNotebooksToLatestResultRepos(apinotebooksOutLocation, dest, independent),
-    //restoreBackupOfNotClonedRepositories(independent, tempLocation, notClonedRepositoriesFile)
+    deletePreviouslyClonedResultsRepo(dest, independent, tempLocation, indepenedentDocuRepositoriesFile, message),
+    copyFilesToLatestResultRepo(src, dest, independent),
+    copyApiNotebooksToLatestResultRepos(apinotebooksOutLocation, dest, independent),
+    restoreBackupOfNotClonedRepositories(independent, tempLocation, notClonedRepositoriesFile)
   ], next);
 }
 
@@ -68,7 +69,7 @@ function deletePreviouslyClonedResultsRepo(dest, independent, tempLocation, inde
   return (cb) => {
     if (independent) {
       eraseRepositoriesFromDest(tempLocation, indepenedentDocuRepositoriesFile, () => {
-        eraseOutdatedLandingPagesFromDest(message, cb);
+        eraseOutdatedLandingPagesFromDest(message, dest, cb);
       });
     }
     else{
@@ -169,16 +170,14 @@ function eraseRepositoriesFromDest(tempLocation, indepenedentDocuRepositoriesFil
 * @param {String} [message] - argv.topics string
 * @param {Function} [cb] - callback for asynchronous operation
 */
-function eraseOutdatedLandingPagesFromDest(message, cb){
+function eraseOutdatedLandingPagesFromDest(message, dest, cb){
   _uniqTopicTypes(message).map((el) => {
-    _prepareOutdatedPaths(el);
+    _prepareOutdatedPaths(dest, el);
   });
 
-  console.log(arrajek);
-
-  // del(arrajek)
-  // .then(() => cb())
-  // .catch(cb);
+  del(pathsToBeErased)
+  .then(() => cb())
+  .catch(cb);
 }
 
 /**
@@ -195,13 +194,21 @@ function _prepareGlobalizedPaths(arrayOfRepositories) {
  * Function returns table that consists of unique topics types. Values taken from argv.topics
  * -t 'services:serviceOne,tools:toolOne,services:serviceTwo' will return: [ 'services', 'tools' ]
  * @param  {String} [message] - argv.topics string
+ * @return {Array} - Array with unique topic types
  */
 function _uniqTopicTypes(message) {
   return _.uniq(message.split(',').map((el) => el.split(':')[0]));
 }
 
-function _prepareOutdatedPaths(el){
-  const main = `internal/${el}/index.html`;
-  const mainInternal = `${el}/index.html`;
-  arrajek.push(main, mainInternal);
+/**
+ * Function returns paths to files that will be erased during independent generation
+ * -t 'services:serviceOne,tools:toolOne,services:serviceTwo' will return: [ 'services', 'tools' ]
+ * @param  {String} [message] - argv.topics string
+ * @param {String} [dest] - where you keep clone of the repo where you want to push,
+ * @return {Array} - Array with paths to be erased
+ */
+function _prepareOutdatedPaths(dest, el){
+  const main = `${dest}/internal/${el}/index.html`;
+  const mainInternal = `${dest}/${el}/index.html`;
+  pathsToBeErased.push(main, mainInternal);
 }
