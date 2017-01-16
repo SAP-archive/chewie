@@ -111,7 +111,13 @@ function restoreBackupOfNotClonedRepositories(independent, tempLocation, notClon
   };
 }
 
-module.exports = preparePushResult;
+const preparePush = {
+  preparePushResult,
+  _uniqTopicTypes,
+  _prepareOutdatedPaths
+};
+
+module.exports = preparePush;
 
 /**
  * Function resposible for moving files between two directories in order to backup them or restore them
@@ -174,7 +180,7 @@ function eraseOutdatedLandingPagesFromDest(message, dest, cb){
   _uniqTopicTypes(message).map((el) => {
     _prepareOutdatedPaths(dest, el);
   });
-  
+
   del(pathsToBeErased)
   .then(() => cb())
   .catch(cb);
@@ -197,6 +203,8 @@ function _prepareGlobalizedPaths(arrayOfRepositories) {
  * @return {Array} - Array with unique topic types
  */
 function _uniqTopicTypes(message) {
+  if (!message) return [];
+
   return _.uniq(message.split(',').map((el) => el.split(':')[0]));
 }
 
