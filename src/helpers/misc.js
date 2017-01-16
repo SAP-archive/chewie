@@ -117,7 +117,7 @@ const dirCheckSync = (dir) => {
 };
 
 /**
- * Function returns table that consists of unique topics types. Values taken from argv.topics
+ * Function returns an array that contains unique topics types. Values are taken from argv.topics
  * -t 'services:serviceOne,tools:toolOne,services:serviceTwo' will return: [ 'services', 'tools' ]
  * @param  {String} [message] - argv.topics string
  * @return {Array} - Array with unique topic types
