@@ -165,7 +165,7 @@ function eraseRepositoriesFromDest(tempLocation, indepenedentDocuRepositoriesFil
   });
 }
 
-/** Function resposible for erasing
+/** Function resposible for erasing index.html pages during independent generation
 * @param {String} [message] - argv.topics string
 * @param {Function} [cb] - callback for asynchronous operation
 */
