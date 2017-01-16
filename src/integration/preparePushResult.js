@@ -162,7 +162,6 @@ function eraseRepositoriesFromDest(tempLocation, indepenedentDocuRepositoriesFil
     del(globalizedArray)
     .then(() => cb()) //no error passed because guy changed standard and returns deleted paths as first argument
     .catch(cb);
-
   });
 }
 
