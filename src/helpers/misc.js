@@ -132,14 +132,14 @@ function uniqTopicTypes(message) {
 /**
  * Function returns an object that contains paths to files that will be erased during independent generation
  * @param {String} [dest] - where you keep clone of the repo where you want to push,
- * @param  {String} [service] - name of the service
+ * @param  {String} [topic] - name of the topic
  * @return {Object} - Object with paths to be erased
  */
-function prepareOutdatedPaths(dest, service){
-  if (!dest || !service) return {};
+function prepareOutdatedPaths(dest, topic){
+  if (!dest || !topic) return {};
 
-  const index = `${dest}/${service}/index.html`;
-  const indexInternal = `${dest}/internal/${service}/index.html`;
+  const index = `${dest}/${topic}/index.html`;
+  const indexInternal = `${dest}/internal/${topic}/index.html`;
   return {
     index,
     indexInternal
