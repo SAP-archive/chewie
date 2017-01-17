@@ -141,8 +141,8 @@ function prepareOutdatedPaths(dest, service){
   const index = `${dest}/${service}/index.html`;
   const indexInternal = `${dest}/internal/${service}/index.html`;
   return {
-    index: index,
-    indexInternal: indexInternal
+    index,
+    indexInternal
   };
 }
 
