@@ -159,7 +159,7 @@ function eraseRepositoriesFromDest(tempLocation, indepenedentDocuRepositoriesFil
     const globalizedArray = _prepareGlobalizedPaths(repoMatrix);
 
     del(globalizedArray)
-    .then(cb) //no error passed because guy changed standard and returns deleted paths as first argument
+    .then(() => cb()) //no error passed because guy changed standard and returns deleted paths as first argument
     .catch(cb);
   });
 }
@@ -177,7 +177,7 @@ function eraseOutdatedLandingPagesFromDest(message, dest, cb){
   });
 
   del(pathsToBeErased)
-  .then(cb)
+  .then(() => cb())
   .catch(cb);
 }
 
