@@ -139,8 +139,9 @@ function _parse (source, docuDir, raml, baseUri, traits) {
  * @param {string} [to] - new string to replace the old one
  */
 function _replaceInFile(file, from, to) {
-  const data = fs.readFileSync(file, 'utf-8');
+  if (!validator.fileCheckSync(file)) return;
 
+  const data = fs.readFileSync(file, 'utf-8');
   const regexExp = new RegExp(`${from}(?!:)`, 'g');
   const replace = data.replace(regexExp, to);
 
