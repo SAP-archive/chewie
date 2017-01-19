@@ -72,6 +72,7 @@ function checkExtension(path, str) {
   return (path.indexOf(str, path.length - str.length) !== -1);
 }
 
+
 function changeFileName(path, newFileName) {
 
   const splitted = path.split(systemPath.sep);
@@ -82,6 +83,7 @@ function changeFileName(path, newFileName) {
 
   return newPath;
 }
+
 
 function deleteFolderAsync(path) {
 
@@ -141,6 +143,37 @@ const dirCheckSync = (dir) => {
 };
 
 
+/**
+ * Function returns an array that contains unique topics types. Values are taken from argv.topics
+ * -t 'services:serviceOne,tools:toolOne,services:serviceTwo' will return: [ 'services', 'tools' ]
+ * @param  {String} [message] - argv.topics string
+ * @return {Array} - Array with unique topic types
+ */
+function uniqTopicTypes(message) {
+  if (!message) return [];
+
+  return _.uniq(message.split(',').map((el) => el.split(':')[0]));
+}
+
+
+/**
+ * Function returns an object that contains paths to files that will be erased during independent generation
+ * @param {String} [dest] - where you keep clone of the repo where you want to push,
+ * @param  {String} [topic] - name of the topic
+ * @return {Object} - Object with paths to be erased
+ */
+function prepareOutdatedPaths(dest, topic){
+  if (!dest || !topic) return {};
+
+  const index = `${dest}/${topic}/index.html`;
+  const indexInternal = `${dest}/internal/${topic}/index.html`;
+  return {
+    index,
+    indexInternal
+  };
+}
+
+
 function _isMatchElement(element, topic){
   return (_matchWildcardCondition(element.name, topic.name) && _matchWildcardCondition(element.type, topic.type));
 }
@@ -158,6 +191,7 @@ function _matchWildcardCondition(str, rule) {
   return new RegExp(`^${helperRule}$`).test(str);
 }
 
+
 const misc = {
   trimAdvanced,
   getTopicsByWildcard,
@@ -167,7 +201,9 @@ const misc = {
   asyncTaskCreator,
   deleteFolderAsync,
   getRegistry,
-  dirCheckSync
+  dirCheckSync,
+  uniqTopicTypes,
+  prepareOutdatedPaths
 };
 
 module.exports = misc;

@@ -131,7 +131,7 @@ describe('Check if backup works for independent document generation', () => {
         'src': `${config.skeletonOutDestination}/**`,
         'dest': config.generationResult.clonedResultFolderPath,
         'branch': config.generationResult.branch,
-        'message': 'Push operation for the whole Dev Portal',
+        'message': 'services:Failing Ipsum,services:Samuel L Ipsum',
         'independent': true,
         'tempLocation': config.tempLocation,
         'notClonedRepositoriesFile': config.notClonedRepositoriesFile,
@@ -174,6 +174,18 @@ describe('Check if backup works for independent document generation', () => {
    */
   it('DeleteIpsum service folder should not be deleted', () => {
     _checkFileOrDir(false, `${config.tempLocation}/${config.generationResult.cloneLocation}/services/deleteipsum`, true);
+  });
+
+  it('It should replace services/inde.html file', () => {
+    _checkFileOrDir(true, `${config.tempLocation}/${config.generationResult.cloneLocation}/services/index.html`, true);
+  });
+
+  it('Content of services/index.html file should be updated', () => {
+    const newFileContent = 'Success! This file was overwritten during independent generation!';
+
+    const servicesIndexFile = testHelper.checkFileContentSync(`${config.tempLocation}/${config.generationResult.cloneLocation}/services/index.html`, newFileContent);
+
+    expect(servicesIndexFile).to.equal(true);
   });
 
 
