@@ -104,13 +104,13 @@ function _parseRAML(filePath, dest, baseUri, listTraits, cb) {
     return cb('Generation went fine');
   }, (err) => {
 
-    // cannot fetch is working for 4xx and 5xx errors
+    // 4xx and 5xx errors
     if(err && err.message && err.message.indexOf('cannotfetch')){ 
       logger.error(`Could not download traits for: ${dest}.\n \n Error: ${err}`);
       return process.exit(1);
     }
 
-    // other errors, such as: 'while validating body', 'version validation', 'while scanning for the next token' or 'while validating resource'
+    // other errors, such as: 'while validating body', 'while scanning for the next token' or 'while validating resource'
     logger.error(`Failed rewriting for service with base uri: ${baseUri}.`);
     logger.error(err);
     return cb('Other error. Proceed!');
