@@ -27,7 +27,7 @@ function replaceApiReferences(registry, config, next) {
     genBasicDocuLocationInternal = topicDetails.genBasicDocuLocationInternal;
     apiReferenceSource = topicDetails.apiReferenceSource;
     apiReferenceSourceInternal = topicDetails.apiReferenceSourceInternal;
-    contentOfNav = '<li><a href="index.html#ApiReference" id="parent_api_ref_nav">API Reference <span class="left-nav__icon hyicon hyicon-chevron u-hide-permanently"></span> <img class="left-nav__play-button svg u-hide-permanently" src="/images/icons/ico_interactive.svg" width="26" height="26" alt=""></a></li>';
+    contentOfNav = '<li><a href="#ApiReference" id="parent_api_ref_nav">API Reference <span class="left-nav__icon hyicon hyicon-chevron u-hide-permanently"></span> <img class="left-nav__play-button svg u-hide-permanently" src="/images/icons/ico_interactive.svg" width="26" height="26" alt=""></a></li>';
 
     if (!topicDetails.isService) return cb();
 
