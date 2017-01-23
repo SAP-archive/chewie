@@ -105,7 +105,7 @@ function _parseRAML(filePath, dest, baseUri, listTraits, cb) {
   }, (err) => {
 
     // 4xx and 5xx errors
-    if(err && err.message && err.message.indexOf('cannotfetch')){ 
+    if(err && err.message && err.message.indexOf('cannotfetch') !== -1){ 
       logger.error(`Could not download traits for: ${dest}.\n \n Error: ${err}`);
       return process.exit(1);
     }
