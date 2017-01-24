@@ -18,7 +18,7 @@ function dirCheck(dir, next) {
 
       if (stats.isDirectory()) return next();
 
-      return next(`There was a problem with dirCheck on $(file)`);
+      return next(`There was a problem with dirCheck on ${file}`);
 
     });
   }
@@ -44,7 +44,7 @@ function fileCheck(file, next) {
 
       if (stats.isFile()) return next();
 
-      return next(`There was a problem with fileCheck on $(file)`);
+      return next(`There was a problem with fileCheck on ${file}`);
 
     });
   }
@@ -56,10 +56,26 @@ function fileCheck(file, next) {
 }
 
 
+/**
+ * This function validates if file exists synchronously
+ * @param {String} [file] - file path
+ * @return {Boolean} - confirmation if exists or not
+ */
+function fileCheckSync(file){
+  try {
+    return fs.statSync(file).isFile();
+  }
+  catch(err) {
+    return false;
+  }
+}
+
+
 
 const validator = {
   dirCheck,
-  fileCheck
+  fileCheck,
+  fileCheckSync
 };
 
 

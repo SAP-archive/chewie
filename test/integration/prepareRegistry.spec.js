@@ -73,3 +73,22 @@ describe('Dont get the registry if it is already in place', () => {
   });
 
 });
+
+
+describe('Check if registry is prepared if wildcard masks are used with services:*', () => {
+
+  const topicsIndependent = {'type':'services', 'name':'*'};
+  config = require('../chewieConfigTestLocal');
+
+  before((done) => prepareRegistry([topicsIndependent], config, done));
+
+  it('should have 4 entries when services: * is passed in', () => {
+    const registry = testHelper.getRegistry(config.registry.shortRegistryPath);
+    expect(registry.length).to.equal(4);
+  });
+
+  after((done) => {
+    rimraf(`${config.tempLocation}`, done);
+  });
+
+});

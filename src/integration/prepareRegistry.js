@@ -61,10 +61,12 @@ function prepareRegistry(topics, config, next) {
 function _prepareRegistryHandler(topics, config, registryPath, shortRegistryPath, next) {
   return () => {
 
-    if(topics) {
-      return _shrinkedRegistry(topics, config, next);
-    }
+    const registry = misc.getRegistry(path.resolve(process.cwd(), `${config.tempLocation}/${config.registry.fileName}`));
+    const wildcardedTopics = topics && misc.getTopicsByWildcard(registry, topics);
 
+    if(wildcardedTopics) {
+      return _shrinkedRegistry(wildcardedTopics, config, registry, next);
+    }
 
     log.info('Creating shrinked registry for globalization feature');
     const localRegistry = require(path.resolve(registryPath));
@@ -94,11 +96,10 @@ function _prepareRegistryForExternal(registrySource, branchTag, config, next) {
   });
 }
 
-function _shrinkedRegistry(topics, config, next) {
+function _shrinkedRegistry(topics, config, registry, next) {
 
-  let registry = misc.getRegistry(path.resolve(process.cwd(), `${config.tempLocation}/${config.registry.fileName}`));
-  registry = misc.registryShrink(registry, topics);
-  creator.createFile(config.registry.shortRegistryPath, JSON.stringify(registry), next);
+  const shrinkedRegistry = misc.registryShrink(registry, topics);
+  creator.createFile(config.registry.shortRegistryPath, JSON.stringify(shrinkedRegistry), next);
 }
 
 module.exports = prepareRegistry;

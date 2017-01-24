@@ -8,12 +8,13 @@ const async = require('async'),
   validator = require('../helpers/validator'),
   reader = require('../helpers/reader'),
   log = require('../helpers/logger'),
-  vfs = require('vinyl-fs');
+  vfs = require('vinyl-fs'),
+  misc = require('../helpers/misc');
 
 /**
  * This function prepares a commit with changes.
  * @param {Object} [opt] - info necessary to determine where to make a proper changes and push them.
- * It should contain 5 different attributes:
+ * It should contains different attributes:
  * src - where to collect new things,
  * dest - where you keep clone of the repo where you want to push,
  * branch - from which branch it should clone (default is master),
@@ -23,6 +24,7 @@ const async = require('async'),
  * notClonedRepositoriesFile - name of the file, which stores the information about not cloned repositories,
  * indepenedentDocuRepositoriesFile - name of the file, which stores the information about repositories used during the independent docu generation,
  * apinotebooksOutLocation - directory where API Notebooks are stored in after generation - out folder,
+ * message - commit message
  * @param {Function} [next] - callback for asynch operations
  */
 function preparePushResult(opt, next) {
@@ -34,12 +36,13 @@ function preparePushResult(opt, next) {
     tempLocation = opt.tempLocation,
     notClonedRepositoriesFile = opt.notClonedRepositoriesFile,
     indepenedentDocuRepositoriesFile = opt.indepenedentDocuRepositoriesFile,
-    apinotebooksOutLocation = opt.apinotebooksOutLocation;
+    apinotebooksOutLocation = opt.apinotebooksOutLocation,
+    message = opt.message;
 
   async.series([
     clone(repo, branch, dest),
     backupOfNotClonedRepositories(independent, tempLocation, notClonedRepositoriesFile),
-    deletePreviouslyClonedResultsRepo(dest, independent, tempLocation, indepenedentDocuRepositoriesFile),
+    deletePreviouslyClonedResultsRepo(dest, independent, tempLocation, indepenedentDocuRepositoriesFile, message),
     copyFilesToLatestResultRepo(src, dest, independent),
     copyApiNotebooksToLatestResultRepos(apinotebooksOutLocation, dest, independent),
     restoreBackupOfNotClonedRepositories(independent, tempLocation, notClonedRepositoriesFile)
@@ -61,10 +64,12 @@ function backupOfNotClonedRepositories(independent, tempLocation, notClonedRepos
 }
 
 //delete previously cloned results
-function deletePreviouslyClonedResultsRepo(dest, independent, tempLocation, indepenedentDocuRepositoriesFile) {
+function deletePreviouslyClonedResultsRepo(dest, independent, tempLocation, indepenedentDocuRepositoriesFile, message) {
   return (cb) => {
     if (independent) {
-      eraseRepositoriesFromDest(tempLocation, indepenedentDocuRepositoriesFile, cb);
+      eraseRepositoriesFromDest(tempLocation, indepenedentDocuRepositoriesFile, () => {
+        eraseOutdatedLandingPagesFromDest(message, dest, cb);
+      });
     }
     else{
       del([`${dest}/**/*`, `!${dest}/.git`]).then(() => cb());
@@ -156,8 +161,24 @@ function eraseRepositoriesFromDest(tempLocation, indepenedentDocuRepositoriesFil
     del(globalizedArray)
     .then(() => cb()) //no error passed because guy changed standard and returns deleted paths as first argument
     .catch(cb);
-
   });
+}
+
+/** Function resposible for erasing index.html pages during independent generation
+* @param {String} [message] - argv.topics string
+* @param {Function} [cb] - callback for asynchronous operation
+*/
+function eraseOutdatedLandingPagesFromDest(message, dest, cb){
+  const pathsToBeErased = [];
+
+  misc.uniqTopicTypes(message).map((el) => {
+    const paths = misc.prepareOutdatedPaths(dest, el);
+    pathsToBeErased.push(paths.index, paths.indexInternal);
+  });
+
+  del(pathsToBeErased)
+  .then(() => cb())
+  .catch(cb);
 }
 
 /**
