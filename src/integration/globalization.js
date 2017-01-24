@@ -22,7 +22,7 @@ const eachRegTopic = require('../helpers/registryIterator'),
 function globalization(registry, config, mapMarketsToRegions, next) {
   eachRegTopic.sync(registry, config, next, (topicDetails, cb) => {
     console.log('lololo registry ', registry, 'topicDetails ', topicDetails, 'config ', config, 'mapMarketsToRegions ', mapMarketsToRegions, 'next', next);
-    const regions = mapMarketsToRegions(topicDetails.markets);
+    const regions = mapMarketsToRegions(topicDetails.markets, topicDetails.name);
     _globalizeTopic(topicDetails, regions, config, cb);
   });
 }
@@ -35,7 +35,7 @@ function _globalizeTopic(topic, regions, config, cb){
 
   const copiers = [];
   regions.forEach((region) => {
-
+console.log('lolo region', region);
     const createDestinationPath = pathCreator.globalizationDestination(config.skeletonOutDestination, topic, region.code);
 
     const defaultDomain = config.defaultBaseUriDomain.replace(/^https?:\/\//, '');
