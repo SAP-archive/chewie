@@ -22,7 +22,7 @@ describe('Run replaceApiReferences task', () => {
 
   let registry;
 
-  const task = '<li><a href="#ApiReference" id="parent_api_ref_nav">API Reference <span class="left-nav__icon hyicon hyicon-chevron u-hide-permanently"></span> <img class="left-nav__play-button svg u-hide-permanently" src="/images/icons/ico_interactive.svg" width="26" height="26" alt=""></a></li>';
+  const task = '<li><a href="#ApiReference" id="parent_api_ref_nav"> <span class="left-nav__icon hyicon hyicon-chevron u-hide-permanently"></span>API Reference</a></li>';
 
   before((done) => {
     prepareRegistry(null, config, () => {
