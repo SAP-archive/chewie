@@ -23,6 +23,8 @@ function globalization(registry, config, mapMarketsToRegions, next) {
   eachRegTopic.sync(registry, config, next, (topicDetails, cb) => {
     console.log('lololo registry ', registry, 'topicDetails ', topicDetails, 'config ', config, 'mapMarketsToRegions ', mapMarketsToRegions, 'next', next);
     const regions = mapMarketsToRegions(topicDetails.markets, topicDetails.name);
+
+    console.log('lolo regions', regions);
     _globalizeTopic(topicDetails, regions, config, cb);
   });
 }
