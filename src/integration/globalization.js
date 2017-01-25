@@ -24,13 +24,11 @@ function globalization(registry, config, mapMarketsToRegions, next) {
     console.log('lololo topicDetails.name ', topicDetails.name, 'topicDetails.markets ', topicDetails.markets);
     const regions = mapMarketsToRegions(topicDetails.markets, topicDetails.name);
 
-    console.log('lolo regions', regions);
     _globalizeTopic(topicDetails, regions, config, cb);
   });
 }
 
 function _globalizeTopic(topic, regions, config, cb){
-  console.log('lolo topic', topic, 'regions', regions);
   const sourcePathPattern = `${topic.genDocuLocation}/**/*`;
   const sourcePathInternalPattern = topic.genDocuLocationInternal ? `${topic.genDocuLocationInternal}/**/*` : null;
 
@@ -38,7 +36,6 @@ function _globalizeTopic(topic, regions, config, cb){
 
   const copiers = [];
   regions.forEach((region) => {
-    console.log('lolo region', region);
     const createDestinationPath = pathCreator.globalizationDestination(config.skeletonOutDestination, topic, region.code);
 
     const defaultDomain = config.defaultBaseUriDomain.replace(/^https?:\/\//, '');
