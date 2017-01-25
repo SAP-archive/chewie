@@ -21,7 +21,6 @@ const eachRegTopic = require('../helpers/registryIterator'),
  */
 function globalization(registry, config, mapMarketsToRegions, next) {
   eachRegTopic.sync(registry, config, next, (topicDetails, cb) => {
-    console.log('lololo topicDetails.name ', topicDetails.name, 'topicDetails.markets ', topicDetails.markets);
     const regions = mapMarketsToRegions(topicDetails.markets, topicDetails.name);
 
     _globalizeTopic(topicDetails, regions, config, cb);
