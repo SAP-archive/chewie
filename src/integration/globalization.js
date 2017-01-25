@@ -21,7 +21,7 @@ const eachRegTopic = require('../helpers/registryIterator'),
  */
 function globalization(registry, config, mapMarketsToRegions, next) {
   eachRegTopic.sync(registry, config, next, (topicDetails, cb) => {
-    console.log('lololo registry ', registry, 'topicDetails ', topicDetails, 'config ', config, 'mapMarketsToRegions ', mapMarketsToRegions, 'next', next);
+    console.log('lololo registry ', registry, 'topicDetails ', topicDetails);
     const regions = mapMarketsToRegions(topicDetails.markets, topicDetails.name);
 
     console.log('lolo regions', regions);
@@ -30,6 +30,7 @@ function globalization(registry, config, mapMarketsToRegions, next) {
 }
 
 function _globalizeTopic(topic, regions, config, cb){
+    console.log('lolo topic', topic, 'regions', regions);
   const sourcePathPattern = `${topic.genDocuLocation}/**/*`;
   const sourcePathInternalPattern = topic.genDocuLocationInternal ? `${topic.genDocuLocationInternal}/**/*` : null;
 
