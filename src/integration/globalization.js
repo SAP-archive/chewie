@@ -6,22 +6,23 @@ const eachRegTopic = require('../helpers/registryIterator'),
   pathCreator = require('../helpers/pathCreator'),
   async = require('async'),
   log = require('../helpers/logger');
-  
+
 
 /**
  * Function copies generated entries to proper locations
  * @param {Array} [registry] - array of full registry
  * @param {Object} [config] - basic integration configuration
- * @param {Function} [mapMarketsToRegions] - function accepts array of string with markets, 
- *                                           should return array with region object { 
- *                                                                                    code: location dir name, 
- *                                                                                    domain: string to replace with defaultBaseURI from config 
+ * @param {Function} [mapMarketsToRegions] - function accepts array of string with markets,
+ *                                           should return array with region object {
+ *                                                                                    code: location dir name,
+ *                                                                                    domain: string to replace with defaultBaseURI from config
  *                                                                                   }
  * @param {Function} [next] - callback for asynch operations
  */
 function globalization(registry, config, mapMarketsToRegions, next) {
   eachRegTopic.sync(registry, config, next, (topicDetails, cb) => {
-    const regions = mapMarketsToRegions(topicDetails.markets);
+    const regions = mapMarketsToRegions(topicDetails.markets, topicDetails.name);
+
     _globalizeTopic(topicDetails, regions, config, cb);
   });
 }
@@ -29,12 +30,11 @@ function globalization(registry, config, mapMarketsToRegions, next) {
 function _globalizeTopic(topic, regions, config, cb){
   const sourcePathPattern = `${topic.genDocuLocation}/**/*`;
   const sourcePathInternalPattern = topic.genDocuLocationInternal ? `${topic.genDocuLocationInternal}/**/*` : null;
-  
+
   if(!Array.isArray(regions)) return cb();
 
   const copiers = [];
   regions.forEach((region) => {
-    
     const createDestinationPath = pathCreator.globalizationDestination(config.skeletonOutDestination, topic, region.code);
 
     const defaultDomain = config.defaultBaseUriDomain.replace(/^https?:\/\//, '');
@@ -42,7 +42,7 @@ function _globalizeTopic(topic, regions, config, cb){
 
     const destinationPath = createDestinationPath(topic.version, false);
     copiers.push(misc.asyncTaskCreator(copyRegion, [sourcePathPattern, destinationPath]));
-    
+
     if(topic.latest){
       const destinationPathLatest = createDestinationPath('latest', false);
       copiers.push(misc.asyncTaskCreator(copyRegion, [sourcePathPattern, destinationPathLatest]));
@@ -65,7 +65,7 @@ function _regionCopier(srcDomain, region, topicType){
   return function(sourcePathPattern, destinationPath, cb){
 
     const afterCopyFiles = region.code ? _replaceUrl(destinationPath, region.code, topicType, cb) : cb;
-    
+
     if(!region.domain){
       log.info(`Copy '${sourcePathPattern}' to '${destinationPath}'.`);
       return  copier.copyFiles(sourcePathPattern, destinationPath, afterCopyFiles);
