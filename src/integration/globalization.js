@@ -65,6 +65,7 @@ function _regionCopier(srcDomain, region, topicType){
   return function(sourcePathPattern, destinationPath, cb){
 
     const afterCopyFiles = region.code ? _replaceUrl(destinationPath, region.code, topicType, cb) : cb;
+    const regExp = new RegExp(`(${sourcePathPattern})(?!(.*\/patterns|.*\/schema))`);
 
     if(!region.domain){
       log.info(`Copy '${sourcePathPattern}' to '${destinationPath}'.`);
@@ -72,7 +73,7 @@ function _regionCopier(srcDomain, region, topicType){
     }
 
     log.info(`Copy '${sourcePathPattern}' to '${destinationPath}' and replace '${srcDomain}' to '${region.domain}'.`);
-    return replacer.replaceInFile(sourcePathPattern, srcDomain, region.domain, destinationPath, afterCopyFiles);
+    return replacer.replaceInFile(sourcePathPattern, regExp, region.domain, destinationPath, afterCopyFiles);
   };
 }
 
