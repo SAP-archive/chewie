@@ -38,7 +38,7 @@ function _globalizeTopic(topic, regions, config, cb){
     const createDestinationPath = pathCreator.globalizationDestination(config.skeletonOutDestination, topic, region.code);
 
     const defaultDomain = config.defaultBaseUriDomain.replace(/^https?:\/\//, '');
-    const copyRegion = _regionCopier(defaultDomain, region, topic.type);
+    const copyRegion = _regionCopier(defaultDomain, region, config, topic.type);
 
     const destinationPath = createDestinationPath(topic.version, false);
     copiers.push(misc.asyncTaskCreator(copyRegion, [sourcePathPattern, destinationPath]));
@@ -60,12 +60,22 @@ function _globalizeTopic(topic, regions, config, cb){
   async.series(copiers, cb);
 }
 
-function _regionCopier(srcDomain, region, topicType){
+function _regionCopier(srcDomain, region, config, topicType){
 
   return function(sourcePathPattern, destinationPath, cb){
 
+    let regExp;
+
+    if(config.topicsWithoutGlobalization) {
+      const skipProxyNames = config.topicsWithoutGlobalization;
+      const proxyRegExp = skipProxyNames.map((name) => `\\w*\\/${name}`).join('|');
+      regExp = new RegExp(`(${srcDomain})(?!(${proxyRegExp}))`, 'g');
+    }
+    else {
+      regExp = srcDomain;
+    }
+
     const afterCopyFiles = region.code ? _replaceUrl(destinationPath, region.code, topicType, cb) : cb;
-    const regExp = new RegExp(`(${sourcePathPattern})(?!(.*\/patterns|.*\/schema))`);
 
     if(!region.domain){
       log.info(`Copy '${sourcePathPattern}' to '${destinationPath}'.`);
