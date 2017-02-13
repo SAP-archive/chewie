@@ -64,16 +64,7 @@ function _regionCopier(srcDomain, region, config, topicType){
 
   return function(sourcePathPattern, destinationPath, cb){
 
-    let regExp;
-
-    if(config.topicsWithoutGlobalization) {
-      const skipProxyNames = config.topicsWithoutGlobalization;
-      const proxyRegExp = skipProxyNames.map((name) => `\\w*\\/${name}`).join('|');
-      regExp = new RegExp(`(${srcDomain})(?!(${proxyRegExp}))`, 'g');
-    }
-    else {
-      regExp = srcDomain;
-    }
+    const regExp = Array.isArray(config.topicsWithoutGlobalization) ? _generateRegExp(config.topicsWithoutGlobalization, srcDomain) : srcDomain;
 
     const afterCopyFiles = region.code ? _replaceUrl(destinationPath, region.code, topicType, cb) : cb;
 
@@ -94,6 +85,12 @@ function _replaceUrl(destinationPath, regionCode, topicType, cb){
 
     replacer.replaceInFile(destinationPathPattern, regExp, `/${topicType}/${regionCode}/`, destinationPath, cb);
   };
+}
+
+function _generateRegExp(topicsWithoutGlobalization, srcDomain) {
+  const skipProxyNames = topicsWithoutGlobalization;
+  const proxyRegExp = skipProxyNames.map((name) => `\\w*\\/${name}`).join('|');
+  return new RegExp(`(${srcDomain})(?!(${proxyRegExp}))`, 'g');
 }
 
 module.exports = globalization;
