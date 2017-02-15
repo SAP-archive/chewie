@@ -29,8 +29,6 @@ describe('Run globalization task', () => {
 
   before((done) => {
 
-    config.topicsWithoutGlobalization = ['patterns', 'schema'];
-
     prepareRegistry(null, config, () => {
       registry = testHelper.getRegistry(config.registry.registryPath);
 

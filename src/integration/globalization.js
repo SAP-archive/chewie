@@ -87,6 +87,9 @@ function _replaceUrl(destinationPath, regionCode, topicType, cb){
   };
 }
 
+/**
+ * _generateRegExp creates RegExp that takes every baseUri into consideration EXCEPT the topics that are listed in config file, for example https://api.yaas.io/patterns will not be changed
+ */
 function _generateRegExp(topicsWithoutGlobalization, srcDomain) {
   const skipProxyNames = topicsWithoutGlobalization;
   const proxyRegExp = skipProxyNames.map((name) => `\\w*\\/${name}`).join('|');
