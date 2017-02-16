@@ -7,6 +7,7 @@ const config = {
   test: 'yes',
   notClonedRepositoriesFile: 'notClonedRepositories.json',
   indepenedentDocuRepositoriesFile: 'indepenedentDocuRepositories.json',
+  topicsWithoutGlobalization: ['patterns', 'schema'],
 
 
   registry: {
@@ -55,7 +56,7 @@ const config = {
     'services'
   ],
 
-  defaultBaseUriDomain: 'localhost'
+  defaultBaseUriDomain: 'https://api.yaas.io'
 };
 
 const out = `${config.skeletonDestination}/${config.registry.clonedRegistryFolder}/out`;

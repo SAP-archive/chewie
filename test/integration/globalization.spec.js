@@ -28,6 +28,7 @@ describe('Run globalization task', () => {
   let registry;
 
   before((done) => {
+
     prepareRegistry(null, config, () => {
       registry = testHelper.getRegistry(config.registry.registryPath);
 
@@ -92,43 +93,56 @@ describe('Run globalization task', () => {
     });
   });
 
-  it('should replace domain in copied files', (done) => {
-
-    eachRegTopic.async(registry, config, done, (topicDetails, cb) => {
+  it('should not replace patterns', (done) => {
+    const checkReplaceDomain = [];
+    eachRegTopic.async(registry, config, () => {}, (topicDetails, cb) => {
 
       const regions = _mapMarketsToRegions(topicDetails.markets);
 
       if (!regions.length) return cb();
 
-      const checkReplaceDomain = [];      
       regions.forEach((region) => {
         if(!region.domain)
           return;
 
         const createDestinationPath = pathCreator.globalizationDestination(config.skeletonOutDestination, topicDetails, region.code);
         const destinationPath = createDestinationPath(topicDetails.version, false);
-        checkReplaceDomain.push(_checkReplaceDomain(destinationPath));
+        checkReplaceDomain.push(_checkReplaceDomain(destinationPath, config));
       });
-
-      async.series(checkReplaceDomain, cb);
+      cb();
     });
+
+    const sanitizedFunctions = checkReplaceDomain.filter((fn) => typeof fn === 'function');
+
+    if(!sanitizedFunctions.length) return done('Test didn\'t work, no tasks to check');
+
+    async.series(sanitizedFunctions, done);
   });
 
   after((done) => {
     rimraf(`${config.tempLocation}`, done);
   });
-
 });
 
 function _checkReplaceDomain(destinationPath){
+  const whiteListedService = 'batmanipsum';
+  const whiteListedBaseUri = 'dccomics/batman-ipsum';
+
+  if(!destinationPath.includes(whiteListedService) || !destinationPath.includes('us')) return;
+
   return (cb) => {
-    gulp.src(`${destinationPath}/**/*`)
+    gulp.src(`${destinationPath}/**/*.raml`)
       .pipe(tap((file, stream) => {
         if(!file.contents)
           return stream;
         const contentFile = String(file.contents);
-        const isReplacedDomain = contentFile.indexOf(config.defaultBaseUriDomain) === -1;
-        expect(isReplacedDomain).to.equal(true);
+
+        const isReplacedDomain = contentFile.includes(`${config.defaultBaseUriDomain}/${whiteListedBaseUri}`);
+        const isProperDomain = contentFile.includes(`us.domain/${whiteListedBaseUri}`);
+        const ignoredPath = contentFile.includes(`${config.defaultBaseUriDomain}/patterns`);
+        expect(isReplacedDomain).to.equal(false, 'Proper URL is not changed in globalization task');
+        expect(isProperDomain).to.equal(true, 'Proper URL is not changed in globalization task');
+        expect(ignoredPath).to.equal(true, 'URL that should not be used in globalization task was changed');
         return stream;
       }))
       .on('error', cb)

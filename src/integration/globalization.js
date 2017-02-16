@@ -38,7 +38,7 @@ function _globalizeTopic(topic, regions, config, cb){
     const createDestinationPath = pathCreator.globalizationDestination(config.skeletonOutDestination, topic, region.code);
 
     const defaultDomain = config.defaultBaseUriDomain.replace(/^https?:\/\//, '');
-    const copyRegion = _regionCopier(defaultDomain, region, topic.type);
+    const copyRegion = _regionCopier(defaultDomain, region, config, topic.type);
 
     const destinationPath = createDestinationPath(topic.version, false);
     copiers.push(misc.asyncTaskCreator(copyRegion, [sourcePathPattern, destinationPath]));
@@ -60,9 +60,11 @@ function _globalizeTopic(topic, regions, config, cb){
   async.series(copiers, cb);
 }
 
-function _regionCopier(srcDomain, region, topicType){
+function _regionCopier(srcDomain, region, config, topicType){
 
   return function(sourcePathPattern, destinationPath, cb){
+
+    const regExp = Array.isArray(config.topicsWithoutGlobalization) ? _generateRegExp(config.topicsWithoutGlobalization, srcDomain) : srcDomain;
 
     const afterCopyFiles = region.code ? _replaceUrl(destinationPath, region.code, topicType, cb) : cb;
 
@@ -72,7 +74,7 @@ function _regionCopier(srcDomain, region, topicType){
     }
 
     log.info(`Copy '${sourcePathPattern}' to '${destinationPath}' and replace '${srcDomain}' to '${region.domain}'.`);
-    return replacer.replaceInFile(sourcePathPattern, srcDomain, region.domain, destinationPath, afterCopyFiles);
+    return replacer.replaceInFile(sourcePathPattern, regExp, region.domain, destinationPath, afterCopyFiles);
   };
 }
 
@@ -83,6 +85,15 @@ function _replaceUrl(destinationPath, regionCode, topicType, cb){
 
     replacer.replaceInFile(destinationPathPattern, regExp, `/${topicType}/${regionCode}/`, destinationPath, cb);
   };
+}
+
+/**
+ * _generateRegExp creates RegExp that takes every baseUri into consideration EXCEPT the topics that are listed in config file, for example https://api.yaas.io/patterns will not be changed
+ */
+function _generateRegExp(topicsWithoutGlobalization, srcDomain) {
+  const skipProxyNames = topicsWithoutGlobalization;
+  const proxyRegExp = skipProxyNames.map((name) => `\\w*\\/${name}`).join('|');
+  return new RegExp(`(${srcDomain})(?!(${proxyRegExp}))`, 'g');
 }
 
 module.exports = globalization;
