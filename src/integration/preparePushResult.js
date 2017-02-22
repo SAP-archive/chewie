@@ -81,7 +81,7 @@ function deletePreviouslyClonedResultsRepo(dest, independent, tempLocation, inde
 function copyFilesToLatestResultRepo(src, dest, independent) {
   return (cb) => {
     if (independent) {
-      vfs.src([src])
+      vfs.src([src], { dot: true })
         .pipe(vfs.dest(dest, {overwrite: false}))
         .on('end', cb);
     }
