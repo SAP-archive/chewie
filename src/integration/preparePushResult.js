@@ -81,7 +81,7 @@ function deletePreviouslyClonedResultsRepo(dest, independent, tempLocation, inde
 function copyFilesToLatestResultRepo(src, dest, independent) {
   return (cb) => {
     if (independent) {
-      vfs.src([src], { dot: true })
+      vfs.src([src, `${src}/.nojekyll`])
         .pipe(vfs.dest(dest, {overwrite: false}))
         .on('end', cb);
     }
