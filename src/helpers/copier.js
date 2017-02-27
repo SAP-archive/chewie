@@ -16,7 +16,7 @@ function copyFiles(src, dest, next) {
 
   if(!src || !dest) return next(`Unable to perform copy operation because of wrong src: ${src} or dest: ${dest} value`);
 
-  gulp.src([src, `${src}/.nojekyll`], { base: src })
+  gulp.src(src, { dot: true })
     .pipe(gulp.dest(dest))
     .on('end', next);
 }
