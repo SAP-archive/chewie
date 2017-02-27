@@ -31,7 +31,7 @@ const config = {
 
   generationResult: {
     srcLocation: 'https://github.com/YaaS/chewie-sample-result.git',
-    branch: 'master',
+    branch: 'preparePushResultTestInit',
     cloneLocation: 'latestStarWarsRepo'
   },
 
