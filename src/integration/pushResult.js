@@ -30,7 +30,7 @@ function pushResult(opt, next) {
 //add and commit changes
 function addCommit(src, msg){
   return (cb) => {
-    gulp.src([`${src}/`], { dot: false })
+    gulp.src([`${src}/`], { dot: true })
       .pipe(git.add({cwd: src, args:'-f', maxBuffer: Infinity}))
       .pipe(git.commit(msg, {cwd: src, args: '--allow-empty', maxBuffer: Infinity}))
       .on('error', (err) => {
