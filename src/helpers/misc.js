@@ -153,8 +153,8 @@ function uniqTopicTypes(message) {
   if (!message) return [];
 
   const topics = _.uniq(message.split(',').map((el) => el.split(':')[0]));
-  const extraTopics = topics.push('rn');
-  return extraTopics;
+  topics.push('rn');
+  return topics;
 }
 
 
