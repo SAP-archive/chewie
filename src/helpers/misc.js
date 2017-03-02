@@ -152,7 +152,9 @@ const dirCheckSync = (dir) => {
 function uniqTopicTypes(message) {
   if (!message) return [];
 
-  return _.uniq(message.split(',').map((el) => el.split(':')[0]));
+  const topics = _.uniq(message.split(',').map((el) => el.split(':')[0]));
+  const extraTopics = topics.push('rn');
+  return extraTopics;
 }
 
 
