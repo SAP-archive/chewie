@@ -72,7 +72,9 @@ function deletePreviouslyClonedResultsRepo(dest, independent, tempLocation, inde
       });
     }
     else{
-      del([`${dest}/**/*`, `!${dest}/.git`]).then(() => cb());
+      del([`${dest}/**/*`, `!${dest}/.git`])
+        .then(() => cb())
+        .catch(cb);
     }
   };
 }
@@ -83,6 +85,10 @@ function copyFilesToLatestResultRepo(src, dest, independent) {
     if (independent) {
       vfs.src([src], { dot: true })
         .pipe(vfs.dest(dest, {overwrite: false}))
+        .on('error', (err) => {
+          log.error(`Informations about failure: \nsrc: ${src} \ndest: ${dest} \nindependent: ${independent} \nerror: ${err}`);
+          cb(err);
+        })
         .on('end', cb);
     }
     else {
@@ -98,7 +104,10 @@ function copyApiNotebooksToLatestResultRepos(apinotebooksOutLocation, dest, inde
 
     vfs.src([`${apinotebooksOutLocation}/**`])
       .pipe(vfs.dest(`${dest}/apinotebooks`, {overwrite: true}))
-      .on('error', cb)
+      .on('error', (err) => {
+        log.error(`Informations about failure: \napinotebooksOutLocation: ${apinotebooksOutLocation} \ndest: ${dest} \nerror: ${err}`);
+        cb(err);
+      })
       .on('end', cb);
   };
 }

@@ -18,6 +18,10 @@ function copyFiles(src, dest, next) {
 
   gulp.src(src, { dot: true })
     .pipe(gulp.dest(dest))
+    .on('error', (err) => {
+      log.error(`Informations about failure: \nsrc: ${src} \ndest: ${dest} \nerror: ${err}`);
+      next(err);
+    })
     .on('end', next);
 }
 
@@ -52,6 +56,10 @@ function copyFilesTap(src, dest, tapFunction, next) {
   gulp.src(src)
     .pipe(tap(tapFunction()))
     .pipe(gulp.dest(dest))
+    .on('error', (err) => {
+      log.error(`Informations about failure: \nsrc: ${src} \ndest: ${dest} \nfunction name: ${tapFunction.name} \nerror: ${err}`);
+      next(err);
+    })
     .on('end', next);
 }
 
@@ -69,10 +77,7 @@ function copyFilesTapAsync(src, dest, tapFunction, name) {
   return (cb) => {
 
     copyFilesTap(src, dest, tapFunction, (err) => {
-
-      if (err) return cb(err, name);
-
-      cb(null, name);
+      cb(err, name);
     });
   };
 }
