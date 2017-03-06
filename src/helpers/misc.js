@@ -151,12 +151,11 @@ const dirCheckSync = (dir) => {
  */
 function uniqTopicTypes(config, message) {
   let topics = [];
-
   if(message) {
     topics = _.uniq(message.split(',').map((el) => el.split(':')[0]));
   }
   if(Array.isArray(config.independentSections) && config.independentSections.length) {
-    topics.length ? topics.concat(config.independentSections) : topics = config.independentSections;
+    topics = topics.length ? topics.concat(config.independentSections) : config.independentSections;
   }
   return topics;
 }
