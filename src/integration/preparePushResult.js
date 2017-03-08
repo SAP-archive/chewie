@@ -28,7 +28,7 @@ const async = require('async'),
  * message - commit message
  * @param {Function} [next] - callback for asynch operations
  */
-function preparePushResult(opt, next) {
+function preparePushResult(config, opt, next) {
   const src = opt.src,
     dest = opt.dest,
     branch = opt.branch || 'master',
@@ -44,7 +44,7 @@ function preparePushResult(opt, next) {
   async.series([
     clone(repo, branch, dest),
     backupOfNotClonedRepositories(independent, tempLocation, notClonedRepositoriesFile),
-    deletePreviouslyClonedResultsRepo(dest, independent, tempLocation, indepenedentDocuRepositoriesFile, message, exclude),
+    deletePreviouslyClonedResultsRepo(config, dest, independent, tempLocation, indepenedentDocuRepositoriesFile, message, exclude),
     copyFilesToLatestResultRepo(src, dest, independent),
     copyApiNotebooksToLatestResultRepos(apinotebooksOutLocation, dest, independent),
     restoreBackupOfNotClonedRepositories(independent, tempLocation, notClonedRepositoriesFile)
@@ -66,11 +66,11 @@ function backupOfNotClonedRepositories(independent, tempLocation, notClonedRepos
 }
 
 //delete previously cloned results
-function deletePreviouslyClonedResultsRepo(dest, independent, tempLocation, indepenedentDocuRepositoriesFile, message, exclude) {
+function deletePreviouslyClonedResultsRepo(config, dest, independent, tempLocation, indepenedentDocuRepositoriesFile, message, exclude) {
   return (cb) => {
     if (independent) {
       eraseRepositoriesFromDest(tempLocation, indepenedentDocuRepositoriesFile, () => {
-        eraseOutdatedLandingPagesFromDest(message, dest, cb);
+        eraseOutdatedLandingPagesFromDest(config, message, dest, cb);
       });
     }
     else{
@@ -179,13 +179,18 @@ function eraseRepositoriesFromDest(tempLocation, indepenedentDocuRepositoriesFil
 * @param {String} [message] - argv.topics string
 * @param {Function} [cb] - callback for asynchronous operation
 */
-function eraseOutdatedLandingPagesFromDest(message, dest, cb){
-  const pathsToBeErased = [];
+function eraseOutdatedLandingPagesFromDest(config, message, dest, cb){
+  let pathsToBeErased = [];
 
-  misc.uniqTopicTypes(message).map((el) => {
+  misc.uniqTopicTypes(config, message).map((el) => {
     const paths = misc.prepareOutdatedPaths(dest, el);
     pathsToBeErased.push(paths.index, paths.indexInternal);
   });
+
+  if(Array.isArray(config.independentPaths)) {
+    const paths = config.independentPaths.map((singlePath) => `${dest}/${singlePath}`);
+    pathsToBeErased = pathsToBeErased.concat(paths);
+  }
 
   del(pathsToBeErased)
   .then(() => cb())

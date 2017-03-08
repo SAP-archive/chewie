@@ -1,7 +1,8 @@
 'use strict';
 const misc = require('../../src/helpers/misc'),
   assert = require('assert'),
-  _ = require('underscore');
+  _ = require('underscore'),
+  config = require('../chewieConfigTest');
 
 describe('misc', () => {
 
@@ -11,7 +12,7 @@ describe('misc', () => {
 
       // is quantity correct
       const message = 'services:serviceUno,services:serviceDos',
-        uniqTopicTypes = misc.uniqTopicTypes(message);
+        uniqTopicTypes = misc.uniqTopicTypes(config, message);
 
       assert.equal(uniqTopicTypes.length, 1);
 
@@ -24,7 +25,7 @@ describe('misc', () => {
 
       // is quantity correct
       const message = 'services:serviceUno,services:serviceDos,services:serviceTres,tools:Quattro',
-        uniqTopicTypes = misc.uniqTopicTypes(message);
+        uniqTopicTypes = misc.uniqTopicTypes(config, message);
 
       assert.equal(uniqTopicTypes.length, 2);
 
@@ -33,13 +34,22 @@ describe('misc', () => {
       assert.equal(isCorrect, true);
     });
 
-    it('should return emply array if no type was provided', () => {
+    it('should return empty array if no type was provided', () => {
 
       // is quantity correct
       const message = '',
-        uniqTopicTypes = misc.uniqTopicTypes(message);
+        uniqTopicTypes = misc.uniqTopicTypes(config, message);
 
       assert.equal(uniqTopicTypes.length, 0);
+    });
+
+    it('should return array with types named in config', () => {
+
+      config.independentSections = ['rn'];
+      const message = '',
+        uniqTopicTypes = misc.uniqTopicTypes(config, message);
+
+      assert.equal(uniqTopicTypes.length, 1);
     });
 
   });
