@@ -169,12 +169,17 @@ function eraseRepositoriesFromDest(tempLocation, indepenedentDocuRepositoriesFil
 * @param {Function} [cb] - callback for asynchronous operation
 */
 function eraseOutdatedLandingPagesFromDest(config, message, dest, cb){
-  const pathsToBeErased = [];
+  let pathsToBeErased = [];
 
   misc.uniqTopicTypes(config, message).map((el) => {
     const paths = misc.prepareOutdatedPaths(dest, el);
     pathsToBeErased.push(paths.index, paths.indexInternal);
   });
+
+  if(Array.isArray(config.independentPaths)) {
+    const paths = config.independentPaths.map((singlePath) => `${dest}/${singlePath}`);
+    pathsToBeErased = pathsToBeErased.concat(paths);
+  }
 
   del(pathsToBeErased)
   .then(() => cb())
