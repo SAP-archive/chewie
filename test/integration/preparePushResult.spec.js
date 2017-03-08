@@ -39,7 +39,7 @@ describe('Check if backup works for full generation', () => {
         preparePlaceholders(registry, config, () => {
           createMetaInfo(registry, null, config, () => {
             cloner.cloneRepo(config.generationResult.srcLocation, 'preparePushResultTest', './out', () => {
-              preparePushResult(opt, done);
+              preparePushResult(config, opt, done);
             });
           });
         });
@@ -143,7 +143,7 @@ describe('Check if backup works for independent document generation', () => {
         preparePlaceholders(registry, config, () => {
           createMetaInfo(registry, [{'type':'services', 'name':'Samuel L Ipsum'}, {'type':'services', 'name':'Failing Ipsum'}], config, () => {
             cloner.cloneRepo(config.generationResult.srcLocation, 'preparePushResultTest', './out', () => {
-              preparePushResult(opt, done);
+              preparePushResult(config, opt, done);
             });
           });
         });
