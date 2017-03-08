@@ -95,7 +95,7 @@ Use [the Github issue tracker](../../issues) for now.
 
 ## Contribution
 
-Currently the only contribution you can make is to report suggestions using [the Github issue tracker](../../issues) for now. We are clarifying how to make it possible that you make a code contributions too.
+Read the [CONTRIBUTING](CONTRIBUTING.md) so you know exactly how to contribute to this project.
 
 ## Credits
 
