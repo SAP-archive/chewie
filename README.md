@@ -100,6 +100,8 @@ Read the [CONTRIBUTING](CONTRIBUTING.md) so you know exactly how to contribute t
 ## Credits
 
 <p align="center">
+
 [![YaaS](https://github.com/YaaS/sample-yaas-repository/blob/master/YaaS.png)](https://yaas.io)
+
 <p align="center">
 :heart: from the GitHub team @ YaaS
