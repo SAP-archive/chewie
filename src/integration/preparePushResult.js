@@ -28,6 +28,7 @@ const async = require('async'),
  * @param {Function} [next] - callback for asynch operations
  */
 function preparePushResult(config, opt, next) {
+  Promise.reject();
   const src = opt.src,
     dest = opt.dest,
     branch = opt.branch || 'master',

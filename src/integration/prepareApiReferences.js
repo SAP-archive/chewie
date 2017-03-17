@@ -89,7 +89,8 @@ function ramlToHtml(files, name){
 
           //workaround for error at raml2html.. ATM throwing error at few raml files. If we invoke cb(err), it would break other steps since its async.series
           cb();
-        });
+        })
+        .catch(cb);
 
     });
   };
