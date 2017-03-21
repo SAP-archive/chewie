@@ -12,19 +12,25 @@ const gulp = require('gulp'),
  * @param {String} [dest] - desting directory
  * @param {Function} [next] - callback for asynch operations
  */
-function copyFiles(src, dest, next) {
+function copyFiles(src, dest, test, next) {
 
   if(!src || !dest) return next(`Unable to perform copy operation because of wrong src: ${src} or dest: ${dest} value`);
 
   gulp.src(src)
     .pipe(gulp.dest(dest))
     .on('error', (err) => {
-      // log.error(`Informations about failure: \nsrc: ${src} \ndest: ${dest} \nerror: ${err}`);
-      // next(err);
-      throw new Error('dupa1');
+      if(test){
+        throw new Error('dupa1');
+        return;
+      }
+      log.error(`Informations about failure: \nsrc: ${src} \ndest: ${dest} \nerror: ${err}`);
+      next(err);
     })
     .on('end', () => {
-      throw new Error('dupa2');
+      if(test){
+        throw new Error('dupa2');
+        return;
+      }
       next();
     });
 }
@@ -36,11 +42,11 @@ function copyFiles(src, dest, next) {
  * @param {String} [name] - name of the operation
  * @return {Function} anonymous function that triggers copy and accepts a callback
  */
-function copyFilesAsync(src, dest, name) {
+function copyFilesAsync(src, dest, name, test) {
 
   return (cb) => {
 
-    copyFiles(src, dest, (err) => {
+    copyFiles(src, dest, test, (err) => {
       return cb(err, name);
     });
   };
