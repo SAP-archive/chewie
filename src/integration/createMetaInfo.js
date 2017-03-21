@@ -36,7 +36,7 @@ function latestRepoCloner(config) {
 
     if(process.env.REGISTRY_LOCATION === 'local') return cb();
 
-    if(config.generation.result.s3){
+    if(config.generationResult.s3){
       latestRepoClonerS3(config, cb);
       return;
     }
