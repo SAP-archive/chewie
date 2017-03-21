@@ -12,7 +12,7 @@ const gulp = require('gulp'),
  * @param {String} [dest] - desting directory
  * @param {Function} [next] - callback for asynch operations
  */
-function copyFiles(src, dest, test, next) {
+function copyFiles(src, dest, next, test) {
 
   if(!src || !dest) return next(`Unable to perform copy operation because of wrong src: ${src} or dest: ${dest} value`);
 
@@ -46,9 +46,9 @@ function copyFilesAsync(src, dest, name, test) {
 
   return (cb) => {
 
-    copyFiles(src, dest, test, (err) => {
+    copyFiles(src, dest, (err) => {
       return cb(err, name);
-    });
+    }, test);
   };
 }
 
