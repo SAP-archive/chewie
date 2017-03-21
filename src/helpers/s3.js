@@ -7,9 +7,9 @@ const AWS = require('aws-sdk');
  * @param {string} bucket - S3 bucket name
  * @param {string} dirPath - source dir path
  */
-function upload({ credentials, bucket, dirPath }){
+function upload({ credentials, bucket, dirPath, getClient }){
   return new Promise((resolve, reject) => {
-    const client = getClient(credentials);
+    const client = getS3Client(credentials);
     const uploader = client.uploadDir({
       localDir: dirPath,
       deleteRemoved: true,
@@ -21,6 +21,9 @@ function upload({ credentials, bucket, dirPath }){
     uploader
       .on('err', reject)
       .on('end', resolve);
+    if(typeof getClient === 'function'){
+      getClient(uploader);
+    }
   });
 }
 
@@ -30,9 +33,9 @@ function upload({ credentials, bucket, dirPath }){
  * @param {string} bucket - S3 bucket name
  * @param {string} dirPath - destination dir path
  */
-function download({ credentials, bucket, dirPath }){
+function download({ credentials, bucket, dirPath, getClient }){
   return new Promise((resolve, reject) => {
-    const client = getClient(credentials);
+    const client = getS3Client(credentials);
     const uploader = client.downloadDir({
       localDir: dirPath,
       deleteRemoved: true,
@@ -44,6 +47,9 @@ function download({ credentials, bucket, dirPath }){
     uploader
       .on('err', reject)
       .on('end', resolve);
+    if(typeof getClient === 'function'){
+      getClient(uploader);
+    }
   });
 }
 
@@ -56,11 +62,15 @@ function download({ credentials, bucket, dirPath }){
  *  region: 'us-west-2'
  * }
  */
-function getClient(credentials){
+function getS3Client(credentials){
   const awsS3Client = new AWS.S3(credentials);
   const client = s3.createClient({
     s3Client: awsS3Client
   });
+
+  // https://github.com/andrewrk/node-s3-client/issues/149
+  client.s3.addExpect100Continue = () => {};
+  
   return client;
 }
 
