@@ -19,7 +19,7 @@ function copyFiles(src, dest, test, next) {
   gulp.src(src)
     .pipe(gulp.dest(dest))
     .on('error', (err) => {
-      if(test){
+      if(test === 'dupa'){
         throw new Error('dupa1');
         return;
       }
@@ -27,7 +27,7 @@ function copyFiles(src, dest, test, next) {
       next(err);
     })
     .on('end', () => {
-      if(test){
+      if(test === 'dupa'){
         throw new Error('dupa2');
         return;
       }
