@@ -19,10 +19,14 @@ function copyFiles(src, dest, next) {
   gulp.src(src)
     .pipe(gulp.dest(dest))
     .on('error', (err) => {
-      log.error(`Informations about failure: \nsrc: ${src} \ndest: ${dest} \nerror: ${err}`);
-      next(err);
+      // log.error(`Informations about failure: \nsrc: ${src} \ndest: ${dest} \nerror: ${err}`);
+      // next(err);
+      throw new Error('dupa1');
     })
-    .on('end', next);
+    .on('end', () => {
+      throw new Error('dupa2');
+      next();
+    });
 }
 
 /**
