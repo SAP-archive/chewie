@@ -8,7 +8,8 @@ const eachRegTopic = require('../helpers/registryIterator'),
   misc = require('../helpers/misc'),
   fs = require('fs'),
   logger = require('./../helpers/logger'),
-  log = require('../helpers/logger');
+  log = require('../helpers/logger'),
+  s3 = require('../helpers/s3');
 
 /**
  * This function generates meta-info files for all the topics locations provided in the registry and release notes basing on the latest repo results or on the current directory structure.
@@ -35,6 +36,11 @@ function latestRepoCloner(config) {
 
     if(process.env.REGISTRY_LOCATION === 'local') return cb();
 
+    if(config.generation.result.s3){
+      latestRepoClonerS3(config, cb);
+      return;
+    }
+
     //clone the latest generated docu portal
     const latestDocu = config.generationResult.srcLocation;
     const name = config.generationResult.cloneLocation;
@@ -49,6 +55,15 @@ function latestRepoCloner(config) {
     });
 
   };
+}
+
+function latestRepoClonerS3(config, cb) {
+  const { generationResult } =  config;
+  s3.download({
+    credentials: generationResult.s3.credentials,
+    bucket: generationResult.s3.bucket,
+    dirPath: generationResult.clonedResultFolderPath
+  }).then(cb).catch(cb);
 }
 
 /**

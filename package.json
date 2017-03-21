@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "async": "^1.4.2",
+    "aws-sdk": "^2.28.0",
     "chai": "3.4.0",
     "del": "^2.2.0",
     "filendir": "^1.0.0",
@@ -39,9 +40,10 @@
     "raml2html": "https://github.com/mjasinski5/raml2html.git",
     "raml2obj": "^2.2.0",
     "rimraf": "2.4.3",
+    "s3": "^4.4.0",
     "underscore": "^1.8.3",
-    "vinyl-paths": "^2.1.0",
-    "vinyl-fs": "^2.4.3"
+    "vinyl-fs": "^2.4.3",
+    "vinyl-paths": "^2.1.0"
   },
   "devDependencies": {
     "npm-check-updates": "2.8.9",
