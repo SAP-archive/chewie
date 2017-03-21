@@ -81,6 +81,7 @@ function _regionCopier(srcDomain, region, config, topicType){
 function _replaceUrl(destinationPath, regionCode, topicType, cb){
   return function(){
     const destinationPathPattern = `${destinationPath}/**/*`;
+    
     //hardcoded values, don't globalize links with URL /release_notes.html and that end with /services/" (quote indicates that it is and end of link in <a href="/services/"> element for example)
     const regExp = new RegExp(`\/${topicType}\/(?!(.*\/release_notes.html)|("))`, 'g');
 
