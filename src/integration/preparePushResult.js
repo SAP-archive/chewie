@@ -146,7 +146,7 @@ function backup(from, to, tempLocation, notClonedRepositoriesFile, backupOperati
       const src = from ? `${item}/*` : `./${tempLocation}/backup/${path.normalize(item)}/*`;
       const dest = to ? `${item}/` : `./${tempLocation}/backup/${path.normalize(item)}/`;
 
-      arrOfTasks.push(copier.copyFilesAsync(src, dest, 'Backup operation', 'dupa'));
+      arrOfTasks.push(copier.copyFilesAsync(src, dest, 'Backup operation'));
     });
 
     async.series(arrOfTasks, cb);
