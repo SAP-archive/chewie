@@ -15,7 +15,6 @@ const gulp = require('gulp'),
 function copyFiles(src, dest, next) {
 
   if(!src || !dest) return next(`Unable to perform copy operation because of wrong src: ${src} or dest: ${dest} value`);
-
   gulp.src(src)
     .pipe(gulp.dest(dest))
     .on('error', (err) => {

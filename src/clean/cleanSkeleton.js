@@ -34,7 +34,8 @@ function clean(registry, config, name, next) {
 
       del(files).then(() => {
         cb();
-      });
+      })
+      .catch(cb);
     });
   });
 }
@@ -47,8 +48,8 @@ function _deleteSection(config, name, cb) {
     del(deleteFolder).then(() => {
       log.info(`Cleaned ${isAll ? 'all sections' : name}`);
       cb();
-
-    });
+    })
+    .catch(cb);
   };
 }
 
