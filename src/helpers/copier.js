@@ -15,24 +15,10 @@ const gulp = require('gulp'),
 function copyFiles(src, dest, next, test) {
 
   if(!src || !dest) return next(`Unable to perform copy operation because of wrong src: ${src} or dest: ${dest} value`);
-
-  gulp.src(src)
+  const dupa = test ? src + 'DUPA' : src;
+  gulp.src(dupa)
     .pipe(gulp.dest(dest))
-    .on('error', (err) => {
-      if(test === 'dupa'){
-        throw new Error('dupa1');
-        return;
-      }
-      log.error(`Informations about failure: \nsrc: ${src} \ndest: ${dest} \nerror: ${err}`);
-      next(err);
-    })
-    .on('end', () => {
-      if(test === 'dupa'){
-        throw new Error('dupa2');
-        return;
-      }
-      next();
-    });
+    .on('end', next);
 }
 
 /**
