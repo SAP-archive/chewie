@@ -19,6 +19,7 @@ function copyFiles(src, dest, next) {
     .pipe(gulp.dest(dest))
     .on('error', (err) => {
       log.error(`Informations about failure: \nsrc: ${src} \ndest: ${dest} \nerror: ${err}`);
+      process.exit(1);
       next(err);
     })
     .on('end', next);
@@ -57,6 +58,7 @@ function copyFilesTap(src, dest, tapFunction, next) {
     .pipe(gulp.dest(dest))
     .on('error', (err) => {
       log.error(`Informations about failure: \nsrc: ${src} \ndest: ${dest} \nfunction name: ${tapFunction.name} \nerror: ${err}`);
+      process.exit(1);
       next(err);
     })
     .on('end', next);

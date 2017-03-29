@@ -9,5 +9,15 @@ install:
 script:
 - npm test
 branches:
-  only: 
-    - master
+  only:
+  - master
+deploy:
+  before_deploy: "npm run test && npm run release:bump-version"
+  after_deploy: "npm run release:push"
+  provider: npm
+  email: ''
+  api_key:
+    secure: VBOIDyjs9k9C9qd/gCWYLDrO5mMao3YhvRoA5A2QbYSZgAmRxbNPo8QG0eXbE7yeF2BUE8enltYe7SHpsnJOsiYe67Nq18/6jP9sE6tkbTHg6klr8v0mNtUZDViVNBWbOr0BC1NEzRjn3/Gulu/23K8t91uxjPGI3Y4OuNDN3jH225BLApLADMe4nt5OhYjXiyTgqCkApvAO3YAME7VKytrNcKAMcJupQUk0o6ISrAMlvXvXqwIstxOlur1DhGcwklpR+SMbf0/Z3IyoMgpBYM2/HeBrxtSy3NSSALpXtZPzYy/7zuZ1xC4YZEeWazRv0EcZMN0z/xypRp/apk49zelMKjy4SaN7EJU1I+X85IznUjIlWDKVaP3FjDc4BZ6X4rIHSkXb2xDPQFi9de0+/2fP+RpYy6ngKCiYDznZdwtgnczWK51zqcS3xr56sKftsVRAJgDItb95fPvC5oX6LJQkQuzBkFjyHbd7wo5l/50plBAYt17XwUlX0+1y3FsF1NKrQwSIONyv8w7cSraBqiauNXAxOYN6/meXOyPf0lzkMfZjpoBaW9bU5tOJQQt4wCMAlIMz5QEtwY4KjqagRriArTt3O1xGq9uXLX+BJo6AMB881PLQF0E4CfZXIIrnu9pi6+vkK8XnpYvP5FoDI9OcHjH6SGu2Ax/eRcQa59M=
+  on:
+    repo: YaaS/chewie
+    branch: master
