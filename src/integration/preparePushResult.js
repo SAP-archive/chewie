@@ -87,6 +87,7 @@ function copyFilesToLatestResultRepo(src, dest, independent) {
         .pipe(vfs.dest(dest, {overwrite: false}))
         .on('error', (err) => {
           log.error(`Informations about failure: \nsrc: ${src} \ndest: ${dest} \nindependent: ${independent} \nerror: ${err}`);
+          process.exit(1);
           cb(err);
         })
         .on('end', cb);
@@ -106,6 +107,7 @@ function copyApiNotebooksToLatestResultRepos(apinotebooksOutLocation, dest, inde
       .pipe(vfs.dest(`${dest}/apinotebooks`, {overwrite: true}))
       .on('error', (err) => {
         log.error(`Informations about failure: \napinotebooksOutLocation: ${apinotebooksOutLocation} \ndest: ${dest} \nerror: ${err}`);
+        process.exit(1);
         cb(err);
       })
       .on('end', cb);
