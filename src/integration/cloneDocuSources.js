@@ -21,8 +21,10 @@ const eachRegTopic = require('../helpers/registryIterator'),
 function cloneDocuSources(registry, config, topics, next) {
 
   iterateRegClone(registry, config, topics, () => {
-    creator.createFile(`${config.tempLocation}/${config.indepenedentDocuRepositoriesFile}`, repositoriesArray, () => {
-      creator.createFile(`${config.tempLocation}/${config.notClonedRepositoriesFile}`, repositoriesFails, next);
+
+    creator.createFile(`${config.tempLocation}/${config.indepenedentDocuRepositoriesFile}`, JSON.stringify(repositoriesArray, null, '  '), () => {
+
+      creator.createFile(`${config.tempLocation}/${config.notClonedRepositoriesFile}`, JSON.stringify(repositoriesFails, null, '  '), next);
     });
   });
 }
@@ -80,11 +82,41 @@ module.exports = cloneDocuSources;
  */
 function _createMatrixWithRepositories(topicDetails, failingOrIndependentArray, cb) {
 
-  (failingOrIndependentArray) ? repositoriesFails.push(topicDetails.clonedGenRNDestLocation, topicDetails.clonedGenRNDestLocationInternal, topicDetails.clonedGenDestLocation, topicDetails.clonedGenDestLocationInternal) : repositoriesArray.push(topicDetails.clonedGenRNDestLocation, topicDetails.clonedGenRNDestLocationInternal, topicDetails.clonedGenDestLocation, topicDetails.clonedGenDestLocationInternal);
+  if(failingOrIndependentArray){
+    repositoriesFails.push(
+      { path: topicDetails.clonedGenRNDestLocation },
+      { path: topicDetails.clonedGenRNDestLocationInternal },
+      { path: topicDetails.clonedGenDestLocation },
+      { path: topicDetails.clonedGenDestLocationInternal }
+    );
+  }
+  else {
+    repositoriesArray.push(
+      { path: topicDetails.clonedGenRNDestLocation },
+      { path: topicDetails.clonedGenRNDestLocationInternal },
+      { path: topicDetails.clonedGenDestLocation },
+      { path: topicDetails.clonedGenDestLocationInternal }
+    );
+  }
 
   //push to array all not cloned repositories - latest versions (for services)
   if (topicDetails.isService){
-    (failingOrIndependentArray) ? repositoriesFails.push(topicDetails.clonedGenRNDestLocationLatest, topicDetails.clonedGenRNDestLocationInternalLatest, topicDetails.clonedGenDestLocationLatest, topicDetails.clonedGenDestLocationInternalLatest) : repositoriesArray.push(topicDetails.clonedGenRNDestLocationLatest, topicDetails.clonedGenRNDestLocationInternalLatest, topicDetails.clonedGenDestLocationLatest, topicDetails.clonedGenDestLocationInternalLatest);
+    if(failingOrIndependentArray) {
+      repositoriesFails.push(
+        { path: topicDetails.clonedGenRNDestLocationLatest },
+        { path: topicDetails.clonedGenRNDestLocationInternalLatest },
+        { path: topicDetails.clonedGenDestLocationLatest },
+        { path: topicDetails.clonedGenDestLocationInternalLatest }
+      );
+    }
+    else {
+      repositoriesArray.push(
+        { path: topicDetails.clonedGenRNDestLocationLatest },
+        { path: topicDetails.clonedGenRNDestLocationInternalLatest },
+        { path: topicDetails.clonedGenDestLocationLatest },
+        { path: topicDetails.clonedGenDestLocationInternalLatest }
+      );
+    }
   }
 
   return cb();
