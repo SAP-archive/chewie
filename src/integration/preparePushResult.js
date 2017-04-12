@@ -148,6 +148,15 @@ function backup(from, to, tempLocation, notClonedRepositoriesFile, backupOperati
   });
 }
 
+
+/**
+ * _backupSection is a helper that is meant for creating proper paths to backup files and initiate copyFilesAsync function
+ * @param  {String} from           directory from where you want to copy
+ * @param  {String} to             destination directory
+ * @param  {String} tempLocation   temp location path from config
+ * @param  {String} item           backup topic
+ * @return {Function}              async function that is passed to async.series later
+ */
 function _backupSection(from, to, tempLocation, item) {
 
   const src = from ? `${item}/*` : `./${tempLocation}/backup/${path.normalize(item)}/*`;
