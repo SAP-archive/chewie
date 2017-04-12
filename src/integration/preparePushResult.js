@@ -175,9 +175,10 @@ function eraseRepositoriesFromDest(tempLocation, indepenedentDocuRepositoriesFil
   const repoPath = `./${tempLocation}/${indepenedentDocuRepositoriesFile}`;
 
   reader.readFile(repoPath, (err, repoMatrix) => {
-    if (err || repoMatrix.length === 0) return cb();
+    const repoRawArray= JSON.parse(repoMatrix);
+    if (err || repoRawArray.length === 0) return cb();
 
-    const repoArray = JSON.parse(repoMatrix)
+    const repoArray = repoRawArray
       .filter((repo) => repo && repo.path)
       .map((repo) => repo.path);
 
