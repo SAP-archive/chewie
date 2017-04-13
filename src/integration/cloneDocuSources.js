@@ -21,10 +21,14 @@ const eachRegTopic = require('../helpers/registryIterator'),
 function cloneDocuSources(registry, config, topics, next) {
 
   iterateRegClone(registry, config, topics, () => {
+    
+    const independentReposFile = JSON.stringify(repositoriesArray, null, '  ');
+    const failedRepos = JSON.stringify(repositoriesFails, null, '  ');
 
-    creator.createFile(`${config.tempLocation}/${config.indepenedentDocuRepositoriesFile}`, JSON.stringify(repositoriesArray, null, '  '), () => {
+    creator.createFile(`${config.tempLocation}/${config.indepenedentDocuRepositoriesFile}`, independentReposFile, () => {
 
-      creator.createFile(`${config.tempLocation}/${config.notClonedRepositoriesFile}`, JSON.stringify(repositoriesFails, null, '  '), next);
+      creator.createFile(`${config.tempLocation}/${config.notClonedRepositoriesFile}`, failedRepos, next);
+      
     });
   });
 }
