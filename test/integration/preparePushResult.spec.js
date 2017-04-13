@@ -11,7 +11,8 @@ const config = require('../chewieConfigTestLocal'),
   chai = require('chai'),
   expect = chai.expect,
   rimraf = require('rimraf'),
-  path = require('path');
+  path = require('path'),
+  fs = require('fs');
 
 
 describe('Check if backup works for full generation', () => {
@@ -51,13 +52,15 @@ describe('Check if backup works for full generation', () => {
   /**
    * Check if notClonedRepositories file was created and contains content (cloneDocuSources -> _createMatrixWithRepositories)
    */
-  it('It should create notClonedRepositories.json file', (done) => {
-    const contentOfNotClonedRepositoriesFile = './tymczas/latestStarWarsRepo/rn/services/failingipsum/v1,./tymczas/latestStarWarsRepo/internal/rn/services/failingipsum/v1,./tymczas/latestStarWarsRepo/services/failingipsum/v1,./tymczas/latestStarWarsRepo/internal/services/failingipsum/v1,./tymczas/latestStarWarsRepo/rn/services/failingipsum/latest,./tymczas/latestStarWarsRepo/internal/rn/services/failingipsum/latest,./tymczas/latestStarWarsRepo/services/failingipsum/latest,./tymczas/latestStarWarsRepo/internal/services/failingipsum/latest';
+  it('It should create proper notClonedRepositories.json file', () => {
 
-    const notClonedRepositoriesFile = testHelper.checkFileContentSync(`${config.tempLocation}/notClonedRepositories.json`, contentOfNotClonedRepositoriesFile);
+    //no try/catch here because if file doesn't exist we want to know
+    const templateOfNotClonedRepositoriesFile = fs.readFileSync('./test/helpers/notClonedRepositoriesTemplate.json', 'utf-8');
+    const contentOfNotClonedRepositoriesFile = fs.readFileSync(`${config.tempLocation}/notClonedRepositories.json`, 'utf-8');
 
-    expect(notClonedRepositoriesFile).to.equal(true);
-    done();
+    //string -> parse -> stringify, so we can be sure there are no differences in a way file was saved (extra tabs, spaces)
+    expect(JSON.stringify(JSON.parse(templateOfNotClonedRepositoriesFile)) === JSON.stringify(JSON.parse(contentOfNotClonedRepositoriesFile))).to.equal(true);
+
   });
 
 

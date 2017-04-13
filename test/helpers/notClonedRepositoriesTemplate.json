@@ -1,0 +1,26 @@
+[
+  {
+    "path": "./tymczas/latestStarWarsRepo/rn/services/failingipsum/v1"
+  },
+  {
+    "path": "./tymczas/latestStarWarsRepo/internal/rn/services/failingipsum/v1"
+  },
+  {
+    "path": "./tymczas/latestStarWarsRepo/services/failingipsum/v1"
+  },
+  {
+    "path": "./tymczas/latestStarWarsRepo/internal/services/failingipsum/v1"
+  },
+  {
+    "path": "./tymczas/latestStarWarsRepo/rn/services/failingipsum/latest"
+  },
+  {
+    "path": "./tymczas/latestStarWarsRepo/internal/rn/services/failingipsum/latest"
+  },
+  {
+    "path": "./tymczas/latestStarWarsRepo/services/failingipsum/latest"
+  },
+  {
+    "path": "./tymczas/latestStarWarsRepo/internal/services/failingipsum/latest"
+  }
+]
