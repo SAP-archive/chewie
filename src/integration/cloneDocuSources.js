@@ -23,11 +23,11 @@ function cloneDocuSources(registry, config, topics, next) {
   iterateRegClone(registry, config, topics, () => {
     
     const independentReposFile = JSON.stringify(repositoriesArray, null, '  ');
-    const failedRepos = JSON.stringify(repositoriesFails, null, '  ');
+    const failedReposFile = JSON.stringify(repositoriesFails, null, '  ');
 
     creator.createFile(`${config.tempLocation}/${config.indepenedentDocuRepositoriesFile}`, independentReposFile, () => {
 
-      creator.createFile(`${config.tempLocation}/${config.notClonedRepositoriesFile}`, failedRepos, next);
+      creator.createFile(`${config.tempLocation}/${config.notClonedRepositoriesFile}`, failedReposFile, next);
       
     });
   });
