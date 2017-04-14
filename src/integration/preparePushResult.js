@@ -17,6 +17,7 @@ const async = require('async'),
  * It should contains different attributes:
  * src - where to collect new things,
  * dest - where you keep clone of the repo where you want to push,
+ * exlude - array with files to not remove
  * branch - from which branch it should clone (default is master),
  * repo - optional, if provided you will first clone this repo and perform operations on it, but if not provided then it is expected that 'dest' dir is a repo dir with .git folder,
  * independent - boolean value, which informs if the independent docu generation was used,
@@ -32,6 +33,7 @@ function preparePushResult(config, opt, next) {
     dest = opt.dest,
     branch = opt.branch || 'master',
     repo = opt.repo,
+    exclude = opt.exclude || [],
     independent = opt.independent,
     tempLocation = opt.tempLocation,
     notClonedRepositoriesFile = opt.notClonedRepositoriesFile,
@@ -42,7 +44,7 @@ function preparePushResult(config, opt, next) {
   async.series([
     clone(repo, branch, dest),
     backupOfNotClonedRepositories(independent, tempLocation, notClonedRepositoriesFile),
-    deletePreviouslyClonedResultsRepo(config, dest, independent, tempLocation, indepenedentDocuRepositoriesFile, message),
+    deletePreviouslyClonedResultsRepo(config, dest, independent, tempLocation, indepenedentDocuRepositoriesFile, message, exclude),
     copyFilesToLatestResultRepo(src, dest, independent),
     copyApiNotebooksToLatestResultRepos(apinotebooksOutLocation, dest, independent),
     restoreBackupOfNotClonedRepositories(independent, tempLocation, notClonedRepositoriesFile)
@@ -64,7 +66,7 @@ function backupOfNotClonedRepositories(independent, tempLocation, notClonedRepos
 }
 
 //delete previously cloned results
-function deletePreviouslyClonedResultsRepo(config, dest, independent, tempLocation, indepenedentDocuRepositoriesFile, message) {
+function deletePreviouslyClonedResultsRepo(config, dest, independent, tempLocation, indepenedentDocuRepositoriesFile, message, exclude) {
   return (cb) => {
     if (independent) {
       eraseRepositoriesFromDest(tempLocation, indepenedentDocuRepositoriesFile, () => {
@@ -72,7 +74,7 @@ function deletePreviouslyClonedResultsRepo(config, dest, independent, tempLocati
       });
     }
     else{
-      del([`${dest}/**/*`, `!${dest}/.git`])
+      del([`${dest}/**/*`, `!${dest}/.git`].concat(exclude))
         .then(() => cb())
         .catch(cb);
     }
