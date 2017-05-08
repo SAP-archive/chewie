@@ -58,10 +58,11 @@ function latestRepoCloner(config) {
 }
 
 function latestRepoClonerS3(config, cb) {
+  const { generationResult } =  config;
   s3.download({
-    credentials: config.generationResult.s3.credentials,
-    bucket: config.generationResult.s3.bucket,
-    dirPath: config.generationResult.clonedResultFolderPath
+    credentials: generationResult.s3.credentials,
+    bucket: generationResult.s3.bucket,
+    dirPath: generationResult.clonedResultFolderPath
   }).then(cb).catch(cb);
 }
 
