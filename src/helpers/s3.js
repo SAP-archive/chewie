@@ -7,7 +7,7 @@ const AWS = require('aws-sdk');
  * @param {string} bucket - S3 bucket name
  * @param {string} dirPath - source dir path
  */
-function upload({ credentials, bucket, dirPath, getClient }){
+function upload(credentials, bucket, dirPath, getClient){
   return new Promise((resolve, reject) => {
     const client = getS3Client(credentials);
     const uploader = client.uploadDir({
@@ -33,7 +33,7 @@ function upload({ credentials, bucket, dirPath, getClient }){
  * @param {string} bucket - S3 bucket name
  * @param {string} dirPath - destination dir path
  */
-function download({ credentials, bucket, dirPath, getClient }){
+function download(credentials, bucket, dirPath, getClient){
   return new Promise((resolve, reject) => {
     const client = getS3Client(credentials);
     const uploader = client.downloadDir({
