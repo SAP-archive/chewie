@@ -58,7 +58,7 @@ function latestRepoCloner(config) {
 }
 
 function latestRepoClonerS3(config, cb) {
-  s3.download(config.generationResult.s3.credentials, config.generationResult.s3.bucket, config.generationResult.clonedResultFolderPath).then(cb).catch(cb);
+  s3.download(config.registry.branch, config.generationResult.s3.credentials, config.generationResult.s3.bucket, config.generationResult.clonedResultFolderPath).then(cb).catch(cb);
 }
 
 /**
