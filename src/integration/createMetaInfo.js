@@ -36,25 +36,35 @@ function latestRepoCloner(config) {
 
     if(process.env.REGISTRY_LOCATION === 'local') return cb();
 
-    if(config.shouldUseS3 === true){
+    if(config.docuProvider === 'S3'){
+      if(!config.generationResult.s3.credentials.accessKeyId || !config.generationResult.s3.credentials.secretAccessKey){ 
+        logger.warning('AWS credentials were not exported.');
+        return cb();
+      }
+
       logger.info('Cloning out folder from S3...');
       latestRepoClonerS3(config, cb);
       return;
     }
 
-    //clone the latest generated docu portal
-    const latestDocu = config.generationResult.srcLocation;
-    const name = config.generationResult.cloneLocation;
-    const branch = config.generationResult.branch;
-    const expectedCloneLocation = config.generationResult.clonedResultFolderPath;
+    if(config.docuProvider === 'STASH'){
 
-    logger.info(`Cloning ${name} repository from ${latestDocu}...`);
-    cloner.cloneRepo(latestDocu, branch, expectedCloneLocation, (err) => {
-      if (err) logger.error(err);
+      //clone the latest generated docu portal
+      const latestDocu = config.generationResult.srcLocation;
+      const name = config.generationResult.cloneLocation;
+      const branch = config.generationResult.branch;
+      const expectedCloneLocation = config.generationResult.clonedResultFolderPath;
 
-      return cb();
-    });
+      logger.info(`Cloning ${name} repository from ${latestDocu}...`);
+      cloner.cloneRepo(latestDocu, branch, expectedCloneLocation, (err) => {
+        if (err) logger.error(err);
 
+        return cb();
+      });
+    }
+
+    logger.error('docuProvider is not correct!');
+    return cb();
   };
 }
 

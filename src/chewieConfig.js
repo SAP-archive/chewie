@@ -7,7 +7,7 @@ const config = {
   docuUrl: process.env.docuURL || 'https://devportal.yaas.io',
   notClonedRepositoriesFile: 'notClonedRepositories.json',
   indepenedentDocuRepositoriesFile: 'indepenedentDocuRepositories',
-  shouldUseS3: process.env.S3 || false,
+  docuProvider: process.env.docuProvider || 'S3',
 
   registry: {
     location: process.env.REGISTRY_LOCATION || 'remote',
@@ -33,7 +33,15 @@ const config = {
   generationResult: {
     srcLocation: process.env.generationResultLocation || 'ssh://git@stash.hybris.com:7999/wookiee/devportal_out.git',
     branch: process.env.docuBranch || 'dev',
-    cloneLocation: 'latestResultRepo'
+    cloneLocation: 'latestResultRepo',
+    s3: {
+      bucket: process.env.S3_BUCKET,
+      credentials: {
+        accessKeyId: process.env.AWS_ID,
+        secretAccessKey: process.env.AWS_SECRET,
+        region: process.env.AWS_REGION
+      }
+    }
   },
   
   constantLocations: {
