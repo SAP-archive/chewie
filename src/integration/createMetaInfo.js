@@ -56,7 +56,7 @@ function latestRepoCloner(config) {
       const expectedCloneLocation = config.generationResult.clonedResultFolderPath;
 
       logger.info(`Cloning ${name} repository from ${latestDocu}...`);
-      cloner.cloneRepo(latestDocu, branch, expectedCloneLocation, (err) => {
+      return cloner.cloneRepo(latestDocu, branch, expectedCloneLocation, (err) => {
         if (err) logger.error(err);
 
         return cb();
@@ -64,7 +64,7 @@ function latestRepoCloner(config) {
     }
 
     logger.error('docuProvider is not correct!');
-    return cb();
+    throw new Error(`${config.docuProvider} is not a valid content provider.`);
   };
 }
 
