@@ -36,7 +36,7 @@ function latestRepoCloner(config) {
 
     if(process.env.REGISTRY_LOCATION === 'local') return cb();
 
-    if(config.shouldUseS3){
+    if(config.shouldUseS3 === true){
       logger.info('Cloning out folder from S3...');
       latestRepoClonerS3(config, cb);
       return;
