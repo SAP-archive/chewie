@@ -135,22 +135,34 @@ function backup(from, to, tempLocation, notClonedRepositoriesFile, backupOperati
   const notClonedRepoPath = `./${tempLocation}/${notClonedRepositoriesFile}`;
 
   reader.readFile(notClonedRepoPath, (err, notClonedRepositoresMatrix) => {
-    if (err || notClonedRepositoresMatrix.length === 0) return cb();
+    const notClonedRepositores = JSON.parse(notClonedRepositoresMatrix);
+    if (err || !notClonedRepositores.length) return cb();
 
     if (backupOperationInfo) log.info('Backup operation has been performed. Some repositories will be restored with their previous version. To find out more, please check logs.');
 
-    const arrayOfNotClonedRepositories = notClonedRepositoresMatrix.toString().split(',');
-    const arrOfTasks = [];
-
-    arrayOfNotClonedRepositories.forEach((item) => {
-      const src = from ? `${item}/*` : `./${tempLocation}/backup/${path.normalize(item)}/*`;
-      const dest = to ? `${item}/` : `./${tempLocation}/backup/${path.normalize(item)}/`;
-
-      arrOfTasks.push(copier.copyFilesAsync(src, dest, 'Backup operation'));
-    });
+    const arrOfTasks = notClonedRepositores
+      .filter((repo) => repo && repo.path)
+      .map( (repo) => _backupSection(from, to, tempLocation, repo.path) );
 
     async.series(arrOfTasks, cb);
   });
+}
+
+
+/**
+ * _backupSection is a helper that is meant for creating proper paths to backup files and initiate copyFilesAsync function
+ * @param  {String} from           directory from where you want to copy
+ * @param  {String} to             destination directory
+ * @param  {String} tempLocation   temp location path from config
+ * @param  {String} item           backup topic
+ * @return {Function}              async function that is passed to async.series later
+ */
+function _backupSection(from, to, tempLocation, item) {
+
+  const src = from ? `${item}/*` : `./${tempLocation}/backup/${path.normalize(item)}/*`;
+  const dest = to ? `${item}/` : `./${tempLocation}/backup/${path.normalize(item)}/`;
+
+  return copier.copyFilesAsync(src, dest, 'Backup operation');
 }
 
 /**
@@ -163,12 +175,17 @@ function eraseRepositoriesFromDest(tempLocation, indepenedentDocuRepositoriesFil
   const repoPath = `./${tempLocation}/${indepenedentDocuRepositoriesFile}`;
 
   reader.readFile(repoPath, (err, repoMatrix) => {
-    if (err || repoMatrix.length === 0) return cb();
+    const repoRawArray= JSON.parse(repoMatrix);
+    if (err || !repoRawArray.length) return cb();
 
-    const globalizedArray = _prepareGlobalizedPaths(repoMatrix);
+    const repoArray = repoRawArray
+      .filter((repo) => repo && repo.path)
+      .map((repo) => repo.path);
+
+    const globalizedArray = _prepareGlobalizedPaths(repoArray);
 
     del(globalizedArray)
-    .then(() => cb()) //no error passed because guy changed standard and returns deleted paths as first argument
+    .then(() => cb())
     .catch(cb);
   });
 }
@@ -201,6 +218,5 @@ function eraseOutdatedLandingPagesFromDest(config, message, dest, cb){
  * @return {Array} [arrayOfGlobalizedPaths] - Array with globalized paths
  */
 function _prepareGlobalizedPaths(arrayOfRepositories) {
-  arrayOfRepositories = arrayOfRepositories.toString().split(',');
   return arrayOfRepositories.map((el) => el.replace('/services/', '/services/**/'));
 }

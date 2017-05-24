@@ -47,6 +47,7 @@ function latestRepoCloner(config) {
       return;
     }
 
+
     if(config.docuProvider === 'STASH'){
 
       //clone the latest generated docu portal
