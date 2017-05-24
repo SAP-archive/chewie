@@ -47,7 +47,7 @@ function latestRepoCloner(config) {
       return;
     }
 
-    if(config.docuProvider === 'STASH' || config.docuProvide === 'GITHUB'){
+    if(config.docuProvider === 'STASH'){
 
       //clone the latest generated docu portal
       const latestDocu = config.generationResult.srcLocation;
@@ -56,11 +56,12 @@ function latestRepoCloner(config) {
       const expectedCloneLocation = config.generationResult.clonedResultFolderPath;
 
       logger.info(`Cloning ${name} repository from ${latestDocu}...`);
-      return cloner.cloneRepo(latestDocu, branch, expectedCloneLocation, (err) => {
+      cloner.cloneRepo(latestDocu, branch, expectedCloneLocation, (err) => {
         if (err) logger.error(err);
 
         return cb();
       });
+      return;
     }
 
     logger.error('docuProvider is not correct!');
