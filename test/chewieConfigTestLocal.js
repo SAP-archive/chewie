@@ -7,7 +7,7 @@ const config = {
   test: 'yes',
   notClonedRepositoriesFile: 'notClonedRepositories.json',
   indepenedentDocuRepositoriesFile: 'indepenedentDocuRepositories.json',
-
+  docuProvider: process.env.docuProvider || 'S3',
 
   registry: {
     location: 'local',

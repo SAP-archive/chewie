@@ -8,7 +8,7 @@ const config = {
   notClonedRepositoriesFile: 'notClonedRepositories.json',
   indepenedentDocuRepositoriesFile: 'indepenedentDocuRepositories.json',
   topicsWithoutGlobalization: ['patterns', 'schema'],
-
+  docuProvider: process.env.docuProvider || 'S3',
 
   registry: {
     location: process.env.REGISTRY_LOCATION || 'remote',
