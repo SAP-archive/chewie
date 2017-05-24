@@ -54,7 +54,7 @@
   "scripts": {
     "test": "npm run eslint && npm run dep-check && npm run test-unit && npm run test-integration",
     "test-unit": "NODE_ENV=master mocha test/unit/*.spec.js",
-    "test-integration": "NODE_ENV=master mocha --timeout 40000 test/integration/*.spec.js",
+    "test-integration": "docuProvider=STASH NODE_ENV=master mocha --timeout 40000 test/integration/*.spec.js",
     "dep-check": "node_modules/npm-check-updates/bin/ncu",
     "eslint": "node_modules/eslint/bin/eslint.js -c .eslintrc src/**/*.js && node_modules/eslint/bin/eslint.js -c .eslintrc test/**/*.js",
     "release": "npm run test && npm run release:bump-version && npm run release:publish && npm run release:push",
