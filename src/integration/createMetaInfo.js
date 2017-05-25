@@ -48,7 +48,7 @@ function latestRepoCloner(config) {
     }
 
 
-    if(config.docuProvider === 'STASH'){
+    if(config.docuProvider === 'GIT'){
 
       //clone the latest generated docu portal
       const latestDocu = config.generationResult.srcLocation;
