@@ -3,11 +3,13 @@ const AWS = require('aws-sdk');
 
 /**
  * Upload dir to S3
+ * @param {string} prefix - prefix of the path in the S3 bucket
  * @param {object} credentials - AWS credentials
  * @param {string} bucket - S3 bucket name
  * @param {string} dirPath - source dir path
+ * @param {function} getClient - optional, passed function will be invoke with S3 client as param
  */
-function upload(env, credentials, bucket, dirPath, getClient){
+function upload(prefix, credentials, bucket, dirPath, getClient){
   return new Promise((resolve, reject) => {
     const client = getS3Client(credentials);
     const uploader = client.uploadDir({
@@ -15,7 +17,7 @@ function upload(env, credentials, bucket, dirPath, getClient){
       deleteRemoved: true,
       s3Params: {
         Bucket: bucket,
-        Prefix: env
+        Prefix: prefix
       }
     });
     uploader
@@ -29,11 +31,13 @@ function upload(env, credentials, bucket, dirPath, getClient){
 
 /**
  * Download dir from S3
+ * @param {string} prefix - prefix of the path in the S3 bucket
  * @param {object} credentials - AWS credentials
  * @param {string} bucket - S3 bucket name
  * @param {string} dirPath - destination dir path
+ * @param {function} getClient - optional, passed function will be invoke with S3 client as param
  */
-function download(env, credentials, bucket, dirPath, getClient){
+function download(prefix, credentials, bucket, dirPath, getClient){
   return new Promise((resolve, reject) => {
     const client = getS3Client(credentials);
     const uploader = client.downloadDir({
@@ -41,7 +45,7 @@ function download(env, credentials, bucket, dirPath, getClient){
       deleteRemoved: true,
       s3Params: {
         Bucket: bucket,
-        Prefix: env
+        Prefix: prefix
       }
     });
     uploader
@@ -63,6 +67,11 @@ function download(env, credentials, bucket, dirPath, getClient){
  * }
  */
 function getS3Client(credentials){
+
+  if(!credentials.accessKeyId || !credentials.secretAccessKey, !credentials.region){
+    throw new Error('Cannot get S3 client. Not valid format of credentials object.');
+  }
+
   const awsS3Client = new AWS.S3(credentials);
   const client = s3.createClient({
     s3Client: awsS3Client
