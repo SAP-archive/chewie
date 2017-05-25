@@ -7,7 +7,7 @@ const config = {
   docuUrl: process.env.docuURL || 'https://devportal.yaas.io',
   notClonedRepositoriesFile: 'notClonedRepositories.json',
   indepenedentDocuRepositoriesFile: 'indepenedentDocuRepositories',
-  docuProvider: process.env.docuProvider || 'S3',
+  docuProvider: process.env.DOCU_PROVIDER || 'S3',
 
   registry: {
     location: process.env.REGISTRY_LOCATION || 'remote',
