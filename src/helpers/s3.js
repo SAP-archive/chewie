@@ -68,7 +68,7 @@ function download(prefix, credentials, bucket, dirPath, getClient){
  */
 function getS3Client(credentials){
 
-  if(!credentials.accessKeyId || !credentials.secretAccessKey, !credentials.region){
+  if(!credentials.accessKeyId || !credentials.secretAccessKey || !credentials.region){
     throw new Error('Cannot get S3 client. Not valid format of credentials object.');
   }
 
