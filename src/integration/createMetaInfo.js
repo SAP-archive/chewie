@@ -36,19 +36,7 @@ function latestRepoCloner(config) {
 
     if(process.env.REGISTRY_LOCATION === 'local') return cb();
 
-    if(config.docuProvider === 'S3'){
-      if(!config.generationResult.s3.credentials.accessKeyId || !config.generationResult.s3.credentials.secretAccessKey){ 
-        logger.warning('AWS credentials were not exported.');
-        return cb();
-      }
-
-      logger.info('Cloning out folder from S3...');
-      latestRepoClonerS3(config, cb);
-      return;
-    }
-
-
-    if(config.docuProvider === 'GIT'){
+    if(!config.docuProvider || config.docuProvider === 'GIT'){
 
       //clone the latest generated docu portal
       const latestDocu = config.generationResult.srcLocation;
@@ -62,6 +50,17 @@ function latestRepoCloner(config) {
 
         return cb();
       });
+      return;
+    }
+
+    if(config.docuProvider === 'S3'){
+      if(!config.generationResult.s3.credentials.accessKeyId || !config.generationResult.s3.credentials.secretAccessKey){ 
+        logger.warning('AWS credentials were not exported.');
+        return cb();
+      }
+
+      logger.info('Cloning out folder from S3...');
+      latestRepoClonerS3(config, cb);
       return;
     }
 
