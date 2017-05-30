@@ -9,13 +9,17 @@ const async = require('async'),
   reader = require('../helpers/reader'),
   log = require('../helpers/logger'),
   vfs = require('vinyl-fs'),
-  misc = require('../helpers/misc');
+  misc = require('../helpers/misc'),
+  logger = require('../helpers/logger'),
+  s3 = require('../helpers/s3');
 
 /**
  * This function prepares a commit with changes.
+ * @param {Object} [config] - chewie config.
  * @param {Object} [opt] - info necessary to determine where to make a proper changes and push them.
  * It should contains different attributes:
  * src - where to collect new things,
+ * latestDocu - link to lastesDocu repository,
  * dest - where you keep clone of the repo where you want to push,
  * branch - from which branch it should clone (default is master),
  * repo - optional, if provided you will first clone this repo and perform operations on it, but if not provided then it is expected that 'dest' dir is a repo dir with .git folder,
@@ -29,6 +33,7 @@ const async = require('async'),
  */
 function preparePushResult(config, opt, next) {
   const src = opt.src,
+    latestDocu = opt.latestDocu,
     dest = opt.dest,
     branch = opt.branch || 'master',
     repo = opt.repo,
@@ -40,7 +45,8 @@ function preparePushResult(config, opt, next) {
     message = opt.message;
 
   async.series([
-    clone(repo, branch, dest),
+    cleanBeforeClone(repo),
+    clone(config, latestDocu, branch, dest),
     backupOfNotClonedRepositories(independent, tempLocation, notClonedRepositoriesFile),
     deletePreviouslyClonedResultsRepo(config, dest, independent, tempLocation, indepenedentDocuRepositoriesFile, message),
     copyFilesToLatestResultRepo(src, dest, independent),
@@ -49,10 +55,50 @@ function preparePushResult(config, opt, next) {
   ], next);
 }
 
-//clone of given repo
-function clone(repo, branch, dest) {
+//clean dir to clone the given repo
+function cleanBeforeClone(repo) {
   return (cb) => {
-    repo ? cloner.cloneRepo(repo, branch, dest, cb) : cb();
+
+    validator.dirCheck(repo, (err) => {
+      if (err) return;
+
+      del(repo)
+        .then(() => cb())
+        .catch(cb);
+    });
+
+  };
+}
+
+//clone of given repo
+function clone(config, latestDocu, branch, dest) {
+  return (cb) => {
+    
+    if(!config.docuProvider || config.docuProvider === 'GIT'){
+
+      logger.info(`Cloning latestResultRepo folder from ${latestDocu}...`);
+      cloner.cloneRepo(latestDocu, branch, dest, (err) => {
+        if (err) return cb(err);
+
+        return cb();
+      });
+      return;
+    }
+
+    if(config.docuProvider === 'S3'){
+
+      if(!config.generationResult.s3.credentials.accessKeyId || !config.generationResult.s3.credentials.secretAccessKey){ 
+        logger.warning('AWS credentials were not exported.');
+        return cb();
+      }
+
+      logger.info('Cloning latestResultRepo folder from S3...');
+      latestRepoClonerS3(config, cb);
+      return;
+    }
+
+    logger.error('docuProvider is not correct!');
+    throw new Error(`${docuProvider} is not a valid content provider.`);
   };
 }
 
@@ -219,4 +265,12 @@ function eraseOutdatedLandingPagesFromDest(config, message, dest, cb){
  */
 function _prepareGlobalizedPaths(arrayOfRepositories) {
   return arrayOfRepositories.map((el) => el.replace('/services/', '/services/**/'));
+}
+
+/**
+ * Function responsible for downloading data from S3 bucket
+ * @param  {Object} [config] - chewie config
+ */
+function latestRepoClonerS3(config, cb) {
+  s3.download(config.registry.branch, config.generationResult.s3.credentials, config.generationResult.s3.bucket, config.generationResult.clonedResultFolderPath).then(cb).catch(cb);
 }
