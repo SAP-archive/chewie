@@ -60,7 +60,7 @@ function cleanBeforeClone(repo) {
   return (cb) => {
 
     validator.dirCheck(repo, (err) => {
-      if (err) return;
+      if (err) return cb();
 
       del(repo)
         .then(() => cb())
