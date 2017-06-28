@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "async": "^1.4.2",
+    "aws-sdk": "^2.28.0",
     "chai": "3.4.0",
     "del": "^2.2.0",
     "filendir": "^1.0.0",
@@ -39,9 +40,10 @@
     "raml2html": "https://github.com/mjasinski5/raml2html.git",
     "raml2obj": "^2.2.0",
     "rimraf": "2.4.3",
+    "s3": "^4.4.0",
     "underscore": "^1.8.3",
-    "vinyl-paths": "^2.1.0",
-    "vinyl-fs": "^2.4.3"
+    "vinyl-fs": "^2.4.3",
+    "vinyl-paths": "^2.1.0"
   },
   "devDependencies": {
     "npm-check-updates": "2.8.9",
@@ -52,7 +54,7 @@
   "scripts": {
     "test": "npm run eslint && npm run dep-check && npm run test-unit && npm run test-integration",
     "test-unit": "NODE_ENV=master mocha test/unit/*.spec.js",
-    "test-integration": "NODE_ENV=master mocha --timeout 40000 test/integration/*.spec.js",
+    "test-integration": "DOCU_PROVIDER=GIT NODE_ENV=master mocha --timeout 40000 test/integration/*.spec.js",
     "dep-check": "node_modules/npm-check-updates/bin/ncu",
     "eslint": "node_modules/eslint/bin/eslint.js -c .eslintrc src/**/*.js && node_modules/eslint/bin/eslint.js -c .eslintrc test/**/*.js",
     "release": "npm run test && npm run release:bump-version && npm run release:publish && npm run release:push",

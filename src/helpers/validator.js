@@ -18,7 +18,7 @@ function dirCheck(dir, next) {
 
       if (stats.isDirectory()) return next();
 
-      return next(`There was a problem with dirCheck on ${file}`);
+      return next(`There was a problem with dirCheck on ${dir}`);
 
     });
   }

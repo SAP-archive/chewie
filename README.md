@@ -62,17 +62,17 @@ NOTE: This command increments the package version by 0.0.1 (patch). To release n
 
 * To run all tests, use the following command:  
   ```
-  NODE_ENV=master npm run test-unit && npm run test-integration
+  DOCU_PROVIDER=GIT NODE_ENV=master npm run test-unit && npm run test-integration
   ```
 
 * To run just one specific test, use one of the following command:
 
   ```
-  NODE_ENV=master ./node_modules/mocha/bin/mocha --harmony_shipping test/unit/NAME_OF_THE_UNIT_TEST.spec.js
+  DOCU_PROVIDER=GIT NODE_ENV=master ./node_modules/mocha/bin/mocha --harmony_shipping test/unit/NAME_OF_THE_UNIT_TEST.spec.js
   ```
 
   ```
-  NODE_ENV=master ./node_modules/mocha/bin/mocha --timeout 40000 --harmony_shipping test/integration/NAME_OF_THE_INTEGRATION_TEST.spec.js
+  DOCU_PROVIDER=GIT NODE_ENV=master ./node_modules/mocha/bin/mocha --timeout 40000 --harmony_shipping test/integration/NAME_OF_THE_INTEGRATION_TEST.spec.js
   ```
 
 ## License

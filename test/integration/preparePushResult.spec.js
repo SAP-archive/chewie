@@ -26,8 +26,10 @@ describe('Check if backup works for full generation', () => {
 
       const opt = {
         'src': `${config.skeletonOutDestination}/**`,
+        'latestDocu': config.generationResult.srcLocation,
         'dest': config.generationResult.clonedResultFolderPath,
         'branch': config.generationResult.branch,
+        'repo': config.generationResult.clonedResultFolderPath,
         'message': 'Push operation for the whole Dev Portal',
         'independent': false,
         'tempLocation': config.tempLocation,
@@ -132,8 +134,10 @@ describe('Check if backup works for independent document generation', () => {
 
       const opt = {
         'src': `${config.skeletonOutDestination}/**`,
+        'latestDocu': config.generationResult.srcLocation,
         'dest': config.generationResult.clonedResultFolderPath,
         'branch': config.generationResult.branch,
+        'repo': config.generationResult.clonedResultFolderPath,
         'message': 'services:Failing Ipsum,services:Samuel L Ipsum',
         'independent': true,
         'tempLocation': config.tempLocation,

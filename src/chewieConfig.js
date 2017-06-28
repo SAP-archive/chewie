@@ -7,6 +7,7 @@ const config = {
   docuUrl: process.env.docuURL || 'https://devportal.yaas.io',
   notClonedRepositoriesFile: 'notClonedRepositories.json',
   indepenedentDocuRepositoriesFile: 'indepenedentDocuRepositories',
+  docuProvider: process.env.DOCU_PROVIDER || 'S3',
 
   registry: {
     location: process.env.REGISTRY_LOCATION || 'remote',
@@ -30,10 +31,19 @@ const config = {
   },
 
   generationResult: {
-    srcLocation: 'git@github.com:hybris/chewie-sample-result.git',
-    branch: 'master',
-    cloneLocation: 'latestResultRepo'
+    srcLocation: process.env.generationResultLocation || 'ssh://git@stash.hybris.com:7999/wookiee/devportal_out.git',
+    branch: process.env.docuBranch || 'dev',
+    cloneLocation: 'latestResultRepo',
+    s3: {
+      bucket: process.env.S3_BUCKET,
+      credentials: {
+        accessKeyId: process.env.AWS_ID,
+        secretAccessKey: process.env.AWS_SECRET,
+        region: process.env.AWS_REGION
+      }
+    }
   },
+  
   constantLocations: {
     apinotebooksLocation: './src/raw/apinotebooks',
     apinotebooksOutLocation: './out/apinotebooks',
