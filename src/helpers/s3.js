@@ -14,7 +14,7 @@ function upload(prefix, credentials, bucket, dirPath, getClient){
     const client = getS3Client(credentials);
     const uploader = client.uploadDir({
       localDir: dirPath,
-      deleteRemoved: true,
+      deleteRemoved: false,
       s3Params: {
         Bucket: bucket,
         Prefix: prefix
