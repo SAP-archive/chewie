@@ -17,7 +17,9 @@ function upload(prefix, credentials, bucket, dirPath, getClient){
       deleteRemoved: true,
       s3Params: {
         Bucket: bucket,
-        Prefix: prefix
+        Prefix: prefix,
+        CacheControl: 'max-age=2000000,public',
+        Expires: '2025-12-31T00:00:00Z'
       }
     });
     uploader
