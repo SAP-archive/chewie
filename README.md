@@ -4,11 +4,11 @@
 [![npm](https://img.shields.io/npm/dt/chewie.svg)](https://www.npmjs.com/package/chewie)
 [![dependencies](https://david-dm.org/yaas/chewie.svg)](https://david-dm.org/yaas/chewie)
 
-Chewie is a Node.js module that can be used in any skeleton build by any [static site generator](https://staticsitegenerators.net/). It supports approach for documentation that is contradictory to main documentation trend called [single source publishing](https://en.wikipedia.org/wiki/Single_source_publishing). Chewie makes it possible to have the content distributend in different locations, we could name it `distributed source publishing`.
+Chewie is a Node.js module that you can use in a skeleton build with any [static site generator](https://staticsitegenerators.net/). It supports a different approach to documentation, unlike the [single source publishing](https://en.wikipedia.org/wiki/Single_source_publishing) documentation trend. With Chewie, you can distribute your content in different locations, essentially making it `distributed source publishing`.
 
-What does it mean in practice. You can imagine your product consists of 40 different documentation topics. You can document them all in one portal using static site generator, but the content keep in 40 different repositories and managed by different teams using [git](https://git-scm.com/).
+What does this mean in practice? Imagine your product consists of forty different documentation topics. Using Chewie, you can document them all in one portal using a static site generator, but keep the content in forty different repositories, each managed by different teams using [git](https://git-scm.com/).
 
-## Table of Contents
+## Table of contents
 
 * [Installation](#installation)
 * [Usage](#usage)
@@ -29,15 +29,15 @@ npm install chewie
 
 ## Usage
 
-### Quick Start
+### Quick start
 
-One of many tools, that you can use, is for example gulp.js. To use chewie with gulp.js, in the gulp file add:
+To use chewie with gulp.js, add the following to the gulp file:
 
 ```
 const chewie = require('chewie');
 ```
 
-### Create Documentation
+### Create documentation
 
 ```
 sudo npm install -g jsdoc
@@ -46,26 +46,26 @@ jsdoc -r src -d documentation
 
 Open index.html under apidocs/documentation
 
-### How to Release
+### How to release
 
-You need to have proper NPM permissions to release this project. Run this command to release:
+To release a Chewie project, run this command:
 
 ```
 npm run release
 ```
 
-NOTE: This command increments the package version by 0.0.1 (patch). To release new minor or major version, modify `bump-version` script in the `package.json` file. Replace `patch` with `minor` or `major`.
+<div class="panel note"> To release a Chewie project, you need proper NPM permissions. </div>
 
-
+<div class="panel note"> This command increments the package version by 0.0.1 (patch). To release a new minor or major version, modify the `bump-version` script in the `package.json` file. Replace `patch` with `minor` or `major`. </div>
 
 ## Development
 
-* To run all tests, use the following command:  
+* To run all the tests, use the following command:  
   ```
   DOCU_PROVIDER=GIT NODE_ENV=master npm run test-unit && npm run test-integration
   ```
 
-* To run just one specific test, use one of the following command:
+* To run just one specific test, use one of the following commands:
 
   ```
   DOCU_PROVIDER=GIT NODE_ENV=master ./node_modules/mocha/bin/mocha --harmony_shipping test/unit/NAME_OF_THE_UNIT_TEST.spec.js
@@ -89,19 +89,16 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-## Defects and Feedback
+## Defects and feedback
 
-Use [the Github issue tracker](../../issues) for now.
+To offer feedback or report issues, use the [Github issue tracker](../../issues).
 
 ## Contribution
 
-Read the [CONTRIBUTING](CONTRIBUTING.md) so you know exactly how to contribute to this project.
+To learn how you can contribute to this project, see the [CONTRIBUTING](CONTRIBUTING.md) document.
 
 ## Credits
 
-<p align="center">
-
 [![YaaS](https://github.com/YaaS/sample-yaas-repository/blob/master/YaaS.png)](https://yaas.io)
 
-<p align="center">
-:heart: from the GitHub team @ YaaS
+From your YaaS team.
