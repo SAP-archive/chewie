@@ -83,7 +83,7 @@ function clone(config, latestDocu, branch, dest) {
         return cb();
       });
       return;
-    
+    }
 
     if(config.docuProvider === 'S3'){
       logger.info('Cloning latestResultRepo folder from S3...');
