@@ -86,12 +86,6 @@ function clone(config, latestDocu, branch, dest) {
     }
 
     if(config.docuProvider === 'S3'){
-
-      if(!config.generationResult.s3.credentials.accessKeyId || !config.generationResult.s3.credentials.secretAccessKey){ 
-        logger.warning('AWS credentials were not exported.');
-        return cb();
-      }
-
       logger.info('Cloning latestResultRepo folder from S3...');
       latestRepoClonerS3(config, cb);
       return;
