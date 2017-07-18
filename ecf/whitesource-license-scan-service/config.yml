@@ -1,0 +1,4 @@
+productName: "SHC - <name_of_your_ppms_PV or name_of_ppms_SCV>"
+EmailToTeam: true
+triggerCondition:
+  - "production-services/build-service*"
