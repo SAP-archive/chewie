@@ -1,34 +1,41 @@
 
 const copier = require('./../helpers/copier'),
   gulp = require('gulp'),
-  fs = require('fs-extra');
+  fs = require('fs-extra'),
+  log = require('../helpers/logger');
 
 
-function customize(customizationConfig, indexPath, next) {
+function customize(customizationConfig, next) {
 
-  if(!customizationConfig) return next();
+  if(!customizationConfig || !customizationConfig.dirPath) {
+    log.warning('Customization config is missing. Use \'customizationDirPath\' environment variable to provide path for customization folder. ');
+    return next();
+  }
+  
+  _customizeLandingPageIndex(customizationConfig, next);
+
+}
+
+function _customizeLandingPageIndex(customizationConfig, next) {
     
-  const customizationTopics = Object.keys(customizationConfig);
+  const sourceIndexPath = `${customizationConfig.dirPath}/index.html.eco`;
+  const destinationIndexPath = customizationConfig.landingPageIndexPath;
 
-  customizationTopics.forEach((c) => {
-    
-    if(!customizationConfig[c].active) return;
+  fs.pathExists(sourceIndexPath, (err, exists) => {
 
-    switch(c) {
-    case 'landingPageIndex':
-      _customizeLandingPageIndex(customizationConfig[c], indexPath, next);
-      break;
+    if(!exists) {
+      log.error(`Path provided for customization of Landing Page doesnt exist! (path: ${sourceIndexPath})`);
+      return next();
     }
-  });
 
-
-  function _customizeLandingPageIndex(config, indexPath, next) {
-
-    const sourceIndexPath = indexPath ? indexPath : config.path;
-    const destinationIndexPath = config.landingPageIndexPath;
+    if(err) {
+      log.error(`Error occured during reading path: ${sourceIndexPath}. ${err}`);
+      return next();
+    }
 
     fs.copy(sourceIndexPath, destinationIndexPath, {overwrite: true}, next);
-  }
+  });
+
 }
 
 module.exports = customize;
