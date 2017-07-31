@@ -16,7 +16,8 @@ const prepareRegistry = require('./src/integration/prepareRegistry'),
   copyTutorials = require('./src/integration/copyTutorials'),
   replaceApiReferences = require('./src/integration/replaceApiReferences'),
   removeClonedRepositories = require('./src/integration/removeClonedRepositories'),
-  globalization = require('./src/integration/globalization');
+  globalization = require('./src/integration/globalization'),
+  customize = require('./src/integration/customize');
 
 
 // helpers
@@ -85,7 +86,8 @@ const chewie = {
   cleanSkeleton,
   minify,
   globalization,
-  s3
+  s3,
+  customize
 };
 
 module.exports = chewie;
