@@ -45,7 +45,7 @@ function preparePushResult(config, opt, next) {
     message = opt.message;
 
   async.series([
-    cleanBeforeClone(repo),
+    config.docuProvider !== 'S3' ? cleanBeforeClone(repo) : (cb) => cb(),
     clone(config, latestDocu, branch, dest),
     backupOfNotClonedRepositories(independent, tempLocation, notClonedRepositoriesFile),
     deletePreviouslyClonedResultsRepo(config, dest, independent, tempLocation, indepenedentDocuRepositoriesFile, message),
