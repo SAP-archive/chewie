@@ -30,7 +30,7 @@ function modifyGlossary(name) {
 
         file.contents = Buffer.concat([
           new Buffer(`---\nterm: ${md.term}\ndescription: ${description}\n${topic}${lockCase}\ninternal: false\n---\n`),
-          new Buffer(`<span class="u-help-label" data-toggle="tooltip" data-placement="top" title="${description}">${md.term}</span>`)
+          new Buffer(`<span class='u-help-label' data-toggle='tooltip' data-placement='top' title='${description}'>${md.term}</span>`)
         ]);
       }
     }
