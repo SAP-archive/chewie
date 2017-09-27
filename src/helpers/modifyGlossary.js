@@ -1,13 +1,13 @@
-"use strict";
-const log = require("../helpers/logger"),
-  mkmeta = require("marked-metadata");
+'use strict';
+const log = require('../helpers/logger'),
+  mkmeta = require('marked-metadata');
 
 /**
  * This function modifies all glossary partials during copy
  * @return {Function} - anonymous function that can be used in tap operations on streap during gulp copy
  */
 function modifyGlossary(name) {
-  return file => {
+  return (file) => {
     let md = new mkmeta(file.path),
       topic,
       lockCase;
@@ -19,10 +19,10 @@ function modifyGlossary(name) {
         topic = `topic: ${name}`;
 
         //new line is added here as this metadata is not common and we don't want to have an extra white space in metadatas
-        lockCase = md.lock_case ? `\nlock_case: ${md.lock_case}` : "";
+        lockCase = md.lock_case ? `\nlock_case: ${md.lock_case}` : '';
 
         // we have escape " because otherwise html syntax is invalid
-        const description = md.description.replace(/'/g, "&quot;");
+        const description = md.description.replace(/'/g, '&quot;');
 
         file.contents = Buffer.concat([
           new Buffer(
@@ -33,7 +33,8 @@ function modifyGlossary(name) {
           )
         ]);
       }
-    } catch (e) {
+    } 
+    catch (e) {
       return;
     }
   };
